@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "779461831683",
+    "project_id": "backend-2e3a2",
+    "storage_bucket": "backend-2e3a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779461831683:android:3dd0bb22f7e6db40287236",
+        "android_client_info": {
+          "package_name": "com.example.nyumbayo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779461831683-vo7h46b9omvond5pepujev1ul4u3quok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgTGQ--LrFjBr06pNE2Z0A1sXg0NYiHo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779461831683-vo7h46b9omvond5pepujev1ul4u3quok.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nyumbayoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
