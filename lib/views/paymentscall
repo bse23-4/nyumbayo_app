@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+
+class PaymentScreen extends StatefulWidget {
+  final int amount;
+  final String customerId;
+
+  PaymentScreen({required this.amount, required this.customerId});
+
+  @override
+  _PaymentScreenState createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  String? _clientSecret;
+
+  @override
+  void initState() {
+    super.initState();
+    _createPaymentIntent();
+  }
+
+  Future<void> _createPaymentIntent() async {
+    final responseData = await createPaymentIntent(widget.amount, widget.customerId);
+    setState(() {
+      _clientSecret = responseData['client_secret'];
+    });
+  }
+
+  Future<void> _confirmPayment() async {
+    // Use the Stripe SDK to confirm the payment
+    // ...
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Payment'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (_clientSecret != null) ...[
+              Text('Payment amount: \$${widget.amount / 100}'),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _confirmPayment,
+                child: Text('Pay now'),
+              ),
+            ] else ...[
+              CircularProgressIndicator(),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
