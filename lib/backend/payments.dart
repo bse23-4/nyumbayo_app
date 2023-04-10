@@ -1,21 +1,29 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+//import 'dart:html';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nyumbayo_app/models/Payment.dart';
 
-// Create a new payment intent with the given amount
-Future<Map<String, dynamic>> createPaymentIntent(int amount, String customerId) async {
-  const url = 'https://api.stripe.com/v1/payment_intents';
-  final headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': 'Bearer YOUR_STRIPE_SECRET_KEY',//replace 'YOUR_STRIPE_SECRET_KEY' with your actual Stripe secret API key. 
-  };
-  final body = {
-    'amount': amount.toString(),
-    'currency': 'usd',
-    'customer': customerId,
-    'payment_method_types[]': 'card',
-    'capture_method': 'automatic',
-  };
-  final response = await http.post(Uri.parse(url), headers: headers, body: body);
-  final responseData = json.decode(response.body);
-  return responseData;
+FirebaseFirestore db = FirebaseFirestore.instance;
+
+class Payments {
+  void makePayments(Payment pay) async {
+
+    // adding different payments
+
+    final p = <String, dynamic>{
+      "issue": pay.rentBalance,
+      "maintenance": pay.powerBill,
+      "negotiationsForPower": pay.percentageBalance,
+      "others": pay.completedPayments,
+      "status": pay.landlordId,
+      "tenantName": pay.tenantName,
+      "category": pay.totalBalance,
+      "datetime": pay.now,
+    };
+
+    //creating the payments collection in the firestore database
+    
+    db.collection("pay").add(p).then((DocumentReference doc) =>
+        // ignore: avoid_print
+        print('Successfully added new payment ${doc.id}'));
+  }
 }
