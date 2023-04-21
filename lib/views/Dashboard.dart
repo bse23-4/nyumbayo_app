@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '/exports/exports.dart';
 
 class Dashboard extends StatefulWidget {
@@ -11,8 +13,29 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      drawer: const Drawer(child: Center(child: Text("Add property"),),),
+      appBar: AppBar(
+        shadowColor: Colors.transparent,
+        title: const Text("Dashboard"),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 100,
+            child: Card(
+              child: RichText(
+                text: TextSpan(
+                    text: "Tenants",
+                    style: TextStyles(context).getRegularStyle().copyWith(color: Colors.black)),
+              ),
+            ),
+          )
+        ],
+      ),
+      drawer: const DrawerWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

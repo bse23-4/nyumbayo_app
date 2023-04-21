@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
               child: Text('Login'),
             ),
             
-            ElevatedButton(onPressed: (){}, child: const Text("Get Started"))
+          
           ],
         ),
       ),
