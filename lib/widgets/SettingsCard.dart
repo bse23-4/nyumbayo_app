@@ -40,11 +40,11 @@ class SettingCard extends StatelessWidget {
       shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
       color: Theme.of(context).brightness == Brightness.light
-          ? color ?? Color.fromRGBO(246, 246, 246, 1)
+          ? color ?? const Color.fromRGBO(246, 246, 246, 1)
           : Theme.of(context).cardColor,
       child: ListTileTheme(
         contentPadding:
-            const EdgeInsets.only(left: 3, top: 3, right: 4, bottom: 3),
+            const EdgeInsets.only(left: 3, top: 3, right: 3, bottom: 3),
         child: ListTile(
           leading: leading ??
               Image.asset(

@@ -59,3 +59,5 @@ export '/views/Landlord/screens/AddTenant.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
 export '/views/Landlord/screens/ViewReports.dart';
+export '/views/Landlord/screens/profiles/TenantProfile.dart';
+export '/views/Landlord/screens/profiles/ComplaintProfile.dart';

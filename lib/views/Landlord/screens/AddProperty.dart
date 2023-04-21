@@ -52,7 +52,7 @@ class _AddPropertyState extends State<AddProperty>
     },
   ];
   EdgeInsets padding =
-      const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2);
+      const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 2);
   @override
   Widget build(BuildContext context) {
     List<String> errorMsg = List.generate(tenantForm.length, (index) => "");
@@ -64,21 +64,30 @@ class _AddPropertyState extends State<AddProperty>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CommonAppbarView(
+            CommonAppbarView(
+              iconData: Icons.arrow_back,
+              onBackClick: () => Navigator.of(context).pop(),
+              topPadding: 20,
+              titlePadding:const EdgeInsets.only(left: 20, bottom: 0),
               titleText: "Add Property",
             ),
-            Expanded(
-              child: CommonFormFields(
-                padding: padding,
-                errorMsgs: errorMsg,
-                formFields: tenantForm,
-                formControllers: formControllers,
-                buttonText: "Save property details",
-                onSubmit: (){
-                  Navigator.of(context).pushNamed(Routes.dashboard);
-                },
+            ...[
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: CommonFormFields(
+                  padding: padding,
+                  formEnabled: true,
+                  formTitle: "Property details",
+                  errorMsgs: errorMsg,
+                  formFields: tenantForm,
+                  formControllers: formControllers,
+                  buttonText: "Save property details",
+                  onSubmit: () {
+                    // Navigator.of(context).pushNamed(Routes.dashboard);
+                  },
+                ),
               ),
-            )
+            ],
           ],
         ),
       ),

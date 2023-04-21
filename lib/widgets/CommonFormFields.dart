@@ -165,7 +165,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                   padding: widget.padding,
                   child: Text(
                     widget.formTitle ?? "",
-                    style: TextStyles(context).getBoldStyle().copyWith(
+                    style: TextStyles(context).getRegularStyle().copyWith(
                           fontSize: 20,
                         ),
                   ),

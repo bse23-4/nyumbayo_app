@@ -87,6 +87,8 @@ EdgeInsets padding = const EdgeInsets.only(left: 10,right:10,top: 2,bottom: 2);
           children: [
             CommonAppbarView(
               iconData: Icons.arrow_back,
+              topPadding: 20,
+              titlePadding: const   EdgeInsets.only(left: 10,top: 4,right: 10,bottom: 4),
               onBackClick: () {
                 Navigator.pop(context);
               },
@@ -95,6 +97,8 @@ EdgeInsets padding = const EdgeInsets.only(left: 10,right:10,top: 2,bottom: 2);
             Expanded(
               child: CommonFormFields(
                   padding: padding,
+                  formEnabled: true,
+                  formTitle: "Tenant details",
                   errorMsgs: errorMsg,
                   formFields: tenantForm,
                   formControllers: formControllers,
