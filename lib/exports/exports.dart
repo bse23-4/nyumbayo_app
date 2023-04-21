@@ -17,7 +17,7 @@ export '/routes/index.dart';
 
 // views
 export '/views/Login.dart';
-export '/views/Dashboard.dart';
+export '../views/Landlord/Dashboard.dart';
 // tools
 export '/tools/TapEffect.dart';
 export '/tools/RemoveFocus.dart';
@@ -38,10 +38,12 @@ export '/widgets/CommonDropDown.dart';
 export '/widgets/SettingsCard.dart';
 export '/widgets/DropDown.dart';
 export '/widgets/NoDataWidget.dart';
+export '/widgets/CommonFormFields.dart';
 
 // themes
 export '/themes/AppThemes.dart';
-
+// tools
+export '/tools/Utils.dart';
 // third party libraries
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:shared_preferences/shared_preferences.dart';
@@ -51,3 +53,9 @@ export 'package:google_fonts/google_fonts.dart';
 export 'package:http/http.dart';
 // nfc package
 export 'package:internet_connection_checker/internet_connection_checker.dart';
+
+// pages
+export '/views/Landlord/screens/AddTenant.dart';
+export '/views/Landlord/screens/AddProperty.dart';
+export '/views/Landlord/screens/ViewTenants.dart';
+export '/views/Landlord/screens/ViewReports.dart';

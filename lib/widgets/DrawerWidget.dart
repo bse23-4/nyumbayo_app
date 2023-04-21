@@ -22,14 +22,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             accountName: Text("Admin"),
             accountEmail: Text("admin@gmail.com"),
           ),
-          const ListTile(
-            title: Text("Add Property"),
-            leading: Icon(Icons.add_home_outlined),
+           ListTile(
+            title: const Text("Add Property"),
+            leading: const Icon(Icons.add_home_outlined),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(Routes.addProperty);
+            },
           ),
           const Divider(),
-          const ListTile(
+          ListTile(
             title: Text("Logout"),
             leading: Icon(Icons.logout_outlined),
+            onTap: () {
+              Navigator.pop(context);
+              
+            }
           ),
           const Divider(),
           ListTile(

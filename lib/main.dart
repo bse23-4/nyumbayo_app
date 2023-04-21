@@ -9,13 +9,20 @@ void main() {
         ),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(
-        builder: (context, state) {
+        builder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
+            theme:  theme.copyWith(
+            textTheme:
+                GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(
+              bodyColor: theme.brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
+              displayColor: theme.brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
             ),
+          ),
             initialRoute: Routes.dashboard,
             routes: Routes.routes(context),
           );

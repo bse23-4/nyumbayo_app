@@ -14,7 +14,7 @@ class CommonAppbarView extends StatelessWidget {
   const CommonAppbarView({
     Key? key,
     this.topPadding,
-    this.titlePadding = const EdgeInsets.all(20),
+    this.titlePadding = const EdgeInsets.all(10),
     this.titleTextSize = 24,
     this.onBackClick,
     this.headerWidget,
@@ -40,7 +40,7 @@ class CommonAppbarView extends StatelessWidget {
                 SizedBox(
                   height: AppBar().preferredSize.height,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 3, right: 8),
+                    padding: const EdgeInsets.only(top: 3, left: 3, right: 8),
                     child: SizedBox(
                       width: AppBar().preferredSize.height - 8,
                       height: AppBar().preferredSize.height - 8,
