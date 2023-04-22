@@ -37,7 +37,7 @@ class _ViewTenantsState extends State<ViewTenants>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CommonAppbarView(
-              topPadding: 10,
+              topPadding: 20,
               titleText: "Tenants",
               iconData: Icons.arrow_back,
               onBackClick: () => Navigator.of(context).pop(),
@@ -47,7 +47,7 @@ class _ViewTenantsState extends State<ViewTenants>
                 children: List.generate(
                   20,
                   (index) => TapEffect(
-                    onClick: () {},
+                    onClick: () => Routes.push(TenantProfile(), context),
                     child: SettingCard(
                       padding: padding,
                       titleText: "John Doe",
