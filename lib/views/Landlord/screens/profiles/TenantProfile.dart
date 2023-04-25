@@ -41,22 +41,29 @@ class _TenantProfileState extends State<TenantProfile>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CommonAppbarView(
-              iconData: Icons.arrow_back,
               headerWidget: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                  const SizedBox(width: 30,),
+                    SizedBox(
+                      width: 30,
+                      child: IconButton(
+                          onPressed: () => Routes.pop(context),
+                          icon: const Icon(Icons.arrow_back)),
+                    ),
                     Flex(
                       direction: Axis.vertical,
                       children: [
-                            CircleAvatar(
-                            backgroundColor: Colors.grey.shade200,
-                      radius: 45,
-                      child: Icon(Icons.person),
-                    ),
-                    const Space(space: 0.04),
+                        CircleAvatar(
+                          backgroundColor: Colors.grey.shade200,
+                          radius: 45,
+                          child: const Icon(
+                            Icons.person,
+                            size: 55,
+                          ),
+                        ),
+                        const Space(space: 0.04),
                         RichText(
                           text: TextSpan(
                             text: "John Doe\n",
@@ -76,7 +83,7 @@ class _TenantProfileState extends State<TenantProfile>
                         ),
                       ],
                     ),
-                 const SizedBox(width: 50),
+                    const SizedBox(width: 50),
                   ],
                 ),
               ),
@@ -87,7 +94,8 @@ class _TenantProfileState extends State<TenantProfile>
                 Icons.attach_money_outlined,
                 size: 35,
               ),
-              title: Text("Amount paid", style: TextStyles(context).getBoldStyle()),
+              title: Text("Amount paid",
+                  style: TextStyles(context).getBoldStyle()),
               subtitle: Text(
                 "UGX 2,00,000",
                 style: TextStyles(context).getDescriptionStyle(),
@@ -106,43 +114,81 @@ class _TenantProfileState extends State<TenantProfile>
               ),
             ),
             const Divider(),
-            ListTile(
-                leading: const Icon(
-                  Icons.attach_money_outlined,
-                  size: 35,
-                ),
-                title: Text("Issue Snapshot",
+            BlocBuilder<PowerConnectionController, bool>(
+              builder: (context, state) => SwitchListTile.adaptive(
+                value: state,
+                onChanged: (value) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          child: Container(
+                            height: 140,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                               const Icon(Icons.warning_amber_rounded,size: 40,color: Colors.amber,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                   state == false? "Confirm turning on the power?" :"Confirm turning off the power?",
+                                    style: TextStyles(context)
+                                        .getRegularStyle()
+                                        .copyWith(fontSize: 16),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right:8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Routes.pop(context);
+                                          context.read<PowerConnectionController>().setPowerState(!state);
+                                        },
+                                        child: Text(
+                                         state == false? "Turn on": "Turn off",
+                                          style: TextStyles(context)
+                                              .getRegularStyle()
+                                              .copyWith(color: Colors.blue),
+                                        ),
+                                      ),
+                                        TextButton(
+                                        onPressed: () => Routes.pop(context),
+                                        child: Text(
+                                          "Cancel",
+                                          style: TextStyles(context)
+                                              .getRegularStyle()
+                                              .copyWith(color: Colors.red),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                },
+                title: Text("Power Switch",
                     style: TextStyles(context).getBoldStyle()),
-                subtitle: const FlutterLogo(
-                  size: 90,
-                )),
-            const Divider(),
-            const Space(space: 0.04),
-            CommonButton(
-              buttonText: "Resolve",
-              height: 55,
-              backgroundColor: Colors.green.shade500,
-              padding: padding,
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.width / 6,
-                        child: const Dialog(
-                          child: Center(child: Text("hshsh")),
-                        ),
-                      );
-                    });
-              },
+                subtitle: Text(
+                  state == false
+                      ? "Power connection off"
+                      : "Power connection on",
+                ),
+              ),
             ),
-            const Space(space: 0.02),
-            CommonButton(
-              buttonText: "Reject",
-              height: 55,
-              backgroundColor: Colors.red.shade500,
-              padding: padding,
-            )
+            const Space(space: 0.04),
           ],
         ),
       ),

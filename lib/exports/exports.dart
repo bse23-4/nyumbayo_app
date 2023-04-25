@@ -7,7 +7,8 @@ export 'package:flutter/foundation.dart';
 export 'dart:io';
 // controllers
 export '/controllers/ThemeController.dart';
-export '';
+export '/controllers/PowerConnectionController.dart';
+
 // widgets
 export '/widgets/Body.dart';
 export '/widgets/DrawerWidget.dart';
@@ -17,7 +18,7 @@ export '/routes/index.dart';
 
 // views
 export '/views/Login.dart';
-export '../views/Landlord/Dashboard.dart';
+export '/views/Landlord/Dashboard.dart';
 // tools
 export '/tools/TapEffect.dart';
 export '/tools/RemoveFocus.dart';
@@ -59,5 +60,10 @@ export '/views/Landlord/screens/AddTenant.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
 export '/views/Landlord/screens/ViewReports.dart';
+export '/views/Landlord/screens/payments/Payment.dart';
 export '/views/Landlord/screens/profiles/TenantProfile.dart';
 export '/views/Landlord/screens/profiles/ComplaintProfile.dart';
+
+
+// controllers
+// export '/controllers/ThemeController.dart';

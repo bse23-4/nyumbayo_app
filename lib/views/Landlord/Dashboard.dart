@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
     },
     {
       "title": "Properties",
-      "route": Routes.properties,
+      "route": Routes.payment,
       "total": 0,
       "color": Colors.red.shade200,
     }
@@ -50,14 +50,13 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: RichText(
                   text:  TextSpan(
                     text: "UGX 3,000,000\n",style: TextStyles(context).getBoldStyle().copyWith(fontSize: 30,color: Colors.white),
                     children: [
-                      TextSpan(text: "Available rent",style: TextStyles(context).getRegularStyle().copyWith(fontSize: 19))
+                      TextSpan(text: "Available collections",style: TextStyles(context).getRegularStyle().copyWith(fontSize: 19))
                     ],
                   ),
                 ),

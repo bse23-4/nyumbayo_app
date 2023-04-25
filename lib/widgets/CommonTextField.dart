@@ -11,13 +11,17 @@ class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Color? fieldColor;
   final IconData? icon;
+  final int?  maxLength;
   final bool enableSuffix;
+  final EdgeInsets? contentPadding;
   final IconData? suffixIcon;
   final bool enableBorder;
   final VoidCallback? onTapSuffix;
   final String? Function(String?)? validate;
   const CommonTextField({
     Key? key,
+    this.maxLength,
+    this.contentPadding,
     this.hintText = '',
     this.isObscureText = false,
     this.padding = const EdgeInsets.only(),
@@ -78,6 +82,7 @@ class CommonTextField extends StatelessWidget {
                 child: Center(
                   child: TextFormField(
                     controller: controller,
+                    maxLength: maxLength,
                     maxLines: 1,
                     onChanged: onChanged,
                     style: TextStyles(context).getRegularStyle(),
@@ -86,11 +91,11 @@ class CommonTextField extends StatelessWidget {
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     validator: validate,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(
+                      contentPadding: contentPadding ??  const EdgeInsets.only(
                         left: 20,
                         right: 16,
-                        top: 16,
-                        bottom: 16,
+                        top: 26,
+                        bottom: 10,
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       suffixIcon: enableSuffix

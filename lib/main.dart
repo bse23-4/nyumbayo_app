@@ -7,6 +7,9 @@ void main() {
         BlocProvider(
           create: (context) => ThemeController(),
         ),
+         BlocProvider(
+          create: (context) => PowerConnectionController(),
+        ),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(
         builder: (context, theme) {
