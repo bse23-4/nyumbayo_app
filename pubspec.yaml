@@ -74,12 +74,13 @@ flutter:
     - assets/images/welcome/
     - assets/images/splash/
     - assets/images/onBoardingScreen/
-    - assets/images/splash/icon2.png
-    - assets/images/splash/splashscreen1.jpeg
-    - assets/images/splash/splashscreen.jpeg
-    - assets/images/onBoardingScreen/on-boarding1.jpeg
-    - assets/images/onBoardingScreen/on-boarding2.png
-    - assets/images/onBoardingScreen/on-boarding3.jpeg
+    - assets/images/forgotPassword.jpeg
+    # - assets/images/splash/icon2.png
+    # - assets/images/splash/splashscreen1.jpeg
+    # - assets/images/splash/splashscreen.jpeg
+    # - assets/images/onBoardingScreen/on-boarding1.jpeg
+    # - assets/images/onBoardingScreen/on-boarding2.png
+    # - assets/images/onBoardingScreen/on-boarding3.jpeg
 
   #   - images/a_dot_ham.jpeg
 

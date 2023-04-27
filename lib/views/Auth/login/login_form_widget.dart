@@ -1,6 +1,8 @@
   import 'package:flutter/material.dart';
+import 'package:nyumbayo_app/views/Auth/forgot_password/forget_password_model_bottom_sheet.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
+import '../forgot_password/forgot_password_btn_widget.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -43,9 +45,11 @@ class LoginForm extends StatelessWidget {
             ),
            ),
            Align(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: (){},
+              onPressed: (){
+                ForgetPasswordScreen.buildShowModalBottomSheet(context);
+              },
             child: const Text(tForgotPassword ),
             ),
            ),
@@ -54,4 +58,7 @@ class LoginForm extends StatelessWidget {
       ),
     );
   }
+
+   
 }
+

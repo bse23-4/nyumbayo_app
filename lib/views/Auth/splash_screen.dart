@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
               opacity: splashController.animate.value ? 1: 0, 
               duration: const Duration(milliseconds: 1000),
              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(tWelcomeTitle, style:Theme.of(context).textTheme.headlineMedium),
                 Text(tWelcomeSubTitle, style:Theme.of(context).textTheme.titleLarge)

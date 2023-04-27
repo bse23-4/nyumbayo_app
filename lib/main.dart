@@ -23,6 +23,8 @@ class  MyApp  extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //theme: ThemeData(brightness: Brightness.light, primarySwatch: Colors.deepPurple),
       //darkTheme: ThemeData(brightness: Brightness.dark),
+      defaultTransition: Transition.leftToRightWithFade,
+      transitionDuration: const Duration(milliseconds: 500),
       themeMode: ThemeMode.light,
       home:  SplashScreen(),
     );

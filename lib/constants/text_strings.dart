@@ -34,8 +34,20 @@ const String tForgotPassword = "Forgot Password?";
 const String tSignUpTitle = "Nyumba Yo";
 const String tSignSubTitle = "Sign up";
 const String tFullName ="Full Name";
-const String tContact ="Contact";
+const String tContact ="Phone Number";
 const String tAddress ="Address";
 const String tConfirmPassword = "Confirm Password";
 const String tSignupSubTitle = "Create your profile to start your journey";
 
+//Forgot Password Text
+const String tForgotPasswordTitle = "Make Selection";
+const String tForgotPasswordSubTitle = "select one of the options given below to reset password";
+const String tResetViaEmail = "Reset via E-mail verification";
+const String tResetViaPhone = "Reset via phone Verification";
+const String tNext = "Next";
+
+//forgot password via phone-text
+const String tForgotPhoneSubTitle = "Enter your registered phone number to receive OTP";
+
+//forgot password via email-text
+const String tForgotEmailSubTitle = "Enter your registered Email to receive OTP";
