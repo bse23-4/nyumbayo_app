@@ -9,6 +9,7 @@ class Routes {
   static String properties = "/properties";
   static String complaints = "/complaints";
   static String payment = "/payments";
+  static String onboard = "/onboarding";
 
   // route pages with widgets
   static void push(Widget widget, BuildContext context) {
@@ -41,6 +42,7 @@ class Routes {
       Routes.complaints: (context) => const ViewReports(),
       Routes.tenants: (context) => const ViewTenants(),
       Routes.payment:(context) => const PaymentScreen(),
+      Routes.onboard: (context) => const OnboardingScreen(),
     };
   }
 }

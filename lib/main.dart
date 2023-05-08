@@ -7,7 +7,7 @@ void main() {
         BlocProvider(
           create: (context) => ThemeController(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => PowerConnectionController(),
         ),
       ],
@@ -15,18 +15,19 @@ void main() {
         builder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme:  theme.copyWith(
-            textTheme:
-                GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(
-              bodyColor: theme.brightness == Brightness.light
-                  ? Colors.black
-                  : Colors.white,
-              displayColor: theme.brightness == Brightness.light
-                  ? Colors.black
-                  : Colors.white,
+            theme: theme.copyWith(
+              textTheme:
+                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+                      .apply(
+                bodyColor: theme.brightness == Brightness.light
+                    ? Colors.black
+                    : Colors.white,
+                displayColor: theme.brightness == Brightness.light
+                    ? Colors.black
+                    : Colors.white,
+              ),
             ),
-          ),
-            initialRoute: Routes.dashboard,
+            initialRoute: Routes.onboard,
             routes: Routes.routes(context),
           );
         },
