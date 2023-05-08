@@ -1,7 +1,10 @@
   import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:nyumbayo_app/views/Auth/forgot_password/forget_password_model_bottom_sheet.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
+import '../../Dashboard/dashboard.dart';
 import '../forgot_password/forgot_password_btn_widget.dart';
 
 class LoginForm extends StatelessWidget {
@@ -40,7 +43,7 @@ class LoginForm extends StatelessWidget {
            SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: (){},
+             onPressed: (){Get.to(()=> const Dashboard());},
               child: Text(tLogin.toUpperCase()),
             ),
            ),

@@ -23,8 +23,13 @@ class SplashScreen extends StatelessWidget {
             duration: const Duration(milliseconds: 1000),
             top: splashController.animate.value ? 0: -30,
             left: splashController.animate.value ? 0: -30,
-            child: const Image(
-              image: AssetImage(tSplashScreenImageIcon),
+            child:  const SizedBox(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Image(
+                  image: AssetImage(tSplashScreenImageIcon),
+                ),
+              ),
             ),         
             ),
           ),
@@ -39,8 +44,8 @@ class SplashScreen extends StatelessWidget {
              child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(tWelcomeTitle, style:Theme.of(context).textTheme.headlineMedium),
-                Text(tWelcomeSubTitle, style:Theme.of(context).textTheme.titleLarge)
+                Text(tWelcomeTitle, style:Theme.of(context).textTheme.headlineMedium,  textAlign: TextAlign.center,),
+                Text(tWelcomeSubTitle, style:Theme.of(context).textTheme.titleLarge,  textAlign: TextAlign.center,),
               ],
             ),
           ),

@@ -18,3 +18,6 @@ const String tOnBoardingScreenImage3 = "assets/images/onBoardingScreen/on-boardi
 
 //forgotPassword
 const String tForgotPasswordImage = "assets/images/forgotPassword.jpeg";
+
+//profile picture
+const String tProfileImage = "assets/images/profile_pic.jpg";

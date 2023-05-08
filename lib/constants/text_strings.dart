@@ -51,3 +51,38 @@ const String tForgotPhoneSubTitle = "Enter your registered phone number to recei
 
 //forgot password via email-text
 const String tForgotEmailSubTitle = "Enter your registered Email to receive OTP";
+
+//otp screen text
+const String tOtpTitle = "OTP Code";
+const String tOtpSubTitle = "Verification";
+const String tOtpMessage = "Enter the OTP sent to your email";
+
+//dashboard screen
+const String tUser = "User";
+const String tPowerStatus = "PowerStatus ";
+const String tFileComplaint = "FileComplaint";
+const String tCheckBalance = "CheckBalance";
+const String tBalances = "Balances";
+const String tPower = "Power Status";
+const String tRent = "Rent";
+const String tPendingBalance ="PendingBalance";
+const String tCompleted ="Completed";
+const String tsubTitle = "Please pay your dues";
+
+
+//ComplaintScreen
+const String tComplaintScreen = "Complaint Submitted";
+const String tComplaint1 = "power Surge";
+const String tComplaint2 = "brockage";
+
+//ProfileScreen
+const String tProfile = "Profile";
+const String tEditProfile = "Edit Profile";
+const String tLogoutDialogHeading =" Logout";
+const String tProfileHeading = "Angella";
+const String tProfileSubHeading = "angella@gmail.com";
+const String tMenu1 = "Personal Details";
+const String tMenu3 = "Settings";
+const String tMenu2 = "Payment Details";
+const String tDelete = "Delete";
+const String tJoined = "Joined";

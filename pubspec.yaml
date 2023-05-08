@@ -43,12 +43,14 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   get: ^4.6.5
   google_fonts: ^4.0.3
+  flutter_otp_text_field: ^1.1.1
+  line_awesome_icons: ^1.0.4+2
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
- 
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -75,6 +77,7 @@ flutter:
     - assets/images/splash/
     - assets/images/onBoardingScreen/
     - assets/images/forgotPassword.jpeg
+    - assets/images/profile_pic.jpg
     # - assets/images/splash/icon2.png
     # - assets/images/splash/splashscreen1.jpeg
     # - assets/images/splash/splashscreen.jpeg
