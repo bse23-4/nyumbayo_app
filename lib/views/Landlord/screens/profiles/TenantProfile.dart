@@ -1,4 +1,4 @@
-import 'package:nyumbayo_app/exports/exports.dart';
+import '/exports/exports.dart';
 
 class TenantProfile extends StatefulWidget {
   const TenantProfile({super.key});
