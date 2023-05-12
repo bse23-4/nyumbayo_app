@@ -2,6 +2,7 @@ import '/exports/exports.dart';
 
 class Routes {
   static String login = "/login";
+  static String signup = "/login";
   static String dashboard = "/dashboard";
   static String addProperty = "/add-property";
   static String addTenant = "/add-tenant";

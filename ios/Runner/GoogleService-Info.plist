@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.384554426334-ae1mfl36b2lu5f2tq0octb19m422242q</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBkXVMD3_mhs7ewjI_szYl1pa6NFiGBcmY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>384554426334</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.nyumbayoApp</string>
+	<key>PROJECT_ID</key>
+	<string>nyumbayo-366ef</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nyumbayo-366ef.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:384554426334:ios:b8cd4558b10a0e52aac74f</string>
+	<key>DATABASE_URL</key>
+	<string>https://nyumbayo-366ef-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
