@@ -3,15 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-<<<<<<< HEAD
-	<string>384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.384554426334-ae1mfl36b2lu5f2tq0octb19m422242q</string>
-	<key>API_KEY</key>
-	<string>AIzaSyBkXVMD3_mhs7ewjI_szYl1pa6NFiGBcmY</string>
-	<key>GCM_SENDER_ID</key>
-	<string>384554426334</string>
-=======
 	<string>779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm</string>
@@ -19,21 +10,14 @@
 	<string>AIzaSyBA-gZnPSsgEGv55hsvFSH_W8A-4d2vcuo</string>
 	<key>GCM_SENDER_ID</key>
 	<string>779461831683</string>
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.nyumbayoApp</string>
 	<key>PROJECT_ID</key>
-<<<<<<< HEAD
-	<string>nyumbayo-366ef</string>
-	<key>STORAGE_BUCKET</key>
-	<string>nyumbayo-366ef.appspot.com</string>
-=======
 	<string>backend-2e3a2</string>
 	<key>STORAGE_BUCKET</key>
 	<string>backend-2e3a2.appspot.com</string>
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -45,12 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-<<<<<<< HEAD
-	<string>1:384554426334:ios:b8cd4558b10a0e52aac74f</string>
-	<key>DATABASE_URL</key>
-	<string>https://nyumbayo-366ef-default-rtdb.firebaseio.com</string>
-=======
 	<string>1:779461831683:ios:7c7cc15c94aa0cb1287236</string>
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
 </dict>
 </plist>

@@ -3,6 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
+	<key>NSCameraUsageDescription</key>
+	<string>Some Description</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Some Description</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Some Description</string>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Nyumbayo App</string>

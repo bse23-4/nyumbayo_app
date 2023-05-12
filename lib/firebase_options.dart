@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,23 +43,41 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCNasX5njlD4i3oA7F7hdLOGDpt4ycMP20',
+    appId: '1:779461831683:web:3eddb34efbe6af04287236',
+    messagingSenderId: '779461831683',
+    projectId: 'backend-2e3a2',
+    authDomain: 'backend-2e3a2.firebaseapp.com',
+    storageBucket: 'backend-2e3a2.appspot.com',
+    measurementId: 'G-6285WNLZ33',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDp4FXbrz-3V7e18cu9oe4AEa90QeBI4Co',
-    appId: '1:384554426334:android:987a03f5c8436202aac74f',
-    messagingSenderId: '384554426334',
-    projectId: 'nyumbayo-366ef',
-    databaseURL: 'https://nyumbayo-366ef-default-rtdb.firebaseio.com',
-    storageBucket: 'nyumbayo-366ef.appspot.com',
+    apiKey: 'AIzaSyDgTGQ--LrFjBr06pNE2Z0A1sXg0NYiHo4',
+    appId: '1:779461831683:android:3dd0bb22f7e6db40287236',
+    messagingSenderId: '779461831683',
+    projectId: 'backend-2e3a2',
+    storageBucket: 'backend-2e3a2.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBkXVMD3_mhs7ewjI_szYl1pa6NFiGBcmY',
-    appId: '1:384554426334:ios:b8cd4558b10a0e52aac74f',
-    messagingSenderId: '384554426334',
-    projectId: 'nyumbayo-366ef',
-    databaseURL: 'https://nyumbayo-366ef-default-rtdb.firebaseio.com',
-    storageBucket: 'nyumbayo-366ef.appspot.com',
-    iosClientId: '384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBA-gZnPSsgEGv55hsvFSH_W8A-4d2vcuo',
+    appId: '1:779461831683:ios:7c7cc15c94aa0cb1287236',
+    messagingSenderId: '779461831683',
+    projectId: 'backend-2e3a2',
+    storageBucket: 'backend-2e3a2.appspot.com',
+    iosClientId: '779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm.apps.googleusercontent.com',
+    iosBundleId: 'com.example.nyumbayoApp',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBA-gZnPSsgEGv55hsvFSH_W8A-4d2vcuo',
+    appId: '1:779461831683:ios:7c7cc15c94aa0cb1287236',
+    messagingSenderId: '779461831683',
+    projectId: 'backend-2e3a2',
+    storageBucket: 'backend-2e3a2.appspot.com',
+    iosClientId: '779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm.apps.googleusercontent.com',
     iosBundleId: 'com.example.nyumbayoApp',
   );
 }
