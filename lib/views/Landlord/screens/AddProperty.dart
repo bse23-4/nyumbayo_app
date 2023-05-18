@@ -17,7 +17,7 @@ class _AddPropertyState extends State<AddProperty>
     _controller = AnimationController(
       vsync: this,
       value: 0,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 900),
     );
     _controller.forward();
   }
@@ -44,7 +44,14 @@ class _AddPropertyState extends State<AddProperty>
       "type": TextInputType.emailAddress,
     },
     {
-      "title": "Number of rooms",
+      "title": "Number of floors",
+      "icon": Icons.room_outlined,
+      "hint": "e.g 07",
+      "password": false,
+      "type": TextInputType.phone,
+    },
+    {
+      "title": "Number of apartments",
       "icon": Icons.room_outlined,
       "hint": "e.g 07",
       "password": false,
@@ -52,43 +59,69 @@ class _AddPropertyState extends State<AddProperty>
     },
   ];
   EdgeInsets padding =
-      const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 2);
+      const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 2);
   @override
   Widget build(BuildContext context) {
     List<String> errorMsg = List.generate(tenantForm.length, (index) => "");
+    // ignore: prefer_typing_uninitialized_variables
     List<TextEditingController> formControllers =
         List.generate(tenantForm.length, (index) => TextEditingController());
+//
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CommonAppbarView(
-              iconData: Icons.arrow_back,
-              onBackClick: () => Navigator.of(context).pop(),
-              topPadding: 20,
-              titlePadding:const EdgeInsets.only(left: 20, bottom: 0),
-              titleText: "Add Property",
-            ),
-            ...[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: CommonFormFields(
-                  padding: padding,
-                  formEnabled: true,
-                  formTitle: "Property details",
-                  errorMsgs: errorMsg,
-                  formFields: tenantForm,
-                  formControllers: formControllers,
-                  buttonText: "Save property details",
-                  onSubmit: () {
-                    // Navigator.of(context).pushNamed(Routes.dashboard);
-                  },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonAppbarView(
+                iconData: Icons.arrow_back,
+                onBackClick: () => Navigator.of(context).pop(),
+                topPadding: 20,
+                titlePadding: const EdgeInsets.only(
+                  left: 20,
+                  bottom: 0,
+                  top: 30,
                 ),
+                titleText: "Add Property",
               ),
+              ...[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: CommonFormFields(
+                    padding: padding,
+                    formTitle: "Property details",
+                    errorMsgs: errorMsg,
+                    formEnabled: true,
+                    formFields: tenantForm,
+                    formControllers: formControllers,
+                    buttonText: "Save property details",
+                    onSubmit: () {
+                      var data = {
+                        "name": formControllers[0].text,
+                        "address": formControllers[1].text,
+                        "floors": formControllers[2].text,
+                        "rooms": formControllers[3].text,
+                        "date": DateTime.now().toString(),
+                      };
+                      showProgress(context, text: "Adding new property...");
+                      Properties.addProperty(data).then((value) {
+                        Routes.pop(context);
+                      }).whenComplete(
+                        () {
+                          Routes.named(context, Routes.dashboard);
+                          showMessage(
+                              context: context,
+                              msg: "Property added successfully",
+                              type: 'success');
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

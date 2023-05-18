@@ -1,12 +1,11 @@
 // ignore_for_file: avoid_print
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '/exports/exports.dart';
 import 'package:nyumbayo_app/models/Power.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
 class Powers {
-  void payElectricity(Power pow) async {
+  static void payElectricity(Power pow) async {
 
 //converting power units to money used
     final double powerBill = Power.powerRate * pow.consumedUnits;

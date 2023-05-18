@@ -1,12 +1,12 @@
-//import 'dart:html';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '/exports/exports.dart';
 import 'package:nyumbayo_app/models/Complaints.dart';
 
-FirebaseFirestore db = FirebaseFirestore.instance;
 
 class Complaints {
 
-  void raiseComplaint(Complain comp) async {
+ static void raiseComplaint(Complain comp) async {
+FirebaseFirestore db = FirebaseFirestore.instance;
+
 
     // adding different complaints
     

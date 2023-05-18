@@ -5,9 +5,9 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiBlocProvider(
       providers: [
@@ -16,6 +16,9 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (context) => PowerConnectionController(),
+        ),
+        BlocProvider(
+          create: (context) => UserdataController(),
         ),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(

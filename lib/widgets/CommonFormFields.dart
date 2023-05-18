@@ -156,7 +156,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
   bool showPassword = false;
   // global form key
   final formKey = GlobalKey<FormState>();
-  List<Widget> buildForm() {
+  List<Widget>  buildForm() {
     return List.generate(
       widget.formFields.length + 2,
       (index) => index != (widget.formFields.length + 1)

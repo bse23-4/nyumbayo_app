@@ -44,30 +44,39 @@ class _DashboardState extends State<Dashboard> {
               ))
         ],
       ),
-      body: Body(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      body: SingleChildScrollView(
+        child: Body(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 18.0, right: 18),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: RichText(
-                  text:  TextSpan(
-                    text: "UGX 3,000,000\n",style: TextStyles(context).getBoldStyle().copyWith(fontSize: 30,color: Colors.white),
+                  text: TextSpan(
+                    text: "UGX 3,000,000\n",
+                    style: TextStyles(context)
+                        .getBoldStyle()
+                        .copyWith(fontSize: 30, color: Colors.white),
                     children: [
-                      TextSpan(text: "Available collections",style: TextStyles(context).getRegularStyle().copyWith(fontSize: 19))
+                      TextSpan(
+                          text: "Available collections",
+                          style: TextStyles(context)
+                              .getRegularStyle()
+                              .copyWith(fontSize: 19))
                     ],
                   ),
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.44,
                 width: MediaQuery.of(context).size.width * 1,
                 child: Card(
                   color: Colors.white,
                   shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(28.0),
                     child: GridView.count(
@@ -96,7 +105,8 @@ class _DashboardState extends State<Dashboard> {
                                       style: TextStyles(context)
                                           .getRegularStyle()
                                           .copyWith(
-                                              color: Colors.black, fontSize: 20),
+                                              color: Colors.black,
+                                              fontSize: 20),
                                       children: [
                                         TextSpan(
                                           text: "\n ${data[index]['total']}",
@@ -119,7 +129,42 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
               ),
-            ],
+              const Space(space: 0.02),
+              TapEffect(
+                onClick: (){
+                  Routes.named(context, Routes.stats);
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: MediaQuery.of(context).size.width * 0.31,
+                  child: Card(
+                    color: Colors.white,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    elevation: 0,
+                    child: Center(
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Payment Stats\t   ",
+                          children: [
+                            TextSpan(
+                              text: "\t\tview all",
+                              style: TextStyles(context)
+                              .getBoldStyle()
+                              .copyWith(color: Colors.black),
+                            )
+                          ],
+                          style: TextStyles(context)
+                              .getRegularStyle()
+                              .copyWith(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
           ),
         ),
       ),

@@ -1,11 +1,10 @@
-//import 'dart:html';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '/exports/exports.dart';
 import 'package:nyumbayo_app/models/Payment.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
 class Payments {
-  void makePayments(Payment pay) async {
+  static void makePayments(Payment pay) async {
 
     // adding different payments
 

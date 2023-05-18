@@ -1,64 +1,38 @@
 {
   "project_info": {
-<<<<<<< HEAD
     "project_number": "384554426334",
     "firebase_url": "https://nyumbayo-366ef-default-rtdb.firebaseio.com",
     "project_id": "nyumbayo-366ef",
     "storage_bucket": "nyumbayo-366ef.appspot.com"
-=======
-    "project_number": "779461831683",
-    "project_id": "backend-2e3a2",
-    "storage_bucket": "backend-2e3a2.appspot.com"
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
   },
   "client": [
     {
       "client_info": {
-<<<<<<< HEAD
         "mobilesdk_app_id": "1:384554426334:android:987a03f5c8436202aac74f",
-=======
-        "mobilesdk_app_id": "1:779461831683:android:3dd0bb22f7e6db40287236",
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
         "android_client_info": {
           "package_name": "com.example.nyumbayo_app"
         }
       },
       "oauth_client": [
         {
-<<<<<<< HEAD
           "client_id": "384554426334-5tg3nj67plpt9hquiire7en9avfasrau.apps.googleusercontent.com",
-=======
-          "client_id": "779461831683-vo7h46b9omvond5pepujev1ul4u3quok.apps.googleusercontent.com",
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
           "client_type": 3
         }
       ],
       "api_key": [
         {
-<<<<<<< HEAD
           "current_key": "AIzaSyDp4FXbrz-3V7e18cu9oe4AEa90QeBI4Co"
-=======
-          "current_key": "AIzaSyDgTGQ--LrFjBr06pNE2Z0A1sXg0NYiHo4"
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-<<<<<<< HEAD
               "client_id": "384554426334-5tg3nj67plpt9hquiire7en9avfasrau.apps.googleusercontent.com",
               "client_type": 3
             },
             {
               "client_id": "384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com",
-=======
-              "client_id": "779461831683-vo7h46b9omvond5pepujev1ul4u3quok.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "779461831683-sq3krnpdeh5fg7iqfevqfrud40dvf2gm.apps.googleusercontent.com",
->>>>>>> b7be2589e91da98d41af24f36d8b2d02a137f14a
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.nyumbayoApp"

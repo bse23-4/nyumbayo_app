@@ -1,8 +1,10 @@
+
+
 import '/exports/exports.dart';
 
 class Routes {
   static String login = "/login";
-  static String signup = "/login";
+  static String signup = "/register";
   static String dashboard = "/dashboard";
   static String addProperty = "/add-property";
   static String addTenant = "/add-tenant";
@@ -11,6 +13,7 @@ class Routes {
   static String complaints = "/complaints";
   static String payment = "/payments";
   static String onboard = "/onboarding";
+  static String stats = "/stats";
 
   // route pages with widgets
   static void push(Widget widget, BuildContext context) {
@@ -32,7 +35,11 @@ class Routes {
   static void routeUntil(BuildContext context, String route){
     Navigator.of(context).pushReplacementNamed(route);
   }
-
+  // named routes
+  static void named(BuildContext context, String route){
+    Navigator.of(context).pushNamed(route);
+  }
+  // routes
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
     return {
@@ -44,6 +51,8 @@ class Routes {
       Routes.tenants: (context) => const ViewTenants(),
       Routes.payment:(context) => const PaymentScreen(),
       Routes.onboard: (context) => const OnboardingScreen(),
+      Routes.signup: (context) => const SignUp(),
+      Routes.stats: (context) => const Stats(),
     };
   }
 }

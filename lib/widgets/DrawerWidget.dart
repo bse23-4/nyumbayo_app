@@ -10,17 +10,31 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+ final credential = FirebaseAuth.instance;
+ FirebaseFirestore firestore = FirebaseFirestore.instance;
+ String userName = "";
+ @override
+ void initState() { 
+    firestore.collection("landlords").doc(credential.currentUser!.uid).get().then((value) {
+      setState(() {
+        userName = value.data()?['name'];
+      });
+    });
+   super.initState();
+   
+ }
   @override
   Widget build(BuildContext context) {
+  
     return Drawer(
       child: Column(
         children: [
-          const UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
+           UserAccountsDrawerHeader(
+            currentAccountPicture: const CircleAvatar(
               child: Icon(Icons.person_3),
             ),
-            accountName: Text("Admin"),
-            accountEmail: Text("admin@gmail.com"),
+            accountName: Text(userName),
+            accountEmail:  Text("${credential.currentUser?.email}"),
           ),
            ListTile(
             title: const Text("Add Property"),
@@ -32,11 +46,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           const Divider(),
           ListTile(
-            title: Text("Logout"),
-            leading: Icon(Icons.logout_outlined),
+            title: const Text("Logout"),
+            leading: const Icon(Icons.logout_outlined),
             onTap: () {
               Navigator.pop(context);
-              
+              showProgress(context,text: "Logging out...");
+              Auth.signOut().then((value) {
+                Routes.pop(context);
+              }).whenComplete(() {
+                showMessage(context: context, msg: "Logged out successfully",type: 'success');
+                Routes.routeUntil(context, Routes.login);
+              });
             }
           ),
           const Divider(),

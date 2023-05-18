@@ -11,12 +11,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
  @override
   initState() {
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      Routes.routeUntil(context,Routes.login);
+      BlocProvider.of<UserdataController>(context).getUserData();
+      if(context.read<UserdataController>().state == "" || context.read<UserdataController>().state == null){
+        Routes.routeUntil(context,Routes.login);
+      } else {
+        Routes.routeUntil(context,Routes.dashboard);
+      }
     });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+      BlocProvider.of<UserdataController>(context).getUserData();
     return Builder(
       // future: Future.delayed(const Duration(seconds: 3)),
       builder: (context) {
@@ -28,7 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 AspectRatio(
                   aspectRatio: 1.8,
-                  child: Image.asset("assets/6184498.avif"),
+                  child: Image.asset("assets/6184498.png"),
                 ),
                 const Space(space: 0.05),
                 SpinKitDualRing(color: Theme.of(context).primaryColor),
