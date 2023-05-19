@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 //import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:nyumbayo_app/constants/colors.dart';
 
@@ -44,7 +44,7 @@ class ProfileMenuWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           color: Colors.grey.withOpacity(0.1),
         ),
-        child: const Icon(LineAwesomeIcons.angle_right, color: Colors.grey, size: 18),
+        child: const Icon(Icons.arrow_right, color: Colors.grey, size: 18),
       ) : null,
     );
   }

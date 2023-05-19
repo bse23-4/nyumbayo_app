@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 //import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:nyumbayo_app/constants/colors.dart';
 import 'package:nyumbayo_app/constants/image.dart';
@@ -20,10 +20,10 @@ class ProfileScreen extends StatelessWidget{
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
    return  Scaffold(
     appBar: AppBar( 
-      leading: IconButton(onPressed: (){}, icon: const Icon(LineAwesomeIcons.angle_left)),
+      leading: IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_left)),
       title: Text(tProfile, style: Theme.of(context).textTheme.headlineSmall),
       actions: [
-        IconButton(onPressed: (){}, icon: Icon(isDark? LineAwesomeIcons.sun_o:LineAwesomeIcons.moon_o)),
+        IconButton(onPressed: (){}, icon: Icon(isDark? Icons.light_mode :Icons.dark_mode)),
       ],
     ),
      body: SingleChildScrollView(
@@ -47,7 +47,7 @@ class ProfileScreen extends StatelessWidget{
                       borderRadius: BorderRadius.circular(100),
                       color: tPrimaryColor,
                     ),
-                    child: const Icon(LineAwesomeIcons.pencil, color: Colors.black, size: 20),
+                    child: const Icon(Icons.edit, color: Colors.black, size: 20),
                   ),
                 ),
               ],
@@ -69,14 +69,14 @@ class ProfileScreen extends StatelessWidget{
             const SizedBox(height: 30),
             const Divider(),
             const SizedBox(height: 10),
-            ProfileMenuWidget(title: tMenu1, icon: LineAwesomeIcons.user, onPress:(){},endIcon: true,),
-            ProfileMenuWidget(title: tMenu2, icon: LineAwesomeIcons.google_wallet, onPress:(){},endIcon: true,),
-            ProfileMenuWidget(title: tMenu3, icon: LineAwesomeIcons.cog, onPress:(){},endIcon: true,),
+            ProfileMenuWidget(title: tMenu1, icon: Icons.person, onPress:(){},endIcon: true,),
+            ProfileMenuWidget(title: tMenu2, icon: Icons.wallet, onPress:(){},endIcon: true,),
+            ProfileMenuWidget(title: tMenu3, icon: Icons.credit_card, onPress:(){},endIcon: true,),
             const Divider(),
             const SizedBox(height: 30),
             ProfileMenuWidget(
               title: "logout", 
-              icon: LineAwesomeIcons.sign_out, 
+              icon: Icons.logout, 
               textColor: Colors.red,
               endIcon: false,
               onPress: (){},

@@ -1,10 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:nyumbayo_app/utils/theme.dart';
-//import 'package:nyumbayo_app/views/Auth/on_boarding_screen.dart';
-// import 'package:nyumbayo_app/constants/image.dart';
-// import 'package:nyumbayo_app/constants/text_strings.dart';
-// import 'package:nyumbayo_app/constants/sizes.dart';
 import 'package:nyumbayo_app/views/Auth/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:nyumbayo_app/views/Dashboard/dashboard.dart';
