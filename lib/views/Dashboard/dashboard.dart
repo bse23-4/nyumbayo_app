@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nyumbayo_app/constants/colors.dart';
-// import 'package:nyumbayo_app/constants/image.dart';
-// import 'package:nyumbayo_app/constants/sizes.dart';
-
-// import '../../constants/text_strings.dart';
-//import '../Auth/forgot_password/forgot_password_btn_widget.dart';
-
 class Dashboard extends StatelessWidget{
    const Dashboard({Key? key}) : super (key : key);
 
