@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
+
 import '/exports/exports.dart';
 
 void showOptions(BuildContext context) {
@@ -127,4 +129,10 @@ void showProgress(BuildContext context, {String? text = 'Task'}) {
       ),
     ),
   );
+}
+
+
+String formatNumberWithCommas(int number) {
+  final formatter = NumberFormat('#,###');
+  return formatter.format(number);
 }

@@ -10,6 +10,10 @@ export 'dart:io';
 export '/controllers/ThemeController.dart';
 export '/controllers/PowerConnectionController.dart';
 export '/controllers/UserdataController.dart';
+export '/controllers/TenantsController.dart';
+export '/controllers/PropertyIdController.dart';
+export '/controllers/AmountController.dart';
+export '/controllers/PropertyController.dart';
 
 // widgets
 export '/widgets/Body.dart';
@@ -59,11 +63,12 @@ export 'package:google_fonts/google_fonts.dart';
 export 'package:http/http.dart';
 export 'package:fl_chart/fl_chart.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
-// nfc package
+export 'package:d_chart/d_chart.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // pages
 export '/views/Landlord/screens/AddTenant.dart';
+export '/views/Landlord/screens/Chart.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
 export '/views/Landlord/screens/ViewReports.dart';
@@ -71,7 +76,6 @@ export '/views/Landlord/screens/payments/Payment.dart';
 export '/views/Landlord/screens/profiles/TenantProfile.dart';
 export '/views/Landlord/screens/profiles/ComplaintProfile.dart';
 export '/views/Onboarding.dart';
-
 
 // models
 export "/models/Payment.dart";

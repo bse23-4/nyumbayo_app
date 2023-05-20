@@ -17,7 +17,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
  void initState() { 
     firestore.collection("landlords").doc(credential.currentUser!.uid).get().then((value) {
       setState(() {
-        userName = value.data()?['name'];
+        userName = value.data()?['name'] ?? "";
       });
     });
    super.initState();

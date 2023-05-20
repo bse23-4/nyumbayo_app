@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '/exports/exports.dart';
 
 class ViewTenants extends StatefulWidget {
@@ -15,8 +17,18 @@ class _ViewTenantsState extends State<ViewTenants>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, value: 0, duration: const Duration(milliseconds: 900));
+      vsync: this,
+      value: 0,
+      duration: const Duration(milliseconds: 900),
+    );
     _controller.forward();
+    BlocProvider.of<TenantController>(context).fetchTenants();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<TenantController>(context).fetchTenants();
   }
 
   @override
@@ -27,6 +39,15 @@ class _ViewTenantsState extends State<ViewTenants>
 
   EdgeInsets padding =
       const EdgeInsets.only(top: 5, right: 15, left: 15, bottom: 2);
+  Color getRandomColor() {
+    final random = Random();
+    return Color.fromRGBO(
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+      1,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,32 +58,102 @@ class _ViewTenantsState extends State<ViewTenants>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CommonAppbarView(
-              topPadding: 20,
+              topPadding: 50,
               titleText: "Tenants",
+              titlePadding: const EdgeInsets.only(left: 30),
               iconData: Icons.arrow_back,
               onBackClick: () => Navigator.of(context).pop(),
             ),
             Expanded(
-              child: ListView(
-                children: List.generate(
-                  20,
-                  (index) => TapEffect(
-                    onClick: () => Routes.push(TenantProfile(), context),
-                    child: SettingCard(
-                      padding: padding,
-                      titleText: "John Doe",
-                      subText: "Tap to view details",
-                      leading: const Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          radius: 25,
-                          child: Icon(Icons.person),
-                        ),
-                      ),
-                    ),
+              child: FutureBuilder(
+                  future: Future.delayed(
+                    const Duration(seconds: 3),
                   ),
-                ),
-              ),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? const Loader(
+                            text: "Tenants...",
+                          )
+                        : BlocProvider.of<TenantController>(context)
+                                .state
+                                .isEmpty
+                            ?  Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.error_outline,size: 100,),
+                                    Space(space: 0.08),
+                                    Text(
+                                      "No Tenants",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return TapEffect(
+                                    onClick: () {
+                                      Routes.push(
+                                          TenantProfile(
+                                            tenantDetails: BlocProvider.of<
+                                                    TenantController>(context)
+                                                .state[index]
+                                                .data(),
+                                          ),
+                                          context);
+                                    },
+                                    child: SettingCard(
+                                      padding: padding,
+                                      titleText:
+                                          BlocProvider.of<TenantController>(
+                                                  context)
+                                              .state[index]
+                                              .data()['name'],
+                                      subText: "Tap to view details",
+                                      leading: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: CircleAvatar(
+                                          backgroundColor: getRandomColor(),
+                                          radius: 25,
+                                          child: Text(
+                                            "${BlocProvider.of<TenantController>(context).state[index].data()['name'].toString().split(" ")[0].characters.first.trim()}${BlocProvider.of<TenantController>(context).state[index].data()['name'].toString().split(" ")[1].characters.first.trim().toUpperCase()}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount:
+                                    BlocProvider.of<TenantController>(context)
+                                        .state
+                                        .length,
+                                // children:
+
+                                //  List.generate(
+                                //   20,
+                                //   (index) => TapEffect(
+                                //     onClick: () => Routes.push(TenantProfile(), context),
+                                //     child: SettingCard(
+                                //       padding: padding,
+                                //       titleText: "John Doe",
+                                //       subText: "Tap to view details",
+                                //       leading: const Padding(
+                                //         padding: EdgeInsets.all(5.0),
+                                //         child: CircleAvatar(
+                                //           radius: 25,
+                                //           child: Icon(Icons.person),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                              );
+                  }),
             ),
           ],
         ),

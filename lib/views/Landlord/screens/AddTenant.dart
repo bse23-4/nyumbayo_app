@@ -70,10 +70,16 @@ class _AddTenantState extends State<AddTenant>
       "hint": "e.g 5000",
       "password": false,
       "type": TextInputType.number,
+    }, {
+      "title": "Amount Paid",
+      "icon": Icons.monetization_on_outlined,
+      "hint": "e.g 5000",
+      "password": false,
+      "type": TextInputType.number,
     }
   ];
   EdgeInsets padding =
-      const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2);
+      const EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 2);
   @override
   Widget build(BuildContext context) {
     List<String> errorMsg = List.generate(tenantForm.length, (index) => "");
@@ -87,9 +93,9 @@ class _AddTenantState extends State<AddTenant>
           children: [
             CommonAppbarView(
               iconData: Icons.arrow_back,
-              topPadding: 20,
+              topPadding: 40,
               titlePadding:
-                  const EdgeInsets.only(left: 10, top: 4, right: 10, bottom: 4),
+                  const EdgeInsets.only(left: 30, top: 4, right: 10, bottom: 0),
               onBackClick: () {
                 Navigator.pop(context);
               },
@@ -105,13 +111,25 @@ class _AddTenantState extends State<AddTenant>
                 formControllers: formControllers,
                 buttonText: "Save tenant details",
                 onSubmit: () {
-                  showProgress(context,text:"Tenant details saved");
-                     var prop = Tenants(name: formControllers[0].text, email: formControllers[1].text, contact: formControllers[2].text, address: formControllers[3].text, roomNumber: formControllers[4].text, monthlyRent: formControllers[5].text);
-                      TenantData.saveTenantDetails(prop).then((value) {
-                        Routes.pop(context);
-                      }).whenComplete((){
-                        showMessage(context: context,msg: "Tenant details saved successfully..");
-                   });
+                  showProgress(context, text: "Saving tenant details..");
+                  // if()
+                  var prop = Tenants(
+                    name: formControllers[0].text,
+                    email: formControllers[1].text,
+                    contact: formControllers[2].text,
+                    address: formControllers[3].text,
+                    roomNumber: formControllers[4].text,
+                    monthlyRent: formControllers[5].text,
+                    amountPaid: formControllers[6].text,
+                  );
+                  TenantData.saveTenantDetails(prop,context.read<PropertyIdController>().state).then((value) {
+                    Routes.pop(context);
+                  }).whenComplete(() {
+                    Routes.named(context, Routes.dashboard);
+                    showMessage(
+                        context: context,
+                        msg: "Tenant details saved successfully..");
+                  });
                 },
               ),
             )

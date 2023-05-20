@@ -10,25 +10,11 @@ class AddProperty extends StatefulWidget {
 class _AddPropertyState extends State<AddProperty>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+List<TextEditingController> formControllers =
+        List.generate(4, (index) => TextEditingController());
+ 
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      value: 0,
-      duration: const Duration(milliseconds: 900),
-    );
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  List<Map<String, dynamic>> tenantForm = [
+  final List<Map<String, dynamic>> _propertyForm = [
     {
       "title": "Building name",
       "icon": Icons.home_work,
@@ -58,15 +44,33 @@ class _AddPropertyState extends State<AddProperty>
       "type": TextInputType.phone,
     },
   ];
+ @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      value: 0,
+      duration: const Duration(milliseconds: 900),
+    );
+    _controller.forward();
+   
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  // padding settings
   EdgeInsets padding =
       const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 2);
   @override
   Widget build(BuildContext context) {
-    List<String> errorMsg = List.generate(tenantForm.length, (index) => "");
+    List<String> errorMsg = List.generate(4, (index) => "");
     // ignore: prefer_typing_uninitialized_variables
-    List<TextEditingController> formControllers =
-        List.generate(tenantForm.length, (index) => TextEditingController());
-//
+    
+// trigger user id
+BlocProvider.of<UserdataController>(context).getUserData();
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
@@ -93,11 +97,12 @@ class _AddPropertyState extends State<AddProperty>
                     formTitle: "Property details",
                     errorMsgs: errorMsg,
                     formEnabled: true,
-                    formFields: tenantForm,
+                    formFields: _propertyForm,
                     formControllers: formControllers,
                     buttonText: "Save property details",
                     onSubmit: () {
                       var data = {
+                        
                         "name": formControllers[0].text,
                         "address": formControllers[1].text,
                         "floors": formControllers[2].text,
@@ -105,7 +110,7 @@ class _AddPropertyState extends State<AddProperty>
                         "date": DateTime.now().toString(),
                       };
                       showProgress(context, text: "Adding new property...");
-                      Properties.addProperty(data).then((value) {
+                      Properties.addProperty(data,context.read<UserdataController>().state).then((value) {
                         Routes.pop(context);
                       }).whenComplete(
                         () {

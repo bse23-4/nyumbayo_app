@@ -20,6 +20,18 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => UserdataController(),
         ),
+        BlocProvider(
+          create: (context) => TenantController(),
+        ),
+        BlocProvider(
+          create: (context) => AmountController(),
+        ),
+        BlocProvider(
+          create: (context) => PropertyController(),
+        ),
+        BlocProvider(
+          create: (context) => PropertyIdController(),
+        ),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(
         builder: (context, theme) {

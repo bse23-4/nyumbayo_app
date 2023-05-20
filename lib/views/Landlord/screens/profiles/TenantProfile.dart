@@ -1,7 +1,8 @@
 import '/exports/exports.dart';
 
 class TenantProfile extends StatefulWidget {
-  const TenantProfile({super.key});
+  final Map<String, dynamic> tenantDetails;
+  const TenantProfile({super.key, required this.tenantDetails});
 
   @override
   State<TenantProfile> createState() => _TenantProfileState();
@@ -42,15 +43,13 @@ class _TenantProfileState extends State<TenantProfile>
           children: [
             CommonAppbarView(
               headerWidget: Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 40, bottom: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                      width: 30,
-                      child: IconButton(
-                          onPressed: () => Routes.pop(context),
-                          icon: const Icon(Icons.arrow_back)),
+                    const SizedBox(
+                      width: 40,
                     ),
                     Flex(
                       direction: Axis.vertical,
@@ -58,21 +57,24 @@ class _TenantProfileState extends State<TenantProfile>
                         CircleAvatar(
                           backgroundColor: Colors.grey.shade200,
                           radius: 45,
-                          child: const Icon(
-                            Icons.person,
-                            size: 55,
+                          child: Text(
+                            "${widget.tenantDetails['name'].toString().split(" ")[0].characters.first.trim()}${widget.tenantDetails['name'].toString().split(" ")[1].characters.first.trim().toUpperCase()}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35,
+                            ),
                           ),
                         ),
                         const Space(space: 0.04),
                         RichText(
                           text: TextSpan(
-                            text: "John Doe\n",
+                            text: "${widget.tenantDetails["name"]}\n",
                             style: TextStyles(context)
                                 .getBoldStyle()
-                                .copyWith(fontSize: 20),
+                                .copyWith(fontSize: 26),
                             children: [
                               TextSpan(
-                                text: "john@gmail.com",
+                                text: "${widget.tenantDetails["email"]}\n",
                                 style: TextStyles(context)
                                     .getDescriptionStyle()
                                     .copyWith(fontSize: 16),
@@ -83,7 +85,7 @@ class _TenantProfileState extends State<TenantProfile>
                         ),
                       ],
                     ),
-                    const SizedBox(width: 50),
+                    const SizedBox(width: 40),
                   ],
                 ),
               ),
@@ -97,7 +99,7 @@ class _TenantProfileState extends State<TenantProfile>
               title: Text("Amount paid",
                   style: TextStyles(context).getBoldStyle()),
               subtitle: Text(
-                "UGX 2,00,000",
+                "UGX ${widget.tenantDetails["amountPaid"]}",
                 style: TextStyles(context).getDescriptionStyle(),
               ),
             ),
@@ -109,13 +111,14 @@ class _TenantProfileState extends State<TenantProfile>
               ),
               title: Text("Balance", style: TextStyles(context).getBoldStyle()),
               subtitle: Text(
-                "Description",
+                "UGX ${double.parse(widget.tenantDetails["monthlyRent"]) - double.parse(widget.tenantDetails["amountPaid"])}",
                 style: TextStyles(context).getDescriptionStyle(),
               ),
             ),
             const Divider(),
             BlocBuilder<PowerConnectionController, bool>(
               builder: (context, state) => SwitchListTile.adaptive(
+                secondary: const Icon(Icons.power_settings_new),
                 value: state,
                 onChanged: (value) {
                   showDialog(
@@ -134,34 +137,44 @@ class _TenantProfileState extends State<TenantProfile>
                             ),
                             child: Column(
                               children: [
-                               const Icon(Icons.warning_amber_rounded,size: 40,color: Colors.amber,),
+                                const Icon(
+                                  Icons.warning_amber_rounded,
+                                  size: 40,
+                                  color: Colors.amber,
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                   state == false? "Confirm turning on the power?" :"Confirm turning off the power?",
+                                    state == false
+                                        ? "Confirm turning on the power?"
+                                        : "Confirm turning off the power?",
                                     style: TextStyles(context)
                                         .getRegularStyle()
                                         .copyWith(fontSize: 16),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right:8.0),
+                                  padding: const EdgeInsets.only(right: 8.0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       TextButton(
                                         onPressed: () {
                                           Routes.pop(context);
-                                          context.read<PowerConnectionController>().setPowerState(!state);
+                                          context
+                                              .read<PowerConnectionController>()
+                                              .setPowerState(!state);
                                         },
                                         child: Text(
-                                         state == false? "Turn on": "Turn off",
+                                          state == false
+                                              ? "Turn on"
+                                              : "Turn off",
                                           style: TextStyles(context)
                                               .getRegularStyle()
                                               .copyWith(color: Colors.blue),
                                         ),
                                       ),
-                                        TextButton(
+                                      TextButton(
                                         onPressed: () => Routes.pop(context),
                                         child: Text(
                                           "Cancel",
@@ -192,6 +205,9 @@ class _TenantProfileState extends State<TenantProfile>
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => Routes.pop(context),
+          child: const Icon(Icons.arrow_back)),
     );
   }
 }

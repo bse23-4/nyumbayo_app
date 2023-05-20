@@ -2,14 +2,17 @@ import '/exports/exports.dart';
 
 class TenantData {
 
- static Future<void> saveTenantDetails(Tenants prop) async {
+ static Future<void> saveTenantDetails(Tenants prop,String property) async {
     final Map<String, dynamic> p = {
       "name": prop.name,
       "email": prop.email,
       "contact": prop.contact,
       "address": prop.address,
       "roomNumber": prop.roomNumber,
-      "monthlyRent": prop.monthlyRent
+      "monthlyRent": prop.monthlyRent,
+      "amountPaid": prop.amountPaid,
+      "power_status": "on",
+      "property": property
     };
     // FirebaseAuth.instance.sendPasswordResetEmail(email: email)
     FirebaseAuth.instance.createUserWithEmailAndPassword(

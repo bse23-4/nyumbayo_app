@@ -5,6 +5,7 @@ class Tenants {
   String address;
   String roomNumber;
   String monthlyRent;
+  String amountPaid;
   Tenants({
     required this.name,
     required this.email,
@@ -12,5 +13,6 @@ class Tenants {
     required this.address,
     required this.roomNumber,
     required this.monthlyRent,
+    required this.amountPaid,
   });
 }

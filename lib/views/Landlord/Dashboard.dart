@@ -10,37 +10,72 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<Map<String, dynamic>> data = [
-    {
-      "title": "Tenants",
-      "total": 0,
-      "route": Routes.tenants,
-      "color": Colors.green.shade200,
-    },
-    {
-      "title": "Complaints",
-      "total": 0,
-      "route": Routes.complaints,
-      "color": Colors.blue.shade200,
-    },
-    {
-      "title": "Properties",
-      "route": Routes.payment,
-      "total": 0,
-      "color": Colors.red.shade200,
-    }
-  ];
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<PropertyController>(context).fetchProperties();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<PropertyController>(context).fetchProperties();
+  }
+// property variable
+String? selectedProperty;
+
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<TenantController>(context, listen: true).fetchTenants();
+    BlocProvider.of<PropertyController>(context, listen: true)
+        .fetchProperties();
+    BlocProvider.of<AmountController>(context).setAmount();
+    List<Map<String, dynamic>> data = [
+      {
+        "title": "Tenants",
+        "total": BlocProvider.of<TenantController>(context).state.length,
+        "route": Routes.tenants,
+        "color": Colors.green.shade200,
+      },
+      {
+        "title": "Complaints",
+        "total": 0,
+        "route": Routes.complaints,
+        "color": Colors.blue.shade200,
+      },
+    ];
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         shadowColor: Colors.transparent,
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.keyboard_arrow_down_outlined,
+          PopupMenuButton(
+              iconSize: 20,
+              itemBuilder: (context) => List.generate(
+                    BlocProvider.of<PropertyController>(context).state.length,
+                    (index) =>  PopupMenuItem(
+                      child: Text("${BlocProvider.of<PropertyController>(context).state[index]['name']}"),
+                      onTap: (){
+                        setState(() {
+                          selectedProperty = BlocProvider.of<PropertyController>(context).state[index]['name'];
+                        });
+                        // (BlocProvider.of<PropertyController>(context).state[index]['name']);
+                      },
+                    ),
+                  ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    right: 8.0, top: 8, bottom: 8, left: 8),
+                child: Row(
+                  children:  [
+                    Text(
+                     selectedProperty ?? "Select a property",
+                    ),
+                   const Icon(Icons.arrow_drop_down),
+                  ],
+                ),
               ))
         ],
       ),
@@ -52,24 +87,28 @@ class _DashboardState extends State<Dashboard> {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: RichText(
-                  text: TextSpan(
-                    text: "UGX 3,000,000\n",
-                    style: TextStyles(context)
-                        .getBoldStyle()
-                        .copyWith(fontSize: 30, color: Colors.white),
-                    children: [
-                      TextSpan(
-                          text: "Available collections",
-                          style: TextStyles(context)
-                              .getRegularStyle()
-                              .copyWith(fontSize: 19))
-                    ],
-                  ),
+                child: BlocBuilder<AmountController, double>(
+                  builder: (context, state) {
+                    return RichText(
+                      text: TextSpan(
+                        text: "UGX ${formatNumberWithCommas(state.toInt())}\n",
+                        style: TextStyles(context)
+                            .getBoldStyle()
+                            .copyWith(fontSize: 30, color: Colors.white),
+                        children: [
+                          TextSpan(
+                              text: "Available collections",
+                              style: TextStyles(context)
+                                  .getRegularStyle()
+                                  .copyWith(fontSize: 19))
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.44,
+                height: MediaQuery.of(context).size.height * 0.24,
                 width: MediaQuery.of(context).size.width * 1,
                 child: Card(
                   color: Colors.white,
@@ -95,8 +134,8 @@ class _DashboardState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: SizedBox(
-                                height: 80,
-                                width: 80,
+                                height: 150,
+                                width: 150,
                                 child: Center(
                                   child: RichText(
                                     textAlign: TextAlign.center,
@@ -114,7 +153,7 @@ class _DashboardState extends State<Dashboard> {
                                               .getBoldStyle()
                                               .copyWith(
                                                   color: Colors.black,
-                                                  fontSize: 19),
+                                                  fontSize: 29),
                                         )
                                       ],
                                     ),
@@ -131,35 +170,62 @@ class _DashboardState extends State<Dashboard> {
               ),
               const Space(space: 0.02),
               TapEffect(
-                onClick: (){
+                onClick: () {
                   Routes.named(context, Routes.stats);
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.width * 0.31,
+                  height: MediaQuery.of(context).size.height * 0.51,
                   child: Card(
                     color: Colors.white,
                     shadowColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                     elevation: 0,
-                    child: Center(
-                      child: RichText(
-                        text: TextSpan(
-                          text: "Payment Stats\t   ",
-                          children: [
-                            TextSpan(
-                              text: "\t\tview all",
-                              style: TextStyles(context)
-                              .getBoldStyle()
-                              .copyWith(color: Colors.black),
-                            )
-                          ],
-                          style: TextStyles(context)
-                              .getRegularStyle()
-                              .copyWith(color: Colors.black),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 18.0, right: 10, bottom: 8, left: 10),
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                text: "Payment Stats\t   ",
+                                children: [
+                                  TextSpan(
+                                    text: "\t\tView all",
+                                    style: TextStyles(context)
+                                        .getBoldStyle()
+                                        .copyWith(color: Colors.black),
+                                  )
+                                ],
+                                style: TextStyles(context)
+                                    .getRegularStyle()
+                                    .copyWith(color: Colors.black),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: SizedBox(
+                            child: DChartLine(
+                              includePoints: true,
+                              data: const [
+                                {
+                                  'id': 'Line',
+                                  'data': [
+                                    {'domain': 0, 'measure': 4.1},
+                                    {'domain': 2, 'measure': 4},
+                                    {'domain': 3, 'measure': 6},
+                                    {'domain': 4, 'measure': 1},
+                                  ],
+                                },
+                              ],
+                              lineColor: (lineData, index, id) => Colors.amber,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -175,4 +241,10 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+}
+
+class SalesData {
+  SalesData(this.year, this.sales);
+  final String year;
+  final double sales;
 }

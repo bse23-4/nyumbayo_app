@@ -3,10 +3,13 @@
         "airtel",
         "Appbar",
         "cshowpass",
+        "Datas",
         "Firestore",
         "fullscreen",
         "showpass",
+        "signin",
         "signup",
+        "syncfusion",
         "Userdata",
         "vsync"
     ]

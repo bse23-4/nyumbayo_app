@@ -56,7 +56,7 @@ class ComplaintFormState extends State<ComplaintForm> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitComplaint,
-                child: const Text('Submit complaint'),
+                child: const Text('Submit Complaint'),
               ),
             ],
           ),
