@@ -30,8 +30,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: Column(
         children: [
            UserAccountsDrawerHeader(
-            currentAccountPicture: const CircleAvatar(
-              child: Icon(Icons.person_3),
+            currentAccountPicture: CircleAvatar(
+              child: Text("${userName.split(" ")[0].characters.first}${userName.split(" ")[1].characters.first}",style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700),),
             ),
             accountName: Text(userName),
             accountEmail:  Text("${credential.currentUser?.email}"),

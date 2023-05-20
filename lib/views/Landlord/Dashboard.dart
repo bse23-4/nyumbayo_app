@@ -61,7 +61,7 @@ String? selectedProperty;
                         setState(() {
                           selectedProperty = BlocProvider.of<PropertyController>(context).state[index]['name'];
                         });
-                        // (BlocProvider.of<PropertyController>(context).state[index]['name']);
+                        BlocProvider.of<PropertyIdController>(context).setPropertyId(BlocProvider.of<PropertyController>(context).state[index].id);
                       },
                     ),
                   ),
