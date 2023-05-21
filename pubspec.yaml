@@ -40,7 +40,7 @@ dependencies:
   image_picker: ^0.8.4+9
   http: ^0.13.5
   flutter_native_splash: ^2.2.18
-  flutter_launcher_icons: ^0.12.0
+
   flutter_bloc: ^8.1.2
   shared_preferences: ^2.1.0
   flutter_svg: ^2.0.5
@@ -54,10 +54,13 @@ dependencies:
   fl_chart: ^0.62.0
   intl: ^0.18.1
   d_chart: ^2.2.11
+  icons_launcher: ^2.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.12.0
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -81,7 +84,25 @@ flutter:
   assets:
     - assets/
   #   - images/a_dot_ham.jpeg
-
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/6184498.png
+  # branding: assets/6184498.png
+  # color_dark: "#121212"
+  # image_dark: assets/logo-produ.png
+  # branding_dark: assets/branding-production.png
+  android_12:
+    image: assets/6184498.png
+    icon_background_color: "#ffffff"
+    # image_dark: assets/6184498.png
+    # icon_background_color_dark: "#121212"
+icons_launcher:
+  image_path: "assets/6184498.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

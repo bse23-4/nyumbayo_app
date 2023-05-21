@@ -22,19 +22,21 @@ class _ViewTenantsState extends State<ViewTenants>
       duration: const Duration(milliseconds: 900),
     );
     _controller.forward();
-    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<TenantController>(context).fetchTenants(context.read<PropertyIdController>().state);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<PropertyIdController>(context).getPropertyId();
+    BlocProvider.of<TenantController>(context).fetchTenants(context.read<PropertyIdController>().state);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+    
   }
 
   EdgeInsets padding =
@@ -51,6 +53,8 @@ class _ViewTenantsState extends State<ViewTenants>
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<PropertyIdController>(context).getPropertyId();
+
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
@@ -77,10 +81,10 @@ class _ViewTenantsState extends State<ViewTenants>
                         : BlocProvider.of<TenantController>(context)
                                 .state
                                 .isEmpty
-                            ?  Center(
+                            ?  const Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(Icons.error_outline,size: 100,),
                                     Space(space: 0.08),
                                     Text(
@@ -101,7 +105,9 @@ class _ViewTenantsState extends State<ViewTenants>
                                             tenantDetails: BlocProvider.of<
                                                     TenantController>(context)
                                                 .state[index]
-                                                .data(),
+                                                .data(), id: BlocProvider.of<
+                                                    TenantController>(context)
+                                                .state[index].id,
                                           ),
                                           context);
                                     },

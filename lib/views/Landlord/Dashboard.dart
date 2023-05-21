@@ -13,25 +13,46 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<TenantController>(context)
+        .fetchTenants(context.read<PropertyIdController>().state);
     BlocProvider.of<PropertyController>(context).fetchProperties();
+    BlocProvider.of<PropertyIdController>(context).getPropertyId();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    BlocProvider.of<TenantController>(context).fetchTenants();
+    BlocProvider.of<TenantController>(context)
+        .fetchTenants(context.read<PropertyIdController>().state);
     BlocProvider.of<PropertyController>(context).fetchProperties();
+    BlocProvider.of<PropertyIdController>(context).getPropertyId();
   }
+
+  String property = "";
+
 // property variable
-String? selectedProperty;
+  String? selectedProperty;
+  void getPropertyName(String id) {
+    FirebaseFirestore.instance
+        .collection("properties")
+        .doc(id)
+        .get()
+        .then((value) {
+      setState(() {
+        property = value.data()?['name'] ?? "";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TenantController>(context, listen: true).fetchTenants();
-    BlocProvider.of<PropertyController>(context, listen: true)
-        .fetchProperties();
+    BlocProvider.of<TenantController>(context, listen: true)
+        .fetchTenants(context.read<PropertyIdController>().state);
+    BlocProvider.of<PropertyController>(context).fetchProperties();
+    BlocProvider.of<PropertyIdController>(context).getPropertyId();
     BlocProvider.of<AmountController>(context).setAmount();
+
+    getPropertyName(context.read<PropertyIdController>().state);
     List<Map<String, dynamic>> data = [
       {
         "title": "Tenants",
@@ -52,39 +73,44 @@ String? selectedProperty;
         shadowColor: Colors.transparent,
         actions: [
           PopupMenuButton(
-              iconSize: 20,
-              itemBuilder: (context) => List.generate(
-                    BlocProvider.of<PropertyController>(context).state.length,
-                    (index) =>  PopupMenuItem(
-                      child: Text("${BlocProvider.of<PropertyController>(context).state[index]['name']}"),
-                      onTap: (){
-                        setState(() {
-                          selectedProperty = BlocProvider.of<PropertyController>(context).state[index]['name'];
-                        });
-                        BlocProvider.of<PropertyIdController>(context).setPropertyId(BlocProvider.of<PropertyController>(context).state[index].id);
-                      },
-                    ),
-                  ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    right: 8.0, top: 8, bottom: 8, left: 8),
-                child: Row(
-                  children:  [
-                    Text(
-                     selectedProperty ?? "Select a property",
-                    ),
-                   const Icon(Icons.arrow_drop_down),
-                  ],
-                ),
-              ))
+            iconSize: 20,
+            itemBuilder: (context) => List.generate(
+              BlocProvider.of<PropertyController>(context).state.length,
+              (index) => PopupMenuItem(
+                child: Text(
+                    "${BlocProvider.of<PropertyController>(context).state[index]['name']}"),
+                onTap: () {
+                  setState(() {
+                    selectedProperty =
+                        BlocProvider.of<PropertyController>(context)
+                            .state[index]['name'];
+                  });
+                  BlocProvider.of<PropertyIdController>(context).setPropertyId(
+                      BlocProvider.of<PropertyController>(context)
+                          .state[index]
+                          .id);
+                },
+              ),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(right: 8.0, top: 8, bottom: 8, left: 8),
+              child: Row(
+                children: [
+                  Text(property),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
+            ),
+          )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Body(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 18),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      body: Body(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: BlocBuilder<AmountController, double>(
@@ -175,7 +201,7 @@ String? selectedProperty;
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 0.51,
+                  height: MediaQuery.of(context).size.height * 0.21,
                   child: Card(
                     color: Colors.white,
                     shadowColor: Colors.transparent,
@@ -206,38 +232,40 @@ String? selectedProperty;
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: SizedBox(
-                            child: DChartLine(
-                              includePoints: true,
-                              data: const [
-                                {
-                                  'id': 'Line',
-                                  'data': [
-                                    {'domain': 0, 'measure': 4.1},
-                                    {'domain': 2, 'measure': 4},
-                                    {'domain': 3, 'measure': 6},
-                                    {'domain': 4, 'measure': 1},
-                                  ],
-                                },
-                              ],
-                              lineColor: (lineData, index, id) => Colors.amber,
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: SizedBox(
+                        //     child: DChartLine(
+                        //       includePoints: true,
+                        //       data: const [
+                        //         {
+                        //           'id': 'Line',
+                        //           'data': [
+                        //             {'domain': 0, 'measure': 4.1},
+                        //             {'domain': 2, 'measure': 4},
+                        //             {'domain': 3, 'measure': 6},
+                        //             {'domain': 4, 'measure': 1},
+                        //           ],
+                        //         },
+                        //       ],
+                        //       lineColor: (lineData, index, id) =>
+                        //           Colors.amber,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ]),
+            ],
           ),
         ),
       ),
       drawer: const DrawerWidget(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showOptions(context),
-        child: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () =>  Navigator.of(context).pushNamed(Routes.addTenant),
+        label: const Text("Add Tenant"),
+        icon: const Icon(Icons.person_add_rounded),
       ),
     );
   }

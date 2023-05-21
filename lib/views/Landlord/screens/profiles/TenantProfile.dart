@@ -2,7 +2,9 @@ import '/exports/exports.dart';
 
 class TenantProfile extends StatefulWidget {
   final Map<String, dynamic> tenantDetails;
-  const TenantProfile({super.key, required this.tenantDetails});
+  final String id;
+  const TenantProfile(
+      {super.key, required this.tenantDetails, required this.id});
 
   @override
   State<TenantProfile> createState() => _TenantProfileState();
@@ -14,6 +16,8 @@ class _TenantProfileState extends State<TenantProfile>
 
   @override
   void initState() {
+    BlocProvider.of<PowerConnectionController>(context)
+        .getPowerState(widget.id);
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -32,9 +36,11 @@ class _TenantProfileState extends State<TenantProfile>
   }
 
   EdgeInsets padding = const EdgeInsets.only(left: 20, right: 20);
-
   @override
   Widget build(BuildContext context) {
+    bool status = widget.tenantDetails["power_status"] == "on";
+    BlocProvider.of<PowerConnectionController>(context)
+        .getPowerState(widget.id);
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
@@ -117,89 +123,96 @@ class _TenantProfileState extends State<TenantProfile>
             ),
             const Divider(),
             BlocBuilder<PowerConnectionController, bool>(
-              builder: (context, state) => SwitchListTile.adaptive(
-                secondary: const Icon(Icons.power_settings_new),
-                value: state,
-                onChanged: (value) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Dialog(
-                          child: Container(
-                            height: 140,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
+              builder: (context, state) {
+                return SwitchListTile.adaptive(
+                  secondary: const Icon(Icons.power_settings_new),
+                  value: state,
+                  onChanged: (value) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: Container(
+                              height: 140,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  const Icon(
+                                    Icons.warning_amber_rounded,
+                                    size: 40,
+                                    color: Colors.amber,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      state
+                                          ? "Confirm turning off the power?"
+                                          : "Confirm turning on the power?",
+                                      style: TextStyles(context)
+                                          .getRegularStyle()
+                                          .copyWith(fontSize: 16),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Routes.pop(context);
+                                            context
+                                                .read<
+                                                    PowerConnectionController>()
+                                                .setPowerState(
+                                                    widget.id, !status);
+                                            FirebaseFirestore.instance
+                                                .collection("tenants")
+                                                .doc(widget.id)
+                                                .update({
+                                              "power_status":
+                                                  !state ? "off" : "on"
+                                            });
+                                          },
+                                          child: Text(
+                                            state ? "Turn off" : "Turn on",
+                                            style: TextStyles(context)
+                                                .getRegularStyle()
+                                                .copyWith(color: Colors.blue),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => Routes.pop(context),
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyles(context)
+                                                .getRegularStyle()
+                                                .copyWith(color: Colors.red),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Icons.warning_amber_rounded,
-                                  size: 40,
-                                  color: Colors.amber,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    state == false
-                                        ? "Confirm turning on the power?"
-                                        : "Confirm turning off the power?",
-                                    style: TextStyles(context)
-                                        .getRegularStyle()
-                                        .copyWith(fontSize: 16),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Routes.pop(context);
-                                          context
-                                              .read<PowerConnectionController>()
-                                              .setPowerState(!state);
-                                        },
-                                        child: Text(
-                                          state == false
-                                              ? "Turn on"
-                                              : "Turn off",
-                                          style: TextStyles(context)
-                                              .getRegularStyle()
-                                              .copyWith(color: Colors.blue),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => Routes.pop(context),
-                                        child: Text(
-                                          "Cancel",
-                                          style: TextStyles(context)
-                                              .getRegularStyle()
-                                              .copyWith(color: Colors.red),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                },
-                title: Text("Power Switch",
-                    style: TextStyles(context).getBoldStyle()),
-                subtitle: Text(
-                  state == false
-                      ? "Power connection off"
-                      : "Power connection on",
-                ),
-              ),
+                          );
+                        });
+                  },
+                  title: Text("Power Switch",
+                      style: TextStyles(context).getBoldStyle()),
+                  subtitle: Text(
+                    state ? "Power connection off" : "Power connection on",
+                  ),
+                );
+              },
             ),
             const Space(space: 0.04),
           ],
