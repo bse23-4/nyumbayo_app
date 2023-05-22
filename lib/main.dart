@@ -1,9 +1,12 @@
 
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:nyumbayo_app/utils/theme.dart';
 import 'package:nyumbayo_app/views/Auth/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:nyumbayo_app/views/Dashboard/dashboard.dart';
+import 'package:nyumbayo_app/views/complaint/complaint.dart';
 import 'package:nyumbayo_app/views/profile/profile_screen.dart';
 //import 'package:nyumbayo_app/views/Auth/welcome.dart';
 
@@ -24,8 +27,8 @@ class  MyApp  extends StatelessWidget {
       defaultTransition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
       themeMode: ThemeMode.light,
-      home: const ProfileScreen(),
-      //home:  SplashScreen(),
+      //home: const ComplaintsPage(),
+      home:  SplashScreen(),
     );
   }
 }
