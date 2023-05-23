@@ -1,37 +1,29 @@
+// ignore_for_file: depend_on_referenced_packages
 
-import 'package:flutter/material.dart';
-import 'package:nyumbayo_app/utils/theme.dart';
-import 'package:nyumbayo_app/views/Auth/splash_screen.dart';
-import 'package:get/get.dart';
-import 'package:nyumbayo_app/views/Dashboard/dashboard.dart';
-import 'package:nyumbayo_app/views/profile/profile_screen.dart';
-//import 'package:nyumbayo_app/views/Auth/welcome.dart';
-
-void main() => runApp(const  MyApp ());
-
-class  MyApp  extends StatelessWidget {
-  const  MyApp ({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'nyumbayo',
-      theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
-      debugShowCheckedModeBanner: false,
-      //theme: ThemeData(brightness: Brightness.light, primarySwatch: Colors.deepPurple),
-      //darkTheme: ThemeData(brightness: Brightness.dark),
-      defaultTransition: Transition.leftToRightWithFade,
-      transitionDuration: const Duration(milliseconds: 500),
-      themeMode: ThemeMode.light,
-      home: const ProfileScreen(),
-      //home:  SplashScreen(),
+import 'Observers/IntervalObserver.dart';
+import 'firebase_options.dart';
+import 'exports/exports.dart';
+import 'package:firebase_core/firebase_core.dart';
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  Bloc.observer = const Observer();
+  runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => UserdataController()),
+          BlocProvider(create: (_) => AmountController()),
+          BlocProvider(create: (_) => TenantController()),
+          BlocProvider(create: (_) => PowerStatusController()),
+          ChangeNotifierProvider(create: (_) => MainController()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: Routes.splash,
+          routes: Routes.routes,
+        ),
+      ),
     );
-  }
-}
-
-
-
-
-
-
+} 

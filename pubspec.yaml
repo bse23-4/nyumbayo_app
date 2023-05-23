@@ -44,6 +44,17 @@ dependencies:
   get:
   google_fonts: ^4.0.3
   flutter_otp_text_field: 
+  flutter_spinkit: ^5.2.0
+  intl: ^0.18.1
+  flutter_svg: ^2.0.6
+  firebase_auth: ^4.6.1
+  shared_preferences: ^2.1.1
+  cloud_firestore: ^4.7.1
+  provider: ^6.0.5
+  flutter_glow: ^0.3.0
+  icons_launcher: ^2.1.0
+  device_info_plus: ^9.0.1
+  firebase_messaging: ^14.6.1
   # line_awesome_icons: clear
   
 
@@ -72,20 +83,31 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    # - assets/images/
+    - assets/images/
     - assets/images/welcome/
     - assets/images/splash/
     - assets/images/onBoardingScreen/
-    - assets/images/forgotPassword.jpeg
-    - assets/images/profile_pic.jpg
-    # - assets/images/splash/icon2.png
-    # - assets/images/splash/splashscreen1.jpeg
-    # - assets/images/splash/splashscreen.jpeg
-    # - assets/images/onBoardingScreen/on-boarding1.jpeg
-    # - assets/images/onBoardingScreen/on-boarding2.png
-    # - assets/images/onBoardingScreen/on-boarding3.jpeg
 
-  #   - images/a_dot_ham.jpeg
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/house.png
+  # branding: assets/6184498.png
+  # color_dark: "#121212"
+  # image_dark: assets/logo-produ.png
+  # branding_dark: assets/branding-production.png
+  android_12:
+    image: assets/images/house.png
+    icon_background_color: "#ffffff"
+    # image_dark: assets/6184498.png
+    # icon_background_color_dark: "#121212"
+icons_launcher:
+  image_path: "assets/images/house.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

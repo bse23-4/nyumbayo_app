@@ -1,84 +1,57 @@
-import 'package:flutter/material.dart';
-//import 'package:nyumbayo_app/views/Auth/welcome.dart';
+import '/exports/exports.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/image.dart';
-import '../../constants/sizes.dart';
-import '../../constants/text_strings.dart';
-import 'package:get/get.dart';
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
-import '../../controllers/splash_screen_controller.dart';
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
 
-class SplashScreen extends StatelessWidget {
-  SplashScreen({Key? key}) : super(key: key);
- final splashController = Get.put(SplashScreenController());
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  initState() {
+    Future.delayed(const Duration(seconds: 6)).then((value) {
+      BlocProvider.of<UserdataController>(context).getUserData();
+      if (context.read<UserdataController>().state == "") {
+        Routes.routeUntil(context, Routes.login);
+      } else {
+        Routes.routeUntil(context, Routes.dashboard);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    splashController.startAnimation();
-    return Scaffold(
-       body: Stack(
-        children:  [
-           Obx(() => AnimatedPositioned(
-            duration: const Duration(milliseconds: 1000),
-            top: splashController.animate.value ? 0: -30,
-            left: splashController.animate.value ? 0: -30,
-            child:  const SizedBox(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Image(
-                  image: AssetImage(tSplashScreenImageIcon),
-                ),
-              ),
-            ),         
-            ),
-          ),
-           
-           Obx(() =>AnimatedPositioned(
-             duration: const Duration(milliseconds: 1000),
-             top: 80,
-             left: splashController.animate.value ?tDefaultSize : -80,
-             child: AnimatedOpacity(
-              opacity: splashController.animate.value ? 1: 0, 
-              duration: const Duration(milliseconds: 1000),
-             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    BlocProvider.of<UserdataController>(context).getUserData();
+    return Builder(
+      // future: Future.delayed(const Duration(seconds: 3)),
+      builder: (context) {
+        return // s.connectionState == ConnectionState.waiting
+            Scaffold(
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(tWelcomeTitle, style:Theme.of(context).textTheme.headlineMedium,  textAlign: TextAlign.center,),
-                Text(tWelcomeSubTitle, style:Theme.of(context).textTheme.titleLarge,  textAlign: TextAlign.center,),
+                AspectRatio(
+                  aspectRatio: 1.8,
+                  child: Image.asset("assets/images/house.png"),
+                ),
+                const Space(space: 0.05),
+                SpinKitDualRing(color: Theme.of(context).primaryColor),
+                const Space(space: 0.05),
+                const Text(
+                  "Loading...",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
               ],
             ),
           ),
-          ),
-        ),
-         Obx(() =>  AnimatedPositioned(
-            duration: const Duration(milliseconds: 1000),
-            bottom: splashController.animate.value ?100 :0 ,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 2000),
-              opacity: splashController.animate.value ? 1: 0,
-              child: const Image(image: AssetImage(tSplashScreenImage1 )),
-             ),
-           ),
-          ),
-         Obx(() =>  AnimatedPositioned(
-            duration: const Duration(milliseconds: 2400),
-            bottom: splashController.animate.value ? 60: 0,
-            right: tDefaultSize,
-            child: AnimatedOpacity(duration: const Duration(milliseconds: 2000), opacity: splashController.animate.value ? 1: 0,
-              child: Container(
-                width:tSplashContainerSize,
-                height: tSplashContainerSize,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color:tPrimaryColor,
-                ),
-              ) ,
-            ),
-          ),
-        )
-        ],
-       ),
+        );
+      },
     );
   }
 }

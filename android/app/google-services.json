@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "384554426334",
+    "firebase_url": "https://nyumbayo-366ef-default-rtdb.firebaseio.com",
+    "project_id": "nyumbayo-366ef",
+    "storage_bucket": "nyumbayo-366ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384554426334:android:f64c186f4b8ae90eaac74f",
+        "android_client_info": {
+          "package_name": "com.app.tenant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384554426334-vv9pv2fn3d58ulk192vjelm1d14igctf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp4FXbrz-3V7e18cu9oe4AEa90QeBI4Co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384554426334-5tg3nj67plpt9hquiire7en9avfasrau.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nyumbayoApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384554426334:android:987a03f5c8436202aac74f",
+        "android_client_info": {
+          "package_name": "com.example.nyumbayo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384554426334-vv9pv2fn3d58ulk192vjelm1d14igctf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp4FXbrz-3V7e18cu9oe4AEa90QeBI4Co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384554426334-5tg3nj67plpt9hquiire7en9avfasrau.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "384554426334-ae1mfl36b2lu5f2tq0octb19m422242q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nyumbayoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
