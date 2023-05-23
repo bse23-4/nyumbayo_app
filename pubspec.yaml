@@ -44,6 +44,7 @@ dependencies:
   get:
   google_fonts: ^4.0.3
   flutter_otp_text_field: 
+  fl_chart: ^0.62.0
   # line_awesome_icons: clear
   
 
