@@ -2,9 +2,12 @@ import '../exports/exports.dart';
 
 class MainController extends ChangeNotifier{
   bool _power = false;
-
+  List<Map<String,dynamic>> _complaints = [];
+  bool _online = false;
   // getters
   bool get power => _power;
+  List<Map<String,dynamic>> get complaints => _complaints;
+  bool get online => _online;
   // setter
   void setPower(String id){
    FirebaseFirestore.instance.collection("tenants").doc(id).get().then((value) {
@@ -25,5 +28,18 @@ class MainController extends ChangeNotifier{
       FirebaseFirestore.instance.collection("tenants").doc(id).update({
         "power_status": percentage < 100 ? "off" : "on",
       }).then((value) {});
+  }
+  // complaints
+  void fetchComplaints(){
+    Database.fetchAll("complaints").then((value) {
+      _complaints = value;
+      notifyListeners();
+    });
+  }
+  checkOnline(){
+    InternetConnectionChecker.createInstance().hasConnection.asStream().listen((event) {
+      _online = event;
+      notifyListeners();
+    });
   }
 }

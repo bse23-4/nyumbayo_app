@@ -22,7 +22,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:flutter_glow/flutter_glow.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+export 'package:internet_connection_checker/internet_connection_checker.dart';
 // controllers
 export '/controllers/UserdataController.dart';
 export '/controllers/TenantsController.dart';
@@ -35,7 +35,13 @@ export '/controllers/PowerStatusController.dart';
 // custom pages
 export '/views/Auth/login.dart';
 export '/views/Dashboard/dashboard.dart';
-export '';
+export '/views/complaint/complaints.dart';
+export '/views/profile/profile_screen.dart';
+export '/views/complaint/AddComplaint.dart';
 
 // routes
 export '/routes/routes.dart';
+export '/tools/index.dart';
+
+// backend
+export '/DB/database.dart';

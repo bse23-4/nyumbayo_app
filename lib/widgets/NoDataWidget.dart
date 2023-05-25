@@ -10,14 +10,14 @@ class NoDataWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AspectRatio(
-          aspectRatio: 2.5,
-          // child: Image.asset(StaffIcons.empty),
+          aspectRatio: 1.2,
+          child: SvgPicture.asset("assets/images/nothing.svg"),
         ),
-        const Space(space: 0.06),
+        const Space(space: 0.03),
         Text(
           text,
           style: TextStyles(context)
-              .getDescriptionStyle()
+              .getRegularStyle()
               .copyWith(fontSize: 20, fontWeight: FontWeight.w300),
         )
       ],

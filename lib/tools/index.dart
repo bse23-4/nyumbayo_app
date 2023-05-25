@@ -125,3 +125,7 @@ void scheduleNotificationReminders() async {
 bool isStartOfMonth(DateTime date) {
   return date.day == 1;
 }
+// function to handle date
+String formatDate(DateTime date) {
+  return DateFormat('dd-MM-yyyy').format(date);
+}

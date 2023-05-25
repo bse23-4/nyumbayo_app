@@ -53,8 +53,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     double percentage =
         ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
          // logic for tunning oof power
-        Provider.of<MainController>(context)
+         if((percentage.isNaN == false)){
+           Provider.of<MainController>(context)
         .controlPower(context.read<UserdataController>().state,percentage.toInt());
+         }
+        
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -70,15 +73,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Text(
-                        "Hi ${context.read<TenantController>().state['name'].split(" ")[0] ?? ''},",
+                        "Hi ${context.read<TenantController>().state['name'] ?? " ".split(" ")[0] ?? ''},",
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
-DateTime.now().month == DateTime.now().month
-                      ? const Text("Current Month")
-                      : const Text("Last Month"),
+// DateTime.now().month == DateTime.now().month
+//                       ? const Text("Current Month")
+                      Text("Power Status",style:TextStyles(context).getBoldStyle()),
                   // power status
                   Expanded(
                     flex: 1,
@@ -283,7 +286,7 @@ DateTime.now().month == DateTime.now().month
                         children: [
                           TextSpan(
                             text:
-                                "\t UGX ${int.parse(context.read<TenantController>().state['amountPaid']) + int.parse(context.read<TenantController>().state['power_fee'])}",
+                                "\t UGX ${int.parse(context.read<TenantController>().state['amountPaid'] ?? "0") + int.parse(context.read<TenantController>().state['power_fee'] ?? "0")}",
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontWeight: FontWeight.w600,
@@ -304,7 +307,7 @@ DateTime.now().month == DateTime.now().month
                   ),
                 ),
               ),
-            if (context.read<TenantController>().state['balance'] == "0")
+            if (context.read<TenantController>().state['balance']  == "0")
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(
@@ -326,7 +329,7 @@ DateTime.now().month == DateTime.now().month
                 ),
               ),
             ),
-            if (context.read<TenantController>().state['balance'] == "0")
+            if (context.read<TenantController>().state['balance']  == "0")
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Card(
@@ -355,7 +358,7 @@ DateTime.now().month == DateTime.now().month
                   ),
                 ),
               ),
-            if (context.read<TenantController>().state['balance'] != "0")
+            if (context.read<TenantController>().state['balance']  != "0")
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(
