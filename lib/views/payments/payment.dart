@@ -121,7 +121,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                           CommonTextField(
                             hintText: "e.g UGX 100,000",
                             controller: rentController,
-                            titleText: "Rent:    UGX: ${int.parse(context.read<TenantController>().state['monthlyRent']) - int.parse(context.read<TenantController>().state['amountPaid'])}",
+                            titleText: "Rent: UGX: ${context.read<TenantController>().state['balance']}",
                             validate: (valid) {
                               setState(() {
                                 errorText1 = "The rent amount field is required";
@@ -264,8 +264,9 @@ class _PaymentScreenState extends State<PaymentScreen>
                                 );
                                  
                                  FirebaseFirestore.instance.collection("tenants").doc(context.read<UserdataController>().state).update({
-                                  "amountPaid": rentController.text,
-                                  "power_fee": electricController.text.isEmpty ? 0 : electricController.text,
+                                  "amountPaid": rentController.text.isEmpty? context.read<TenantController>().state['amountPaid'] : (int.parse(context.read<TenantController>().state['amountPaid']) + int.parse(rentController.text)).toString(),
+                                  "balance": (int.parse(context.read<TenantController>().state['balance']) - int.parse(rentController.text)).toString(),
+                                  "power_fee": electricController.text.isEmpty ? context.read<TenantController>().state['power_fee'] : (int.parse(context.read<TenantController>().state['power_fee']) - int.parse(electricController.text)).toString(),
                                 }).then((event) {
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(

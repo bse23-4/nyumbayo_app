@@ -18,10 +18,12 @@ class _LoginState extends State<Login> {
   bool _showpass = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
+        key: formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,21 +51,17 @@ class _LoginState extends State<Login> {
                 padding: padding,
                 controller: emailController,
               ),
-            
-              Padding(
-                padding: padding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(),
-                    TextButton(
-                      onPressed: () {
-                        Routes.named(context, Routes.forgotPassword);
-                      },
-                      child: const Text("Forgot Password?"),
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  TextButton(
+                    onPressed: () {
+                      Routes.named(context, Routes.forgotPassword);
+                    },
+                    child: const Text("Forgot Password?"),
+                  ),
+                ],
               ),
               CommonTextField(
                 titleText: "Password",
@@ -90,66 +88,29 @@ class _LoginState extends State<Login> {
                 height: 50,
                 buttonText: "Login",
                 onTap: () {
-                  // FutureBuilder(
-                  //   future: Auth.signInTenant(
-                  //     emailController.text,
-                  //     passwordController.text,
-                  //   ),
-                  //   builder: (context, snap) {
-                  //     if (snap.connectionState == ConnectionState.waiting) {
-                  //       showProgress(context,
-                  //           text: "Logging in please wait...");
-                  //     } else if (snap.connectionState == ConnectionState.done) {
-                  //       if (snap.hasError) {
-                  //         return Center(child: Text("Error ${snap.error}}"));
-                  //       } else if (snap.hasData) {
-                  //         BlocProvider.of<UserdataController>(context).captureData();
-                  //         Routes.pop(context);
-                  //         Routes.routeUntil(context, Routes.dashboard);
-                  //         showMessage(
-                  //             context: context, msg: "Logged in Successfully");
-                  //       }
-                  //     }
-                  //     return const Center(child: Text("No Data"));
-                  //   },
-                  // );
-                  showProgress(context, text: "Logging in please wait...");
-                  Auth.signInTenant(
-                          emailController.text, passwordController.text)
-                      .then((value) {
-                    BlocProvider.of<UserdataController>(context).captureData();
-                    Routes.pop(context);
-                    Routes.routeUntil(context, Routes.dashboard);
-                  }).whenComplete(() {
-                    BlocProvider.of<UserdataController>(context).captureData();
+                  if (formKey.currentState!.validate()) {
+                    showProgress(context, text: "Logging in please wait...");
+                    Auth.signInTenant(
+                            emailController.text, passwordController.text)
+                        .then((value) {
+                      BlocProvider.of<UserdataController>(context)
+                          .captureData();
+                      Routes.pop(context);
+                      Routes.routeUntil(context, Routes.dashboard);
+                    }).whenComplete(() {
+                      BlocProvider.of<UserdataController>(context)
+                          .captureData();
+                      showMessage(
+                          context: context, msg: "Logged in Successfully");
+                    });
+                  } else {
                     showMessage(
-                        context: context, msg: "Logged in Successfully");
-                  });
+                        context: context, msg: "Please fill all the fields",type: 'danger'
+                    );
+                  }
                 },
               ),
               const Space(space: 0.03),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20.0, right: 20),
-              //   child: Row(
-              //     children: [
-              //       const Text(
-              //         "Don't have account",
-              //         style:
-              //             TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              //       ),
-              //       TextButton(
-              //         onPressed: () {
-              //           Routes.routeUntil(context, Routes.signup);
-              //         },
-              //         child: const Text(
-              //           "Sign Up",
-              //           style: TextStyle(
-              //               fontSize: 18, fontWeight: FontWeight.w500),
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),

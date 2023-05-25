@@ -40,6 +40,12 @@ EdgeInsets pad = const EdgeInsets.only(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               appBar(),
+              AspectRatio(
+                aspectRatio: 1.7,
+                child: SvgPicture.asset(
+                  "assets/images/forgot_pass.svg",
+                ),
+              ),
                 Padding(
                       padding: const EdgeInsets.only(
                           top: 16.0, bottom: 10.0, left: 24, right: 24),
@@ -87,6 +93,7 @@ EdgeInsets pad = const EdgeInsets.only(
                         Routes.pop(context);
                          if(AuthStatus.values.contains(value)){
                            showMessage(context:context, msg: "Email sent successfully",type: 'success');
+                           Routes.named(context, Routes.messagePage);
                          }else{
                            showMessage(context:context, msg: "Email not sent",type: 'danger');
                            
@@ -108,6 +115,7 @@ EdgeInsets pad = const EdgeInsets.only(
       iconData: Icons.arrow_back,
       titleText:
           "Password Reset",
+          topPadding: 0,
       onBackClick: () {
         Navigator.pop(context);
       },

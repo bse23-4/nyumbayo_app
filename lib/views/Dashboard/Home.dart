@@ -37,9 +37,24 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     Provider.of<MainController>(context)
         .setPower(context.read<UserdataController>().state);
+       
     BlocProvider.of<UserdataController>(context).getUserData();
     BlocProvider.of<TenantController>(context, listen: true)
         .fetchTenants(context.read<UserdataController>().state);
+    // computations for balance
+    // int balance = int.parse(context.read<TenantController>().state['balance']);
+    int powerFee =
+        int.parse(context.read<TenantController>().state['power_fee'] ?? "0");
+    int amountPaid =
+        int.parse(context.read<TenantController>().state['amountPaid'] ?? "0");
+    int amountToPay =
+        int.parse(context.read<TenantController>().state['monthlyRent'] ?? "0");
+    // computes percentage
+    double percentage =
+        ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
+         // logic for tunning oof power
+        Provider.of<MainController>(context)
+        .controlPower(context.read<UserdataController>().state,percentage.toInt());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -55,7 +70,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Text(
-                        "Hi ${context.read<TenantController>().state['name'].split(" ")[0]},",
+                        "Hi ${context.read<TenantController>().state['name'].split(" ")[0] ?? ''},",
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       ),
@@ -79,16 +94,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           child: Badge(
                             largeSize: 240,
                             smallSize: 18,
-                            backgroundColor: context.watch<MainController>().power
-                                ? Colors.green
-                                : Colors.red,
+                            backgroundColor:
+                                context.watch<MainController>().power
+                                    ? Colors.green
+                                    : Colors.red,
                           ),
                         ),
                         Text(
                           context.watch<MainController>().power == true
                               ? "ON"
                               : "OFF",
-                          style: const TextStyle(fontWeight: FontWeight.bold,fontSize:17),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         )
                       ],
                     ),
@@ -148,7 +165,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             Padding(
                               padding: const EdgeInsets.only(right: 18.0),
                               child: Text(
-                                "UGX ${int.parse(context.read<TenantController>().state['monthlyRent']) - int.parse(context.read<TenantController>().state['amountPaid'])}",
+                                "UGX ${context.read<TenantController>().state['balance']}",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white,
@@ -229,98 +246,125 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             const Padding(
               padding: EdgeInsets.all(18.0),
               child: Text(
-                "Pending Balances",
+                "Pending Balance",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Card(
-                child: ListTile(
-                  leading: const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: Icon(Icons.account_balance_wallet),
-                  ),
-                  title: const Text(
-                    "Rent & Electricity",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17,
+            if (context.read<TenantController>().state['balance'] != "0")
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "${percentage.toStringAsFixed(1)} %",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 15),
+                      ),
                     ),
-                  ),
-                  subtitle: const Text("Please pay your dues"),
-                  trailing: RichText(
-                    text:  TextSpan(
-                      text: "Paid",
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16),
-                      children: [
-                        TextSpan(
-                          text: "\t UGX ${int.parse(context.read<TenantController>().state['amountPaid'])+ int.parse(context.read<TenantController>().state['power_fee'])}",
-                          style:  TextStyle(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ), const TextSpan(
-                          text: "\nDue on 30/09/2021",
-                          style: TextStyle(
-                            color: Colors.grey,
+                    title: const Text(
+                      "Rent & Electricity",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17,
+                      ),
+                    ),
+                    subtitle: const Text("Please pay your dues"),
+                    trailing: RichText(
+                      text: TextSpan(
+                        text: "Paid",
+                        style: const TextStyle(
+                            color: Colors.black,
                             fontWeight: FontWeight.w400,
-                            fontSize: 14,
+                            fontSize: 16),
+                        children: [
+                          TextSpan(
+                            text:
+                                "\t UGX ${int.parse(context.read<TenantController>().state['amountPaid']) + int.parse(context.read<TenantController>().state['power_fee'])}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
                           ),
-                        )
-                      ],
+                          const TextSpan(
+                            text: "\nDue on 30/09/2021",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            if (context.read<TenantController>().state['balance'] == "0")
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "No pending balance",
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
             const Padding(
               padding: EdgeInsets.all(18.0),
               child: Text(
-                "Completed Balances",
+                "Completed Balance",
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 20,
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 23,
-                      child: Text("100%"),
+            if (context.read<TenantController>().state['balance'] == "0")
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text("$percentage%"),
                     ),
-                  ),
-                  title: Text(
-                    "Rent",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 18,
+                    title: const Text(
+                      "Rent & Electricity",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    "Thank you for paying",
-                  ),
-                  trailing: Text(
-                    "UGX 0",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                    subtitle: const Text(
+                      "Thank you for paying",
+                    ),
+                    trailing: const Text(
+                      "UGX 0",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            if (context.read<TenantController>().state['balance'] != "0")
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "No completed balance",
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

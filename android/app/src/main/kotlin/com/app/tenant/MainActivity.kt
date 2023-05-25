@@ -1,4 +1,4 @@
-package com.example.tenant
+package com.app.tenant
 
 import io.flutter.embedding.android.FlutterActivity
 

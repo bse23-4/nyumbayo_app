@@ -21,6 +21,7 @@ export 'package:http/http.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:flutter_glow/flutter_glow.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // controllers
 export '/controllers/UserdataController.dart';

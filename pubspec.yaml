@@ -1,36 +1,15 @@
 name: nyumbayo_app
-description: A new Flutter project.
+description: An app to help tenants keep track of their rent and electricity bills.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
-
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -55,7 +34,7 @@ dependencies:
   icons_launcher: ^2.1.0
   device_info_plus: ^9.0.1
   firebase_messaging: ^14.6.1
-  # line_awesome_icons: clear
+  flutter_local_notifications: ^14.1.0
   
 
 dev_dependencies:
@@ -89,17 +68,15 @@ flutter:
     - assets/images/onBoardingScreen/
 
 flutter_native_splash:
-  color: "#ffffff"
+  color: "#FFFFFF"
   image: assets/images/house.png
-  # branding: assets/6184498.png
-  # color_dark: "#121212"
-  # image_dark: assets/logo-produ.png
-  # branding_dark: assets/branding-production.png
   android_12:
-    image: assets/images/house.png
-    icon_background_color: "#ffffff"
-    # image_dark: assets/6184498.png
-    # icon_background_color_dark: "#121212"
+    image: assets/images/ic_launcher.png
+    color: "#FCFCFC"
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
+
 icons_launcher:
   image_path: "assets/images/house.png"
   platforms:
