@@ -33,15 +33,19 @@ class _DashboardState extends State<Dashboard> {
 // property variable
   String? selectedProperty;
   void getPropertyName(String id) {
-    FirebaseFirestore.instance
-        .collection("properties")
-        .doc(id)
-        .get()
-        .then((value) {
-      setState(() {
-        property = value.data()?['name'] ?? "";
+    if (id == "") {
+      property = "Select a property";
+    } else {
+      FirebaseFirestore.instance
+          .collection("properties")
+          .doc(id)
+          .get()
+          .then((value) {
+        setState(() {
+          property = value.data()?['name'] ?? "";
+        });
       });
-    });
+    }
   }
 
   @override
@@ -120,7 +124,7 @@ class _DashboardState extends State<Dashboard> {
                         text: "UGX ${formatNumberWithCommas(state.toInt())}\n",
                         style: TextStyles(context)
                             .getBoldStyle()
-                            .copyWith(fontSize: 30, color: Colors.white),
+                            .copyWith(fontSize: 40, color: Colors.white),
                         children: [
                           TextSpan(
                               text: "Available collections",
@@ -201,7 +205,7 @@ class _DashboardState extends State<Dashboard> {
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 0.21,
+                  height: MediaQuery.of(context).size.height * 0.36,
                   child: Card(
                     color: Colors.white,
                     shadowColor: Colors.transparent,
@@ -213,45 +217,31 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 18.0, right: 10, bottom: 8, left: 10),
-                          child: Center(
-                            child: RichText(
-                              text: TextSpan(
-                                text: "Payment Stats\t   ",
-                                children: [
-                                  TextSpan(
-                                    text: "\t\tView all",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                     "Payment Summary",
                                     style: TextStyles(context)
                                         .getBoldStyle()
                                         .copyWith(color: Colors.black),
-                                  )
-                                ],
-                                style: TextStyles(context)
-                                    .getRegularStyle()
-                                    .copyWith(color: Colors.black),
+                                ),
                               ),
-                            ),
+                               Padding(
+                                 padding: const EdgeInsets.all(8.0),
+                                 child: Text(
+                                      "View all",
+                                      style: TextStyles(context)
+                                          .getBoldStyle()
+                                          .copyWith(color: Colors.blue.shade900),
+                                    ),
+                               )
+                            ],
                           ),
                         ),
-                        // Expanded(
-                        //   child: SizedBox(
-                        //     child: DChartLine(
-                        //       includePoints: true,
-                        //       data: const [
-                        //         {
-                        //           'id': 'Line',
-                        //           'data': [
-                        //             {'domain': 0, 'measure': 4.1},
-                        //             {'domain': 2, 'measure': 4},
-                        //             {'domain': 3, 'measure': 6},
-                        //             {'domain': 4, 'measure': 1},
-                        //           ],
-                        //         },
-                        //       ],
-                        //       lineColor: (lineData, index, id) =>
-                        //           Colors.amber,
-                        //     ),
-                        //   ),
-                        // ),
+                       Chart()
                       ],
                     ),
                   ),
@@ -263,7 +253,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       drawer: const DrawerWidget(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>  Navigator.of(context).pushNamed(Routes.addTenant),
+        onPressed: () => Navigator.of(context).pushNamed(Routes.addTenant),
         label: const Text("Add Tenant"),
         icon: const Icon(Icons.person_add_rounded),
       ),

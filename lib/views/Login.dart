@@ -70,14 +70,43 @@ class _LoginState extends State<Login> {
                 height: 50,
                 buttonText: "Login",
                 onTap: () {
-                  showProgress(context,text: "Logging in please wait...");
-                  BlocProvider.of<UserdataController>(context).captureData();
-                  Auth.signinLandlord(emailController.text, passwordController.text).then((value) {
+                  showProgress(context, text: "Logging in please wait...");
+                  if (emailController.text.isEmpty &&
+                      passwordController.text.isEmpty) {
                     Routes.pop(context);
-                    Routes.routeUntil(context, Routes.dashboard);
-                  }).whenComplete(() {
-                    showMessage(context: context,msg: "Logged in Successfully");
-                  });
+                    showMessage(
+                        context: context,
+                        msg: "Please fill all fields",
+                        type: 'danger');
+                  } else if (emailController.text.isNotEmpty &&
+                      passwordController.text.isEmpty) {
+                    Routes.pop(context);
+                    showMessage(
+                        context: context,
+                        msg: "Password is required",
+                        type: 'danger');
+                  } else if (passwordController.text.isNotEmpty &&
+                      emailController.text.isEmpty) {
+                    Routes.pop(context);
+                    showMessage(
+                        context: context,
+                        msg: "Email is required",
+                        type: 'danger');
+                  } else if (passwordController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty) {
+                    Routes.pop(context);
+                    Auth.signinLandlord(
+                            emailController.text, passwordController.text)
+                        .then((value) {
+                      Routes.pop(context);
+                      Routes.routeUntil(context, Routes.dashboard);
+                      BlocProvider.of<UserdataController>(context)
+                          .captureData();
+                    }).whenComplete(() {
+                      showMessage(
+                          context: context, msg: "Logged in Successfully");
+                    });
+                  }
                 },
               ),
               const Space(space: 0.03),

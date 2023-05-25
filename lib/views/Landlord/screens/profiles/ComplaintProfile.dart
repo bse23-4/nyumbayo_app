@@ -46,14 +46,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Center(
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                        onPressed: () {
-                          Routes.pop(context);
-                        },
-                      ),
-                    ),
+                    const SizedBox.shrink(),
                     RichText(
                       text: TextSpan(
                         text: "Complaint\n",
@@ -71,9 +64,15 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 35,
-                      child: Icon(Icons.person),
+                      backgroundColor: Colors.blue.shade50,
+                      child: Text(
+                        "C",
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 30),
+                      ),
                     )
                   ],
                 ),
@@ -87,7 +86,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
               ),
               title: Text("Title", style: TextStyles(context).getBoldStyle()),
               subtitle: Text(
-                "UGX 2,00,000",
+                "title here",
                 style: TextStyles(context).getDescriptionStyle(),
               ),
             ),
@@ -105,15 +104,18 @@ class _ComplaintProfileState extends State<ComplaintProfile>
             ),
             const Divider(),
             ListTile(
-                leading: const Icon(
-                  Icons.attach_money_outlined,
-                  size: 35,
-                ),
-                title: Text("Issue Snapshot",
-                    style: TextStyles(context).getBoldStyle()),
-                subtitle: const FlutterLogo(
-                  size: 90,
-                )),
+              leading: const Icon(
+                Icons.image,
+                size: 35,
+              ),
+              title: Text("Issue Snapshot",
+                  style: TextStyles(context).getBoldStyle()),
+              subtitle: Image.asset(
+                "assets/6184498.png",
+                height: 200,
+                width: 200,
+              ),
+            ),
             const Divider(),
             const Space(space: 0.04),
             CommonButton(
@@ -126,21 +128,34 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     context: context,
                     builder: (context) {
                       return SizedBox(
-                        height: MediaQuery.of(context).size.width / 6,
-                        child: const Dialog(
-                          child: Center(child: Text("hshsh")),
+                        height: MediaQuery.of(context).size.width / 3,
+                        child: AlertDialog(
+                          title: const Center(
+                            child: Text(
+                                "Are you sur you want to resolve this issue?"),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text("Approve"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text(
+                                "Reject this issue",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
                         ),
                       );
                     });
               },
             ),
-            const Space(space: 0.02),
-            CommonButton(
-              buttonText: "Reject",
-              height: 55,
-              backgroundColor: Colors.red.shade500,
-              padding: padding,
-            )
           ],
         ),
       ),

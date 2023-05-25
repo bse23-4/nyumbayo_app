@@ -9,8 +9,7 @@ class AmountController extends Cubit<double> {
       double total = 0;
       for (var element in value.docs) {
         
-          total += double.parse(element.data()['amountPaid']);
-        
+          total += (double.parse(element.data()['amountPaid']) + double.parse(element.data()['power_fee']));
         emit(total);
       }
     });

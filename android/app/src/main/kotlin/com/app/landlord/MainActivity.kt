@@ -1,4 +1,4 @@
-package com.example.nyumbayo_app
+package com.app.landlord
 
 import io.flutter.embedding.android.FlutterActivity
 

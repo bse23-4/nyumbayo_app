@@ -16,8 +16,8 @@ class _TenantProfileState extends State<TenantProfile>
 
   @override
   void initState() {
-    BlocProvider.of<PowerConnectionController>(context)
-        .getPowerState(widget.id);
+    // BlocProvider.of<PowerConnectionController>(context)
+    //     .getPowerState(widget.id);
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -38,9 +38,9 @@ class _TenantProfileState extends State<TenantProfile>
   EdgeInsets padding = const EdgeInsets.only(left: 20, right: 20);
   @override
   Widget build(BuildContext context) {
-    bool status = widget.tenantDetails["power_status"] == "on";
-    BlocProvider.of<PowerConnectionController>(context)
-        .getPowerState(widget.id);
+    // bool status = widget.tenantDetails["power_status"] == "on";
+    // BlocProvider.of<PowerConnectionController>(context,listen: true)
+    //     .getPowerState(widget.id);
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
@@ -125,7 +125,7 @@ class _TenantProfileState extends State<TenantProfile>
             BlocBuilder<PowerConnectionController, bool>(
               builder: (context, state) {
                 return SwitchListTile.adaptive(
-                  secondary: const Icon(Icons.power_settings_new),
+                  secondary: const Icon(Icons.power_settings_new,color: Colors.red ,),
                   value: state,
                   onChanged: (value) {
                     showDialog(
@@ -172,13 +172,13 @@ class _TenantProfileState extends State<TenantProfile>
                                                 .read<
                                                     PowerConnectionController>()
                                                 .setPowerState(
-                                                    widget.id, !status);
+                                                    widget.id,!state);
                                             FirebaseFirestore.instance
                                                 .collection("tenants")
                                                 .doc(widget.id)
                                                 .update({
-                                              "power_status":
-                                                  !state ? "off" : "on"
+                                              "landlord_power_control":
+                                                  state ? "off" : "on"
                                             });
                                           },
                                           child: Text(
@@ -209,7 +209,7 @@ class _TenantProfileState extends State<TenantProfile>
                   title: Text("Power Switch",
                       style: TextStyles(context).getBoldStyle()),
                   subtitle: Text(
-                    state ? "Power connection off" : "Power connection on",
+                    state ? "Power connection on" : "Power connection off",
                   ),
                 );
               },

@@ -1,15 +1,29 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 import '/exports/exports.dart';
 import 'Observers/IntervalObserver.dart';
+import 'controllers/MainController.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // system layout settings
+  // portrait only
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // set status view
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Observer ob = Observer();
+  Bloc.observer = const Observer();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -34,11 +48,15 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => PropertyIdController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => MainController(),
+        ),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(
         builder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.system,
             theme: theme.copyWith(
               textTheme:
                   GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
@@ -59,4 +77,3 @@ Future<void> main() async {
     ),
   );
 }
-

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nyumbayo_app">
+    package="com.app.landlord">
    <application
-        android:label="nyumbayo_app"
+        android:label="Nyumbayo Landlord"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

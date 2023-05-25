@@ -26,9 +26,10 @@ class _StatsState extends State<Stats> {
               child: Expanded(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.width * 0.8,
-                  child: const _LineChart(
-                    isShowingMainData: true,
-                  ),
+                  child: Chart(),
+                  // child: const _LineChart(
+                  //   isShowingMainData: true,
+                  // ),
                 ),
               ),
             ),

@@ -1,19 +1,22 @@
 import '/exports/exports.dart';
 
-class PowerConnectionController extends Cubit<bool> {
+ class PowerConnectionController extends Cubit<bool> {
   PowerConnectionController() : super(powerState);
   static bool powerState = true;
-  void setPowerState(String tenantId, bool val) {
-    SharedPreferences.getInstance().then((value) {
-      value.setBool(tenantId, val);
-    });
-    
-    emit(val);
+
+  void setPowerState(String tenantId,bool v) {
+      // SharedPreferences.getInstance().then((val) {
+      //   val.setBool(tenantId, !v);
+      // });
+    emit(v);
+
+    // });
+
   }
 
-  getPowerState(String tenant_id) {
-    SharedPreferences.getInstance().then((value) {
-      emit(value.getBool(tenant_id) ?? true);
-    });
-  }
+  // void getPowerState(String tenantId) {
+  //   SharedPreferences.getInstance().then((value) {
+  //     emit(value.getBool(tenantId) ?? true);
+  //   });
+  // }
 }

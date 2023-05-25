@@ -12,15 +12,17 @@ class TenantData {
       "monthlyRent": prop.monthlyRent,
       "amountPaid": prop.amountPaid,
       "power_status": "on",
+      "landlord_power_control": "off",
+      "power_fee":"0",
+      "balance":(int.parse(prop.monthlyRent) - int.parse(prop.amountPaid)).toString(),
       "property": property
     };
     // FirebaseAuth.instance.sendPasswordResetEmail(email: email)
-    FirebaseAuth.instance.createUserWithEmailAndPassword(
+   var usr = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: prop.email,
       password: "test123",
     );
-    // 
     //creating the user collection in the firestore database
-    await FirebaseFirestore.instance.collection("tenants").add(p);
+    await FirebaseFirestore.instance.collection("tenants").doc(usr.user?.uid).set(p);
   }
 }

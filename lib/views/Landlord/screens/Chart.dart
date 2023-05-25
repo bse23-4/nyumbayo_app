@@ -1,14 +1,20 @@
 // ignore_for_file: deprecated_member_use
 
 import '/exports/exports.dart';
-
-class Chart extends StatelessWidget {
+class Chart extends StatefulWidget {
   const Chart({
     Key? key,
+    this.numberOfTenants = 0,
   }) : super(key: key);
+  final int numberOfTenants;
+  @override
+  State<Chart> createState() => _ChartState();
+}
 
+class _ChartState extends State<Chart> {
   @override
   Widget build(BuildContext context) {
+    
     return SizedBox(
       height: 200,
       child: Stack(
@@ -33,7 +39,7 @@ class Chart extends StatelessWidget {
                       .bodyText1!
                       .copyWith(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
-                const Text("of 128GB")
+                 Text("of ${widget.numberOfTenants}")
               ],
             ),
           ),
@@ -46,9 +52,9 @@ class Chart extends StatelessWidget {
 List<PieChartSectionData> paiChartSelectionDatas = [
   PieChartSectionData(
     color: Colors.blue,
-    value: 25,
+    value: 75,
     showTitle: false,
-    radius: 25,
+    radius: 15,
   ),
   PieChartSectionData(
     color: const Color(0xFF26E5FF),
@@ -70,8 +76,8 @@ List<PieChartSectionData> paiChartSelectionDatas = [
   ),
   PieChartSectionData(
     color: Colors.blue.withOpacity(0.1),
-    value: 25,
+    value: 85,
     showTitle: false,
-    radius: 13,
+    radius: 10,
   ),
 ];
