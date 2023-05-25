@@ -76,7 +76,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-
+DateTime.now().month == DateTime.now().month
+                      ? const Text("Current Month")
+                      : const Text("Last Month"),
                   // power status
                   Expanded(
                     flex: 1,

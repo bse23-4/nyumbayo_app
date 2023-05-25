@@ -120,3 +120,8 @@ void scheduleNotificationReminders() async {
       // });
     }
   }
+
+  // function to detect the start of a new month
+bool isStartOfMonth(DateTime date) {
+  return date.day == 1;
+}
