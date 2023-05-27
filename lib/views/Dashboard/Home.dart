@@ -1,5 +1,5 @@
 import '/exports/exports.dart';
-import 'package:nyumbayo_app/views/payments/payment.dart';
+import '/views/payments/payment.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -53,9 +53,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     double percentage =
         ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
          // logic for tunning oof power
-         if((percentage.isNaN == false)){
+         if((percentage.isNaN == false && percentage  > 80) ){
            Provider.of<MainController>(context)
-        .controlPower(context.read<UserdataController>().state,percentage.toInt());
+              .controlPower(context.read<UserdataController>().state,percentage.toInt(),x: 1);
+         } else {
+          Provider.of<MainController>(context)
+              .controlPower(context.read<UserdataController>().state,percentage.toInt(),x: 0);
          }
         
     return Scaffold(
@@ -79,8 +82,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-// DateTime.now().month == DateTime.now().month
-//                       ? const Text("Current Month")
                       Text("Power Status",style:TextStyles(context).getBoldStyle()),
                   // power status
                   Expanded(

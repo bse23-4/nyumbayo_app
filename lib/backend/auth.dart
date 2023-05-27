@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../exports/exports.dart';
 
@@ -32,7 +30,7 @@ class Auth {
 
   static Future<void> signOut() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
+    await sharedPreferences.clear();
     await FirebaseAuth.instance.signOut();
   }
 

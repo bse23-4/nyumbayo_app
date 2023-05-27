@@ -42,6 +42,12 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: true,
+        unselectedLabelStyle: TextStyles(context).getRegularStyle().copyWith(
+          fontSize: 12
+        ), selectedLabelStyle: TextStyles(context).getRegularStyle().copyWith(
+          fontSize: 12
+        ),
         currentIndex:_page ,
         onTap: (x){
           setState(() {

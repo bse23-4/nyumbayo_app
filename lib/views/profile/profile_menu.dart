@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-// import 'package:line_awesome_icons/line_awesome_icons.dart';
-//import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:nyumbayo_app/constants/colors.dart';
+import 'package:nyumbayo_app/exports/exports.dart';
 
-
-class ProfileMenuWidget extends StatelessWidget {
+class ProfileMenuWidget extends StatefulWidget {
   const ProfileMenuWidget({
     super.key,
     required this.title,
@@ -17,35 +13,44 @@ class ProfileMenuWidget extends StatelessWidget {
 
   final String title;
   final IconData icon;
-  final VoidCallback onPress ;
+  final VoidCallback onPress;
   final bool endIcon;
   final Color? textColor;
 
   @override
+  State<ProfileMenuWidget> createState() => _ProfileMenuWidgetState();
+}
+
+class _ProfileMenuWidgetState extends State<ProfileMenuWidget> {
+  @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var iconColor = isDark? tPrimaryColor: tAccentColor;
+    var iconColor =  Theme.of(context).primaryColor;
     return ListTile(
-      onTap: onPress,
+      onTap: widget.onPress,
       leading: Container(
-        width:30,
-        height:30,
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: iconColor.withOpacity(0.1),
         ),
-         child:  Icon(icon, color: iconColor, size: 20),
+        child: Icon(widget.icon, color: iconColor, size: 25),
       ),
-      title: Text(title, style: Theme.of(context).textTheme.bodyMedium?.apply(color: textColor)),
-      trailing: endIcon? Container(
-        width:30,
-        height:30,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.grey.withOpacity(0.1),
-        ),
-        child: const Icon(Icons.arrow_right, color: Colors.grey, size: 18),
-      ) : null,
+      title: Text(widget.title,
+          style:
+              TextStyles(context).getRegularStyle().copyWith(color: widget.textColor)),
+      trailing: widget.endIcon
+          ? Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.1),
+              ),
+              child:
+                  const Icon(Icons.arrow_right, color: Colors.grey, size: 18),
+            )
+          : null,
     );
   }
 }

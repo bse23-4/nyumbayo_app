@@ -1,5 +1,4 @@
 import '/exports/exports.dart';
-
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
 
@@ -284,6 +283,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                                   );
                                  Routes.push(const Dashboard(), context);
                               
+                                }).whenComplete(() {
+                                  sendNotification(title: "Payment", body: "Payment made successfully");
                                 });
                                  }else{
                                    ScaffoldMessenger.of(context).showSnackBar(

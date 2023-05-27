@@ -48,7 +48,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       height: 35,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          color: tPrimaryColor),
+                          color: Theme.of(context).primaryColor),
                       child: const Icon(
                         Icons.camera,
                         color: Colors.black,
@@ -104,12 +104,12 @@ class UpdateProfileScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => Get.to(() => const ProfileScreen()),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: tPrimaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           side: BorderSide.none,
                           shape: const StadiumBorder(),
                         ),
                         child: const Text(tEditProfile,
-                            style: TextStyle(color: tDarkColor)),
+                           ),
                       ),
                     ),
                   ],

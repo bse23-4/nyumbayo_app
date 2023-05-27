@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '/exports/exports.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -12,6 +14,8 @@ class _AddComplaintState extends State<AddComplaint> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   final _titleController = TextEditingController(); 
+  Uint8List? _byteImage;
+  String? _base64Image;
   String options = "";
   @override
   Widget build(BuildContext context) {
@@ -159,11 +163,22 @@ class _AddComplaintState extends State<AddComplaint> {
                             child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 height: MediaQuery.of(context).size.width * 0.3,
-                                child: Image.asset(
+                                child: _byteImage != null? Image.memory(_byteImage!) : Image.asset(
                                     "assets/images/profile_pic.jpg")),
                           ),
                           TapEffect(
-                            onClick: () {},
+                            onClick: ()  {
+                              uploadImage()
+                              .then((value){
+                                  setState(() {
+                                    _base64Image = base64Encode(value.readAsBytesSync());
+                                    _byteImage = value.readAsBytesSync();
+                                  });
+                              })
+                              .whenComplete((){
+                                showMessage(context: context, msg: "Image Uploaded Successfully", type: "success");
+                              });
+                            },
                             child: const Padding(
                               padding: EdgeInsets.only(left: 25.0, right: 45),
                               child: CircleAvatar(
@@ -187,8 +202,8 @@ class _AddComplaintState extends State<AddComplaint> {
                               "description": _descriptionController.text,
                               "title": options == 'Others'?_titleController.text:options,
                               "date": DateTime.now().toString(),
-                              "status": "pending",
-                              "user_id": "1",
+                              "status": "Pending",
+                              "image": _base64Image ?? "",
                             }).then((value) {
                               Routes.pop(context);
                             }).whenComplete(() {

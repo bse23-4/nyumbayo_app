@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '/exports/exports.dart';
 
 class Complaint extends StatefulWidget {
@@ -11,12 +13,12 @@ class _ComplaintState extends State<Complaint> {
   @override
   void initState() {
     super.initState();
-    context.read<MainController>().fetchComplaints();
+    // context.read<MainController>().fetchComplaints();
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<MainController>(context, listen: true).fetchComplaints();
+    // Provider.of<MainController>(context, listen: true).fetchComplaints();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -31,32 +33,48 @@ class _ComplaintState extends State<Complaint> {
                     .copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            if (context.watch<MainController>().complaints.isEmpty)
-              const NoDataWidget(
-                text: "No Complaints",
-              ),
             Expanded(
               child: FutureBuilder(
                   future: Database.fetchAll("complaints"),
                   builder: (context, s) {
-                    var d = s.data;
-                    return s.connectionState == ConnectionState.waiting
+                    var data = s.data;
+                    return s.hasData == false
                         ? const Loader(
                             text: "Complaints",
                           )
-                        : ListView.builder(
-                            itemCount: d?.length,
-                            itemBuilder: (ctx, i) {
-                              var data =
-                                  context.watch<MainController>().complaints[i];
-                              return ListTile(
-                                onTap: () {},
-                                leading: const Icon(Icons.file_copy),
-                                title: Text("${data['title']}"),
-                                subtitle: Text(formatDate(DateTime.now())),
-                                trailing: Text("${data['status']}"),
-                              );
-                            });
+                        : s.data!.isEmpty
+                            ? const NoDataWidget(text: "No Complaints")
+                            : ListView.builder(
+                                itemCount: data?.length,
+                                itemBuilder: (ctx, i) {
+                                  var t = data?[i];
+                                  return ListTile(
+                                    onTap: () {},
+                                    leading: CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: MemoryImage(
+                                        base64.decode(
+                                          t?['image'],
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text("${t?['title']}",
+                                        style: TextStyles(context)
+                                            .getRegularStyle()),
+                                    subtitle: Text(
+                                        formatDate(DateTime.parse(t?['date'])),
+                                        style: TextStyles(context)
+                                            .getDescriptionStyle()),
+                                    trailing: Text(
+                                        "${t?['status']}"
+                                                .characters
+                                                .first
+                                                .toUpperCase() +
+                                            "${t?['status']}".substring(1),
+                                        style: TextStyles(context)
+                                            .getDescriptionStyle()),
+                                  );
+                                });
                   }),
             )
           ],

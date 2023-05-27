@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import 'Observers/IntervalObserver.dart';
@@ -52,33 +54,11 @@ Future<void> main() async {
       print(event);
     }
   });
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  if (kDebugMode) {
-    print('fcmToken: $fcmToken');
-  }
-  FirebaseMessaging.instance.onTokenRefresh
-    .listen((fcmToken) {
-      // TODO: If necessary send token to application server.
-      if (kDebugMode) {
-        print('fcmToken update: $fcmToken');
-      }
-      // Note: This callback is fired at each app startup and whenever a new
-      // token is generated.
-    })
-    .onError((err) {
-      // Error getting token.
-      if (kDebugMode) {
-        print(err.toString());
-      }
-    });
   // end of firebase messaging
-  
+  Timer.periodic(const Duration(seconds: 7), (timer) {
+    // sendNotification();
+  });
   Bloc.observer = const Observer();
   runApp(
     MultiBlocProvider(

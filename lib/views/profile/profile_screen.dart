@@ -1,23 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nyumbayo_app/constants/colors.dart';
-import 'package:nyumbayo_app/constants/image.dart';
+import 'dart:io';
+
 import 'package:nyumbayo_app/constants/sizes.dart';
-import 'package:nyumbayo_app/tools/index.dart';
 import 'package:nyumbayo_app/views/profile/profile_menu.dart';
-import 'package:nyumbayo_app/views/profile/update_profile.dart';
 
-import '../../backend/auth.dart';
-import '../../constants/text_strings.dart';
-import '../../exports/exports.dart';
-//import '../Auth/forgot_password/forgot_password_btn_widget.dart';
+import '/backend/auth.dart';
+import '/constants/text_strings.dart';
+import '/exports/exports.dart';
 
-class ProfileScreen extends StatelessWidget {
+
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -29,49 +29,42 @@ class ProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Colors.blue.shade100,
                     radius: 50,
-                    child: Text("${context.read<TenantController>().state['name'].split(" ")[0].toString().characters.first.toUpperCase()}${context.read<TenantController>().state['name'].split(" ")[1].toString().characters.first.toUpperCase()}",style:TextStyle(fontSize: 25,fontWeight: FontWeight.bold)),
-                    
+                    child: Text(
+                        "${context.read<TenantController>().state['name'].split(" ")[0].toString().characters.first.toUpperCase()}${context.read<TenantController>().state['name'].split(" ")[1].toString().characters.first.toUpperCase()}",
+                        style: const TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               Text(context.read<TenantController>().state['name'],
-                  style: Theme.of(context).textTheme.headlineSmall),
+                  style: TextStyles(context).getTitleStyle()),
               Text(context.read<TenantController>().state['email'],
-                  style: Theme.of(context).textTheme.bodyMedium),
+                  style: TextStyles(context).getRegularStyle()),
               const SizedBox(height: 20),
               const SizedBox(height: 30),
               const Divider(),
               const SizedBox(height: 10),
               ProfileMenuWidget(
-                title: tMenu1,
-                icon: Icons.person,
+                title: context.read<TenantController>().state['contact'],
+                icon: Icons.phone,
                 onPress: () {},
-                endIcon: true,
+                endIcon: false,
               ),
               ProfileMenuWidget(
-                title: tMenu2,
-                icon: Icons.wallet,
+                title: context.read<TenantController>().state['address'],
+                icon: Icons.location_on,
                 onPress: () {},
-                endIcon: true,
+                endIcon: false,
               ),
-              ProfileMenuWidget(
-                title: tMenu3,
-                icon: Icons.credit_card,
-                onPress: () {},
-                endIcon: true,
-              ),
-              const Divider(),
-              const SizedBox(height: 30),
+            
               ProfileMenuWidget(
                 title: "logout",
                 icon: Icons.logout,
-                textColor: Colors.red,
                 endIcon: false,
                 onPress: () {
                   showProgress(context, text: "Logging out...");
                   Auth.signOut().then((value) {
-                    Routes.pop(context);
                   }).whenComplete(() {
                     Routes.routeUntil(context, Routes.login);
                     showMessage(
@@ -81,6 +74,14 @@ class ProfileScreen extends StatelessWidget {
                   });
                 },
               ),
+                ProfileMenuWidget(
+                title: "Exit",
+                icon: Icons.exit_to_app,
+                onPress: () => exit(0),
+                endIcon: false,
+              ),
+             Space(space: 0.03),
+             Divider()
             ],
           ),
         ),

@@ -2,6 +2,8 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Database{
+ static String dbUrl = "mongodb://brunohectre:mugamba%402580@cluster0.k6kp0b7.mongodb.net/NyumbaYo";
+// static Db db =  Db(dbUrl);
 
   /// connect to mongoDB
   static Future<Db> connect() async {
@@ -31,6 +33,6 @@ class Database{
   static Future<List<Map<String, dynamic>>> fetchAll(String collection) async {
     var db = await connect();
     await db.open();
-    return await db.collection(collection).find().toList();
+    return  db.collection(collection).find().toList();
   }
 }
