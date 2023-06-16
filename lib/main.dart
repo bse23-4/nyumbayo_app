@@ -8,6 +8,7 @@ import 'Observers/IntervalObserver.dart';
 import 'firebase_options.dart';
 import 'exports/exports.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 @pragma('vm:entry-point')
 void firebaseMessagingBackgroundHandler(RemoteMessage message) {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -20,7 +21,8 @@ Future<void> main() async {
     const SystemUiOverlayStyle(
       systemNavigationBarIconBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
+      statusBarBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
     ),
   );

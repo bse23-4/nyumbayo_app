@@ -25,4 +25,10 @@ class Api {
     );
     return response;
   }
+  // units consumed
+  static Future<String> getPowerConsumed() async {
+    var response = await Client().get(Uri.parse(power_consumed_api));
+    var result = json.decode(response.body);
+    return result["field1"];
+  }
 }

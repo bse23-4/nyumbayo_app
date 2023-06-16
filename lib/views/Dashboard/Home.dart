@@ -17,7 +17,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     context
         .read<MainController>()
         .setPower(context.read<UserdataController>().state);
-
+    context.read<MainController>().fetchPowerConsumed();
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<UserdataController>().state);
     super.initState();
@@ -35,9 +35,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 // String user =  FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    // settings power status
     Provider.of<MainController>(context)
         .setPower(context.read<UserdataController>().state);
-       
+    // power consumed
+    context.watch<MainController>().fetchPowerConsumed();
     BlocProvider.of<UserdataController>(context).getUserData();
     BlocProvider.of<TenantController>(context, listen: true)
         .fetchTenants(context.read<UserdataController>().state);
@@ -54,10 +56,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
          // logic for tunning oof power
          if((percentage.isNaN == false && percentage  > 80) ){
-           Provider.of<MainController>(context)
+           Provider.of<MainController>(context,listen: true)
               .controlPower(context.read<UserdataController>().state,percentage.toInt(),x: 1);
-         } else {
-          Provider.of<MainController>(context)
+         } else if((percentage.isNaN == false && percentage  < 80) ){
+          Provider.of<MainController>(context,listen: true)
               .controlPower(context.read<UserdataController>().state,percentage.toInt(),x: 0);
          }
         
@@ -132,9 +134,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 padding: const EdgeInsets.only(left: 19.0, right: 19.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width * 0.483,
+                  height: MediaQuery.of(context).size.width * 0.5983,
                   child: Card(
-                    color: Colors.blue,
+                    color: Colors.blue.shade600,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -153,63 +155,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           ),
                         ),
                         const Space(space: 0.02),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 18.0),
-                              child: Text(
-                                "Rent",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    fontSize: 20),
-                              ),
-                            ),
-                            const SizedBox(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 18.0),
-                              child: Text(
-                                "UGX ${context.read<TenantController>().state['balance']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                    fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
+                     DashTile(title: "Rent", value: "${context.read<TenantController>().state['balance']}/="),
                         SizedBox(
                           height: MediaQuery.of(context).size.width * 0.03,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 18.0),
-                              child: Text(
-                                "Electricity",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontSize: 20),
-                              ),
-                            ),
-                            const SizedBox(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 18.0),
-                              child: Text(
-                                "UGX ${context.read<TenantController>().state['power_fee']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                    fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
+                       DashTile(title: "Units consumed", value: "${context.watch<MainController>().powerConsumed} kWh"),
+                       const Space(space: 0.01),
+                       DashTile(title: "Electricity", value: "${context.watch<MainController>().powerConsumed}/="),
                         const Space(space: 0.01),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -217,11 +169,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                               Text(
                                 "Click here to make payment",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
+                                style: TextStyles(context).getRegularStyle().copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.greenAccent,
                                     fontSize: 17),
                               ),
                               Padding(

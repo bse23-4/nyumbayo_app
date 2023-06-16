@@ -7,6 +7,8 @@ export '/widgets/LoaderWidget.dart';
 export '/widgets/BottomUpAnimation.dart';
 export '/widgets/CommonTextField.dart';
 export '/widgets/CommonButton.dart';
+export '/widgets/DashTile.dart';
+
 export 'package:flutter/services.dart';
 export '/widgets/CommonAppBarView.dart';
 export '/widgets/space.dart';

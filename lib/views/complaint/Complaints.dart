@@ -1,4 +1,4 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import '/exports/exports.dart';
 
@@ -35,46 +35,48 @@ class _ComplaintState extends State<Complaint> {
             ),
             Expanded(
               child: FutureBuilder(
-                  future: Database.fetchAll("complaints"),
+                  future: Future.delayed(Duration.zero),//Database.fetchAll("complaints"),
                   builder: (context, s) {
-                    var data = s.data;
-                    return s.hasData == false
+                    // var data = s.data;
+                    // return s.hasData == false
+                    return s.connectionState == ConnectionState.waiting
                         ? const Loader(
                             text: "Complaints",
                           )
-                        : s.data!.isEmpty
-                            ? const NoDataWidget(text: "No Complaints")
-                            : ListView.builder(
-                                itemCount: data?.length,
-                                itemBuilder: (ctx, i) {
-                                  var t = data?[i];
-                                  return ListTile(
-                                    onTap: () {},
-                                    leading: CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: MemoryImage(
-                                        base64.decode(
-                                          t?['image'],
-                                        ),
-                                      ),
-                                    ),
-                                    title: Text("${t?['title']}",
-                                        style: TextStyles(context)
-                                            .getRegularStyle()),
-                                    subtitle: Text(
-                                        formatDate(DateTime.parse(t?['date'])),
-                                        style: TextStyles(context)
-                                            .getDescriptionStyle()),
-                                    trailing: Text(
-                                        "${t?['status']}"
-                                                .characters
-                                                .first
-                                                .toUpperCase() +
-                                            "${t?['status']}".substring(1),
-                                        style: TextStyles(context)
-                                            .getDescriptionStyle()),
-                                  );
-                                });
+                        :  NoDataWidget(text: "No Complaints");
+                            // : s.data!.isEmpty
+                            // ? const NoDataWidget(text: "No Complaints") : Container();
+                            // : ListView.builder(
+                            //     itemCount: data?.length,
+                            //     itemBuilder: (ctx, i) {
+                            //       var t = data?[i];
+                            //       return ListTile(
+                            //         onTap: () {},
+                            //         leading: CircleAvatar(
+                            //           radius: 40,
+                            //           backgroundImage: MemoryImage(
+                            //             base64.decode(
+                            //               t?['image'],
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         title: Text("${t?['title']}",
+                            //             style: TextStyles(context)
+                            //                 .getRegularStyle()),
+                            //         subtitle: Text(
+                            //             formatDate(DateTime.parse(t?['date'])),
+                            //             style: TextStyles(context)
+                            //                 .getDescriptionStyle()),
+                            //         trailing: Text(
+                            //             "${t?['status']}"
+                            //                     .characters
+                            //                     .first
+                            //                     .toUpperCase() +
+                            //                 "${t?['status']}".substring(1),
+                            //             style: TextStyles(context)
+                            //                 .getDescriptionStyle()),
+                            //       );
+                            //     });
                   }),
             )
           ],

@@ -13,7 +13,7 @@ class _AddComplaintState extends State<AddComplaint> {
   // /controllers
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
-  final _titleController = TextEditingController(); 
+  final _titleController = TextEditingController();
   Uint8List? _byteImage;
   String? _base64Image;
   String options = "";
@@ -27,13 +27,20 @@ class _AddComplaintState extends State<AddComplaint> {
             CommonAppbarView(
               titlePadding: const EdgeInsets.only(
                 left: 18.0,
-                top: 20,
+                top: 10,
               ),
               titleText: "Add Complaints",
               iconData: Icons.arrow_back,
               onBackClick: () => Routes.pop(context),
             ),
-            const Space(space: 0.03),
+            Padding(
+              padding: const EdgeInsets.only(left: 18.0, top: 3, bottom: 0),
+              child: Text(
+                "Select the appropriate complaint you want to raise..",
+                style: TextStyles(context).getDescriptionStyle(),
+              ),
+            ),
+            const Space(space: 0.01),
             Expanded(
               child: Form(
                 autovalidateMode: AutovalidateMode.always,
@@ -57,8 +64,8 @@ class _AddComplaintState extends State<AddComplaint> {
                         ),
                       ),
                       RadioListTile(
-                        selected: options == "brokages" ? true : false,
-                        value: "Brokages",
+                        selected: options == "Plumbing issues" ? true : false,
+                        value: "Plumbing issues",
                         groupValue: options,
                         onChanged: (v) {
                           print(v);
@@ -67,7 +74,7 @@ class _AddComplaintState extends State<AddComplaint> {
                           });
                         },
                         title: Text(
-                          "Brokages",
+                          "Plumbing issues",
                           style: TextStyles(context).getRegularStyle(),
                         ),
                       ),
@@ -95,24 +102,24 @@ class _AddComplaintState extends State<AddComplaint> {
                             style: TextStyles(context).getRegularStyle(),
                           ),
                         ),
-                        if (options == "Others")
-                      Padding(
-                        padding: const EdgeInsets.only(left: 28.0, right: 28),
-                        child: TextFormField(
-                          controller: _titleController,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            floatingLabelAlignment:
-                                FloatingLabelAlignment.start,
-                            hintText: "Specify the kind of complaint",
-                            hintTextDirection: TextDirection.ltr,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      if (options == "Others")
+                        Padding(
+                          padding: const EdgeInsets.only(left: 28.0, right: 28),
+                          child: TextFormField(
+                            controller: _titleController,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              floatingLabelAlignment:
+                                  FloatingLabelAlignment.start,
+                              hintText: "Specify the kind of complaint",
+                              hintTextDirection: TextDirection.ltr,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              hintStyle: TextStyles(context).getRegularStyle(),
                             ),
-                            hintStyle: TextStyles(context).getRegularStyle(),
                           ),
                         ),
-                      ),
                       const Space(space: 0.03),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -160,31 +167,130 @@ class _AddComplaintState extends State<AddComplaint> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 25.0, right: 25),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                height: MediaQuery.of(context).size.width * 0.3,
-                                child: _byteImage != null? Image.memory(_byteImage!) : Image.asset(
-                                    "assets/images/profile_pic.jpg")),
+                            child: PhysicalModel(
+                              elevation: 20,
+                              color: Colors.white24,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: _byteImage != null
+                                      ? Image.memory(
+                                          _byteImage!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          "assets/images/profile_pic.jpg",
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                              ),
+                            ),
                           ),
                           TapEffect(
-                            onClick: ()  {
-                              uploadImage()
-                              .then((value){
-                                  setState(() {
-                                    _base64Image = base64Encode(value.readAsBytesSync());
-                                    _byteImage = value.readAsBytesSync();
+                            onClick: () {
+                              showModalBottomSheet(
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return BottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        onClosing: () {},
+                                        builder: (context) {
+                                          return Container(
+                                            height: MediaQuery.of(context).size.width / 2,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(18.0),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius: 40,
+                                                        child: TapEffect(
+                                                          child: const Icon(
+                                                              Icons.camera_sharp,
+                                                              size: 40),
+                                                          onClick: () {
+                                                            uploadImage()
+                                                                .then((value) {
+                                                              setState(() {
+                                                                _base64Image =
+                                                                    base64Encode(value
+                                                                        .readAsBytesSync());
+                                                                _byteImage = value
+                                                                    .readAsBytesSync();
+                                                              });
+                                                            }).whenComplete(() {
+                                                              showMessage(
+                                                                  context: context,
+                                                                  msg:
+                                                                      "Image Uploaded Successfully",
+                                                                  type: "success",);
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                     Text("Camera",style: TextStyles(context).getRegularStyle(),),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius: 40,
+                                                        child: TapEffect(
+                                                          child: const Icon(
+                                                            Icons.upload_file_rounded,
+                                                            size: 40,
+                                                          ),
+                                                          onClick: () {
+                                                            captureImage()
+                                                                .then((value) {
+                                                              setState(() {
+                                                                _base64Image =
+                                                                    base64Encode(value
+                                                                        .readAsBytesSync());
+                                                                _byteImage = value
+                                                                    .readAsBytesSync();
+                                                              });
+                                                            }).whenComplete(() {
+                                                              showMessage(
+                                                                context: context,
+                                                                msg:
+                                                                    "Image Uploaded Successfully",
+                                                                type: "success",
+                                                              );
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Text("Gallery",style: TextStyles(context).getRegularStyle(),),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
                                   });
-                              })
-                              .whenComplete((){
-                                showMessage(context: context, msg: "Image Uploaded Successfully", type: "success");
-                              });
                             },
                             child: const Padding(
                               padding: EdgeInsets.only(left: 25.0, right: 45),
                               child: CircleAvatar(
                                 radius: 40,
                                 child: Icon(
-                                  Icons.camera_alt_rounded,
+                                  Icons.attachment,
                                   size: 40,
                                 ),
                               ),
@@ -200,7 +306,9 @@ class _AddComplaintState extends State<AddComplaint> {
                           if (_formKey.currentState!.validate()) {
                             Database.insertOne("complaints", {
                               "description": _descriptionController.text,
-                              "title": options == 'Others'?_titleController.text:options,
+                              "title": options == 'Others'
+                                  ? _titleController.text
+                                  : options,
                               "date": DateTime.now().toString(),
                               "status": "Pending",
                               "image": _base64Image ?? "",

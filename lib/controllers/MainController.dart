@@ -4,10 +4,13 @@ import '../exports/exports.dart';
 
 class MainController extends ChangeNotifier{
   bool _power = false;
-  List<Map<String,dynamic>> _complaints = [];
+  final List<Map<String,dynamic>> _complaints = [];
   bool _online = false;
   // getters
   bool get power => _power;
+  // power consumed
+  String _powerConsumed = "";
+  String get powerConsumed => _powerConsumed;
   List<Map<String,dynamic>> get complaints => _complaints;
   bool get online => _online;
   // setter
@@ -40,10 +43,14 @@ class MainController extends ChangeNotifier{
         "power_status": percentage < 80 ? "off" : "on",
       }).then((value) {});
     }
+   
   }
   // complaints
-  void fetchComplaints(){
-    Api.getCurrentPowerStatus();
+  void fetchPowerConsumed(){
+    Api.getPowerConsumed().then((value) {
+      _powerConsumed = value;
+      notifyListeners();
+    });
   }
   checkOnline(){
     InternetConnectionChecker.createInstance().hasConnection.asStream().listen((event) {

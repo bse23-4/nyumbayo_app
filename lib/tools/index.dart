@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -106,6 +105,12 @@ String formatDateTime(DateTime date) {
 Future<File> uploadImage() async {
    final ImagePicker _picker = ImagePicker();
   var file = await _picker.pickImage(source: ImageSource.camera);
+  return (File(file!.path));
+}
+// function to handle image upload in form of base64
+Future<File> captureImage() async {
+   final ImagePicker _picker = ImagePicker();
+  var file = await _picker.pickImage(source: ImageSource.gallery);
   return (File(file!.path));
 }
 
