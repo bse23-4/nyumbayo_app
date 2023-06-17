@@ -14,6 +14,8 @@ export '/controllers/TenantsController.dart';
 export '/controllers/PropertyIdController.dart';
 export '/controllers/AmountController.dart';
 export '/controllers/PropertyController.dart';
+export '/controllers/MainController.dart';
+export '/controllers/ComplaintController.dart';
 
 // widgets
 export '/widgets/Body.dart';
@@ -64,6 +66,7 @@ export 'package:http/http.dart';
 export 'package:fl_chart/fl_chart.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:d_chart/d_chart.dart';
+export 'package:provider/provider.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // pages
@@ -89,3 +92,4 @@ export '/backend/auth.dart';
 export '/backend/complaints.dart';
 export '/backend/property.dart';
 export '/backend/TenantData.dart';
+export '/DB/database.dart';

@@ -1,9 +1,7 @@
 import '/exports/exports.dart';
 
-FirebaseFirestore db = FirebaseFirestore.instance;
-
 class Properties {
- static Future<DocumentReference<Map<String, dynamic>>> addProperty(var prop,String user_id) async {
+ static Future<void> addProperty(var prop,String user_id) async {
     // adding new property
     /**
      *   "name": formControllers[0].text,
@@ -18,9 +16,10 @@ class Properties {
       "floors": prop["floors"],
       "rooms": prop["rooms"],
       "date": prop["date"],
-      "landlord_id": user_id
+      "landlord_id": user_id,
+      "monthlyRent": prop["monthlyRent"],
     };
     //creating the property collection in the firestore database
-    return await db.collection("properties").add(p);
+    return await Database.insertOne("properties",p);
   }
 }

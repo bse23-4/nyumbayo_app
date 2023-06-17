@@ -25,7 +25,11 @@ class _DashboardState extends State<Dashboard> {
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<PropertyIdController>().state);
     BlocProvider.of<PropertyController>(context).fetchProperties();
+  //  
     BlocProvider.of<PropertyIdController>(context).getPropertyId();
+  // 
+
+
   }
 
   String property = "";
@@ -55,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
     BlocProvider.of<PropertyController>(context).fetchProperties();
     BlocProvider.of<PropertyIdController>(context).getPropertyId();
     BlocProvider.of<AmountController>(context).setAmount();
-
+ 
     getPropertyName(context.read<PropertyIdController>().state);
     List<Map<String, dynamic>> data = [
       {
@@ -66,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
       },
       {
         "title": "Complaints",
-        "total": 0,
+        "total": context.watch<MainController>().complaints.length,
         "route": Routes.complaints,
         "color": Colors.blue.shade200,
       },

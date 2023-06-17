@@ -94,17 +94,20 @@ class _LoginState extends State<Login> {
                         type: 'danger');
                   } else if (passwordController.text.isNotEmpty &&
                       emailController.text.isNotEmpty) {
-                    Routes.pop(context);
+                  
                     Auth.signinLandlord(
                             emailController.text, passwordController.text)
                         .then((value) {
-                      Routes.pop(context);
+                            Routes.pop(context);
                       Routes.routeUntil(context, Routes.dashboard);
                       BlocProvider.of<UserdataController>(context)
                           .captureData();
                     }).whenComplete(() {
                       showMessage(
-                          context: context, msg: "Logged in Successfully");
+                        context: context,
+                        msg: "Logged in Successfully",
+                        type: 'success',
+                      );
                     });
                   }
                 },

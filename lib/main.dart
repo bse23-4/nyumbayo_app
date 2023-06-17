@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
 
 import '/exports/exports.dart';
 import 'Observers/IntervalObserver.dart';
-import 'controllers/MainController.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -48,6 +46,7 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => PropertyIdController(),
         ),
+        BlocProvider(create: (context) => ComplaintsController()),
         ChangeNotifierProvider(
           create: (context) => MainController(),
         ),
@@ -56,7 +55,6 @@ Future<void> main() async {
         builder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            themeMode: ThemeMode.system,
             theme: theme.copyWith(
               textTheme:
                   GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
@@ -69,7 +67,7 @@ Future<void> main() async {
                     : Colors.white,
               ),
             ),
-            initialRoute: Routes.onboard,
+            initialRoute:  Routes.onboard,
             routes: Routes.routes(context),
           );
         },

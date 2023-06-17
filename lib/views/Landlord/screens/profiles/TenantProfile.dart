@@ -1,3 +1,5 @@
+import 'package:nyumbayo_app/api/Api.dart';
+
 import '/exports/exports.dart';
 
 class TenantProfile extends StatefulWidget {
@@ -173,13 +175,14 @@ class _TenantProfileState extends State<TenantProfile>
                                                     PowerConnectionController>()
                                                 .setPowerState(
                                                     widget.id,!state);
-                                            FirebaseFirestore.instance
-                                                .collection("tenants")
-                                                .doc(widget.id)
-                                                .update({
-                                              "landlord_power_control":
-                                                  state ? "off" : "on"
-                                            });
+                                                    Api.triggerPower(state == false ?1.toString():0.toString());
+                                            // FirebaseFirestore.instance
+                                            //     .collection("tenants")
+                                            //     .doc(widget.id)
+                                            //     .update({
+                                            //   "landlord_power_control":
+                                            //       state ? "off" : "on"
+                                            // });
                                           },
                                           child: Text(
                                             state ? "Turn off" : "Turn on",

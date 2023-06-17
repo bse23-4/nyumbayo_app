@@ -14,6 +14,7 @@ class _ViewReportsState extends State<ViewReports>
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<ComplaintsController>(context).setComplaints();
     _controller = AnimationController(
         vsync: this, value: 0, duration: const Duration(milliseconds: 900));
     _controller.forward();
@@ -24,11 +25,13 @@ class _ViewReportsState extends State<ViewReports>
     _controller.dispose();
     super.dispose();
   }
- EdgeInsets padding =
+
+  EdgeInsets padding =
       const EdgeInsets.only(top: 5, right: 15, left: 15, bottom: 2);
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ComplaintsController>(context).setComplaints();
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller,
@@ -41,28 +44,41 @@ class _ViewReportsState extends State<ViewReports>
               iconData: Icons.arrow_back,
               onBackClick: () => Navigator.of(context).pop(),
             ),
-             Expanded(
-              child: ListView(
-                children: List.generate(
-                  20,
-                  (index) => TapEffect(
-                    onClick: () {
-                      Routes.push(const ComplaintProfile(), context);
-                    },
-                    child: SettingCard(
-                      padding: padding,
-                      titleText: "John Doe",
-                      subText: "Tap to view details",
-                      leading: const Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          radius: 25,
-                          child: Icon(Icons.person),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+            Expanded(
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: Database.fetchAll("complaints"),
+                builder: (context, snap) {
+                  return snap.hasData == false
+                      ? const Loader(
+                          text: "Raised complaints",
+                        )
+                      : ListView(
+                          children: List.generate(
+                            snap.data!.length,
+                            (index) => TapEffect(
+                              onClick: () {
+                                Routes.push(const ComplaintProfile(), context);
+                              },
+                              child: SettingCard(
+                                padding: padding,
+                                titleText: "${snap.data![index]['title']}",
+                                subText: "Tap to view details",
+                                leading: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CircleAvatar(
+                                    backgroundImage: MemoryImage(
+                                      base64.decode(
+                                        snap.data![index]['image'],
+                                      ),
+                                    ),
+                                    radius: 25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                },
               ),
             ),
           ],

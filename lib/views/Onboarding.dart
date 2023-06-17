@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import '/exports/exports.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -12,11 +14,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   initState() {
     Future.delayed(const Duration(seconds: 3)).then((value) {
       BlocProvider.of<UserdataController>(context).getUserData();
-      if(context.read<UserdataController>().state == "" || context.read<UserdataController>().state == null){
+      InternetConnectionChecker.createInstance().hasConnection.asStream().listen((event) {
+        if(event == false){
+          Routes.routeUntil(context,Routes.offline);
+        } else  if(FirebaseAuth.instance.currentUser == null){
         Routes.routeUntil(context,Routes.login);
       } else {
         Routes.routeUntil(context,Routes.dashboard);
       }
+      });
+     
     });
     super.initState();
   }

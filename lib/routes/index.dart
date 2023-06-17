@@ -1,5 +1,7 @@
 
 
+import 'package:nyumbayo_app/views/Offline.dart';
+
 import '/exports/exports.dart';
 
 class Routes {
@@ -14,6 +16,7 @@ class Routes {
   static String payment = "/payments";
   static String onboard = "/onboarding";
   static String stats = "/stats";
+  static String offline = "/offline";
 
   // route pages with widgets
   static void push(Widget widget, BuildContext context) {
@@ -53,6 +56,7 @@ class Routes {
       Routes.onboard: (context) => const OnboardingScreen(),
       Routes.signup: (context) => const SignUp(),
       Routes.stats: (context) => const Stats(),
+      Routes.offline: (context) => const OfflinePage(),
     };
   }
 }
