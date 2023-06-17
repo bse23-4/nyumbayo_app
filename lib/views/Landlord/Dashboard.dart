@@ -1,5 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 
+import 'package:nyumbayo_app/tools/index.dart';
+
 import '/exports/exports.dart';
 
 class Dashboard extends StatefulWidget {
@@ -59,9 +61,9 @@ class _DashboardState extends State<Dashboard> {
     BlocProvider.of<PropertyController>(context).fetchProperties();
     BlocProvider.of<PropertyIdController>(context).getPropertyId();
     BlocProvider.of<AmountController>(context).setAmount();
- 
+ context.watch<MainController>().fetchComplaints(context.read<PropertyIdController>().state);
     getPropertyName(context.read<PropertyIdController>().state);
-    List<Map<String, dynamic>> data = [
+    List<Map<String, dynamic>> _data = [
       {
         "title": "Tenants",
         "total": BlocProvider.of<TenantController>(context).state.length,
@@ -88,6 +90,8 @@ class _DashboardState extends State<Dashboard> {
                 child: Text(
                     "${BlocProvider.of<PropertyController>(context).state[index]['name']}"),
                 onTap: () {
+                  // show an alert message when a property is changed
+                  showAlertMsg(context, title: "Property", content: "You selected ${BlocProvider.of<PropertyController>(context).state[index]['name']}",);
                   setState(() {
                     selectedProperty =
                         BlocProvider.of<PropertyController>(context)
@@ -155,12 +159,12 @@ class _DashboardState extends State<Dashboard> {
                     child: GridView.count(
                       crossAxisCount: 2,
                       children: List.generate(
-                        data.length,
+                        _data.length,
                         (index) => TapEffect(
                           onClick: () => Navigator.of(context)
-                              .pushNamed(data[index]['route']),
+                              .pushNamed(_data[index]['route']),
                           child: Card(
-                            color: data[index]["color"],
+                            color: _data[index]["color"],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -174,7 +178,7 @@ class _DashboardState extends State<Dashboard> {
                                   child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
-                                      text: data[index]["title"],
+                                      text: _data[index]["title"],
                                       style: TextStyles(context)
                                           .getRegularStyle()
                                           .copyWith(
@@ -182,7 +186,7 @@ class _DashboardState extends State<Dashboard> {
                                               fontSize: 20),
                                       children: [
                                         TextSpan(
-                                          text: "\n ${data[index]['total']}",
+                                          text: "\n ${_data[index]['total']}",
                                           style: TextStyles(context)
                                               .getBoldStyle()
                                               .copyWith(

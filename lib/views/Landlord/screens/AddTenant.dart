@@ -49,6 +49,12 @@ class _AddTenantState extends State<AddTenant>
       "hint": "e.g 075xxxxx",
       "password": false,
       "type": TextInputType.phone,
+    }, {
+      "title": "Another Contact",
+      "icon": Icons.phone,
+      "hint": "e.g 077xxxxx",
+      "password": false,
+      "type": TextInputType.phone,
     },
     {
       "title": "Home Address",
@@ -111,16 +117,31 @@ class _AddTenantState extends State<AddTenant>
                 formControllers: formControllers,
                 buttonText: "Save tenant details",
                 onSubmit: () {
+                  // check if all fields have data
+                  if (formControllers[0].text.isEmpty ||
+                      formControllers[1].text.isEmpty ||
+                      formControllers[2].text.isEmpty ||
+                      formControllers[3].text.isEmpty ||
+                      formControllers[4].text.isEmpty ||
+                      formControllers[5].text.isEmpty ||
+                      formControllers[6].text.isEmpty ||
+                      formControllers[7].text.isEmpty) {
+                    showMessage(
+                        context: context,
+                        msg: "Please fill in all the fields",type:"danger");
+                    return;
+                  } else {
                   showProgress(context, text: "Saving tenant details..");
                   // if()
                   var prop = Tenants(
                     name: formControllers[0].text,
                     email: formControllers[1].text,
                     contact: formControllers[2].text,
-                    address: formControllers[3].text,
-                    roomNumber: formControllers[4].text,
-                    monthlyRent: formControllers[5].text,
-                    amountPaid: formControllers[6].text,
+                    acontact: formControllers[3].text,
+                    address: formControllers[4].text,
+                    roomNumber: formControllers[5].text,
+                    monthlyRent: formControllers[6].text,
+                    amountPaid: formControllers[7].text,
                   );
                   TenantData.saveTenantDetails(prop,context.read<PropertyIdController>().state).then((value) {
                     Routes.pop(context);
@@ -130,6 +151,7 @@ class _AddTenantState extends State<AddTenant>
                         context: context,
                         msg: "Tenant details saved successfully..");
                   });
+                  }
                 },
               ),
             )

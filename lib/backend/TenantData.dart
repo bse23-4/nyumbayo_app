@@ -13,6 +13,7 @@ class TenantData {
       "name": prop.name,
       "email": prop.email,
       "contact": prop.contact,
+      "acontact": prop.acontact,
       "address": prop.address,
       "roomNumber": prop.roomNumber,
       "monthlyRent": prop.monthlyRent,

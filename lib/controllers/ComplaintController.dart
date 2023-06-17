@@ -1,11 +1,14 @@
 import '/exports/exports.dart';
 
-class ComplaintsController extends Cubit<List<Map<String,dynamic>>>{
-  ComplaintsController() : super([]);
+class ComplaintsController extends Cubit<int>{
+  ComplaintsController() : super(1);
 
-  void setComplaints(){
-    Database.fetchAll("complaints").then((event) {
-      emit(event);
+  void resolveComplaintWithCondition(int time){
+    Timer.periodic(Duration(seconds: time), (timer) { 
+      // if(timer.tick < time){
+        timer.cancel();
+        emit(0);
+      // }
     });
   }
 }

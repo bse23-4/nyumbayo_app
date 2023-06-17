@@ -140,3 +140,36 @@ String formatNumberWithCommas(int number) {
 String formatDate(DateTime date) {
   return DateFormat('dd-MM-yyyy').format(date);
 }
+
+void showAlertWindow(BuildContext context,{String title= "", String content = ""}){
+   showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.width / 3,
+                        child: AlertDialog(
+                          title: const Center(
+                            child: Text(
+                                "Are you sur you want to resolve this issue?"),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text("Approve"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text(
+                                "Reject this issue",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+}

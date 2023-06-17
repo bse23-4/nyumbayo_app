@@ -1,7 +1,23 @@
+import 'dart:ui';
+
 import 'package:nyumbayo_app/exports/exports.dart';
 
+import 'widgets/BottomMenu.dart';
+import 'widgets/RejectBottomMenu.dart';
+
 class ComplaintProfile extends StatefulWidget {
-  const ComplaintProfile({super.key});
+  final String title;
+  final String description;
+  final String status;
+  final String image;
+  final String date;
+  const ComplaintProfile(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.status,
+      required this.image,
+      required this.date});
 
   @override
   State<ComplaintProfile> createState() => _ComplaintProfileState();
@@ -30,135 +46,183 @@ class _ComplaintProfileState extends State<ComplaintProfile>
     super.dispose();
   }
 
-  EdgeInsets padding = const EdgeInsets.only(left: 20, right: 20);
+  EdgeInsets padding = const EdgeInsets.only(left: 10, right: 10);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.grey.shade200,
       body: BottomTopMoveAnimationView(
         animationController: _controller,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CommonAppbarView(
-              headerWidget: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: NestedScrollView(
+          body: Column(
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Space(space: 0.04),
+              Card(
+                elevation: 1,
+                color: Colors.white,
+                margin: padding,
+                child: Column(
                   children: [
-                    const SizedBox.shrink(),
-                    RichText(
-                      text: TextSpan(
-                        text: "Complaint\n",
-                        style: TextStyles(context)
-                            .getBoldStyle()
-                            .copyWith(fontSize: 20),
-                        children: [
-                          TextSpan(
-                            text: "john@gmail.com",
-                            style: TextStyles(context)
-                                .getDescriptionStyle()
-                                .copyWith(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    CircleAvatar(
-                      radius: 35,
-                      backgroundColor: Colors.blue.shade50,
-                      child: Text(
-                        "C",
+                    ListTile(
+                      title: Text(
+                        "Complaint title",
                         style: TextStyles(context)
                             .getRegularStyle()
-                            .copyWith(fontSize: 30),
+                            .copyWith(fontSize: 18),
                       ),
-                    )
+                      trailing: Text(
+                        widget.title,
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Description",
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 18),
+                      ),
+                      trailing: Text(
+                        widget.description,
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Date",
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 18),
+                      ),
+                      trailing: Text(
+                        formatDate(DateTime.parse(widget.date)),
+                        style: TextStyles(context)
+                            .getRegularStyle()
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.title_outlined,
-                size: 35,
+              const Space(space: 0.02),
+              Row(
+                children: [
+                  CommonButton(
+                    buttonText: "Resolve",
+                    height: 55,
+                    backgroundColor: Colors.green.shade500,
+                    // padding: padding,
+                    onTap: () => showBottomMenu(),
+                  ),
+                  CommonButton(
+                    buttonText: "Reject",
+                    height: 55,
+                    backgroundColor: Colors.red.shade500,
+                    // padding: padding,
+                    onTap: () => showRejectBottomMenu(),
+                  ),
+                ],
               ),
-              title: Text("Title", style: TextStyles(context).getBoldStyle()),
-              subtitle: Text(
-                "title here",
-                style: TextStyles(context).getDescriptionStyle(),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.report_problem,
-                size: 35,
-              ),
-              title: Text("Issue", style: TextStyles(context).getBoldStyle()),
-              subtitle: Text(
-                "Description",
-                style: TextStyles(context).getDescriptionStyle(),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.image,
-                size: 35,
-              ),
-              title: Text("Issue Snapshot",
-                  style: TextStyles(context).getBoldStyle()),
-              subtitle: Image.asset(
-                "assets/6184498.png",
-                height: 200,
-                width: 200,
-              ),
-            ),
-            const Divider(),
-            const Space(space: 0.04),
-            CommonButton(
-              buttonText: "Resolve",
-              height: 55,
-              backgroundColor: Colors.green.shade500,
-              padding: padding,
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.width / 3,
-                        child: AlertDialog(
-                          title: const Center(
-                            child: Text(
-                                "Are you sur you want to resolve this issue?"),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: const Text("Approve"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text(
-                                "Reject this issue",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
+            ],
+          ),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                centerTitle: true,
+                floating: true,
+                pinned: true,
+                expandedHeight: MediaQuery.of(context).size.width,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(widget.title),
+                  background: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: MemoryImage(
+                          base64Decode(widget.image),
                         ),
-                      );
-                    });
-              },
-            ),
-          ],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                          color: Colors.black.withOpacity(0.2),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 68.0, bottom: 68.0),
+                            child: Image.memory(
+                              base64.decode(widget.image),
+                            ),
+                          )),
+                    ),
+                  ),
+                ),
+              ),
+            ];
+          },
         ),
       ),
     );
+  }
+
+  // bottom menu
+  showBottomMenu() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return BottomSheet(
+             backgroundColor: Colors.transparent,
+            builder: (context) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 10, right: 10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: const BottomMenu(),
+              );
+            },
+            onClosing: () {},
+          );
+        });
+  }  
+  // show rejection options
+  void showRejectBottomMenu() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return BottomSheet(
+             backgroundColor: Colors.transparent,
+            builder: (context) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 10, right: 10,bottom:10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: const RejectBottomMenu(),
+              );
+            },
+            onClosing: () {},
+          );
+        });
   }
 }

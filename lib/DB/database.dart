@@ -30,9 +30,9 @@ class Database{
   //   await db.collection(collection).update(data);
   // }
   // fetch all records from mongoDB
-  static Future<List<Map<String, dynamic>>> fetchAll(String collection) async {
-    var db = await connect();
-    await db.open();
-    return await db.collection(collection).find().toList();
-  }
+  // static Future<List<Map<String, dynamic>>> fetchAll(String collection) async {
+  //   var db = await connect();
+  //   await db.open();
+  //   return await db.collection(collection).find().toList();
+  // }
 }
