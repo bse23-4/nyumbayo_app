@@ -3,7 +3,7 @@
 import '../exports/exports.dart';
 
 class CustomDialog extends StatefulWidget {
-  const CustomDialog({
+  const CustomDialog({super.key, 
     required this.title,
     this.description = '',
     this.topWidget,

@@ -56,6 +56,7 @@ dependencies:
   icons_launcher: ^2.1.0
   provider: ^6.0.5
   mongo_dart: ^0.9.1
+  mockito: ^5.4.2
  
 
 dev_dependencies:
