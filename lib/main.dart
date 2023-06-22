@@ -9,20 +9,16 @@ import 'firebase_options.dart';
 import 'exports/exports.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-@pragma('vm:entry-point')
-void firebaseMessagingBackgroundHandler(RemoteMessage message) {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-
-}
 Future<void> main() async {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
+      // statusBarColor: Colors.transparent,
+      // statusBarIconBrightness: Brightness.dark,
+      // statusBarBrightness: Brightness.dark,
+      // systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
       systemNavigationBarDividerColor: Colors.transparent,
     ),
   );
@@ -30,8 +26,16 @@ Future<void> main() async {
       FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('android12splash');
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  // iOS settings
+  // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+
+  const DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings();
+
+  // initialization settings for both Android and iOS
+  InitializationSettings initializationSettings = const InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin);
 
   flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -44,12 +48,12 @@ Future<void> main() async {
       print(payload);
     }
   });
- 
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-   // firebase messaging
+  // firebase messaging
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   FirebaseMessaging.onMessage.listen((event) {
     if (kDebugMode) {
@@ -74,6 +78,12 @@ Future<void> main() async {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: Routes.splash,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color.fromARGB(0, 121, 169, 240),
+          ),
+          useMaterial3: true,
+        ),
         routes: Routes.routes,
       ),
     ),

@@ -1,7 +1,21 @@
+import 'dart:convert';
+import 'dart:ui';
+
 import '/exports/exports.dart';
 
 class ViewComplaint extends StatefulWidget {
-  const ViewComplaint({super.key});
+  final String title;
+  final String description;
+  final String status;
+  final String image;
+  final String date;
+  const ViewComplaint(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.status,
+      required this.image,
+      required this.date});
 
   @override
   State<ViewComplaint> createState() => _ViewComplaintState();
@@ -30,11 +44,61 @@ class _ViewComplaintState extends State<ViewComplaint>
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-      body: const Scaffold(
+      body: Scaffold(
+        backgroundColor: Colors.grey.shade200,
         body: SafeArea(
           child: Column(
             children: [
-              Center(child: Text("Complaint status"),)
+              const Space(space: 0.03),
+              Center(
+                child: Text(
+                  "Complaint details",
+                  style: TextStyles(context).getTitleStyle(),
+                ),
+              ),
+              const Divider(),
+              SizedBox(
+                height: MediaQuery.of(context).size.width * 0.6,
+                child: Card(
+                  margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          "Title",
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
+                        trailing: Text(widget.title),
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Description",
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
+                        trailing: Text(widget.description),
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Status",
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
+                        trailing: Chip(
+                          label: Text(widget.status,style:TextStyles(context).getRegularStyle().copyWith(color: Colors.white),),
+                          avatar:  Icon(widget.status == "Pending"? Icons.pending_rounded :Icons.check_circle_rounded,color: Colors.white,),
+                          backgroundColor: widget.status == "Pending"? Colors.orangeAccent[700] :Colors.green[700],
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Date",
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
+                        trailing: Text(widget.date),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -42,20 +106,45 @@ class _ViewComplaintState extends State<ViewComplaint>
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
           SliverAppBar(
-            backgroundColor: Colors.transparent,
-            expandedHeight: 200.0,
-            floating: false,
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            expandedHeight: MediaQuery.of(context).size.width * 0.8,
+            floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Complaints",
-                style: TextStyles(context).getBoldStyle(),
+                widget.title,
+                style: TextStyles(context).getRegularStyle().copyWith(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
-              background: Image.asset(
-                "assets/images/apartment1.jpeg",
-                fit: BoxFit.cover,
-              ),
+              background: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: MemoryImage(
+                          base64.decode(widget.image),
+                        ),
+                        fit: BoxFit.cover),
+                  ),
+                  child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: SizedBox(
+                        width: 100,
+                        height: 50,
+                        child: Image.memory(
+                          base64.decode(widget.image),
+                          // fit: BoxFit.cover,
+                        ),
+                      ))),
             ),
           ),
         ];

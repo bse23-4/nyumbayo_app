@@ -1,4 +1,3 @@
-
 import '../exports/exports.dart';
 
 FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -21,7 +20,6 @@ class Auth {
     final auth = FirebaseAuth.instance;
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      status = AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
       status = AuthExceptionHandler.handleAuthException(e);
     }
@@ -38,11 +36,12 @@ class Auth {
     AuthStatus? status;
 
     final auth = FirebaseAuth.instance;
-    await auth
-        .sendPasswordResetEmail(email: email)
-        .then((value) => status = AuthStatus.successful)
-        .catchError(
-            (e) => status = AuthExceptionHandler.handleAuthException(e));
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      status = AuthExceptionHandler.handleAuthException(e);
+    }
+
     return status;
   }
 }
@@ -50,16 +49,16 @@ class Auth {
 // exception handler
 
 enum AuthStatus {
-  successful,
   wrongPassword,
   emailAlreadyExists,
+  emailDoesnotExist,
   invalidEmail,
   weakPassword,
-  unknown,
+  unknown
 }
 
 class AuthExceptionHandler {
-  static handleAuthException(FirebaseAuthException e) {
+  static AuthStatus handleAuthException(FirebaseAuthException e) {
     AuthStatus status;
     switch (e.code) {
       case "invalid-email":
@@ -71,6 +70,9 @@ class AuthExceptionHandler {
       case "weak-password":
         status = AuthStatus.weakPassword;
         break;
+      case "email-doesnot-exist":
+        status = AuthStatus.emailDoesnotExist;
+        break;
       case "email-already-in-use":
         status = AuthStatus.emailAlreadyExists;
         break;
@@ -80,8 +82,8 @@ class AuthExceptionHandler {
     return status;
   }
 
-  static String generateErrorMessage(error) {
-    String errorMessage;
+  static void generateErrorMessage(AuthStatus error, BuildContext context) {
+    String? errorMessage;
     switch (error) {
       case AuthStatus.invalidEmail:
         errorMessage = "Your email address appears to be malformed.";
@@ -96,9 +98,15 @@ class AuthExceptionHandler {
         errorMessage =
             "The email address is already in use by another account.";
         break;
-      default:
-        errorMessage = "An error occured. Please try again later.";
+      case AuthStatus.emailDoesnotExist:
+        errorMessage = "The email address doesn't exist.";
+        break;
+      case AuthStatus.unknown:
+        errorMessage = null;
+        break;
     }
-    return errorMessage;
+    if (errorMessage != null) {
+      showMessage(context: context, msg: errorMessage, type: 'danger');
+    }
   }
 }

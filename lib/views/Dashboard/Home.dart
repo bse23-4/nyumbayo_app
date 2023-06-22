@@ -53,9 +53,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         int.parse(context.read<TenantController>().state['monthlyRent'] ?? "0");
     // computes percentage
     double percentage =
-        ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
+        ((amountPaid ) / (amountToPay)) * 100;
+    // compute percentage for electricity
+    // double powerPercentage = ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
          // logic for tunning oof power
-         if((percentage.isNaN == false && percentage  > 80) ){
+         if((percentage.isNaN == false && percentage  > 80)  ){
            Provider.of<MainController>(context,listen: true)
               .controlPower(context.read<UserdataController>().state,percentage.toInt(),x: 1);
          } else if((percentage.isNaN == false && percentage  < 80) ){
@@ -210,7 +212,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             if (context.read<TenantController>().state['balance'] != "0")
               Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Card(
                   child: ListTile(
                     leading: Padding(
@@ -222,7 +224,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     title: const Text(
-                      "Rent & Electricity",
+                      "Rent Payment",
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 17,
@@ -240,6 +242,51 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           TextSpan(
                             text:
                                 "\t UGX ${int.parse(context.read<TenantController>().state['amountPaid'] ?? "0") + int.parse(context.read<TenantController>().state['power_fee'] ?? "0")}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: "\nDue on 30/09/2021",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (context.read<TenantController>().state['balance'] != "0")
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Icon(Icons.electric_bolt_sharp, color: Colors.blue.shade600,size: 40,),
+                    title: const Text(
+                      "Electricity Payment",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17,
+                      ),
+                    ),
+                    subtitle: const Text("Please pay your dues"),
+                    trailing: RichText(
+                      text: TextSpan(
+                        text: "Paid",
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16),
+                        children: [
+                          TextSpan(
+                            text:
+                                "\t UGX ${int.parse(context.read<TenantController>().state['power_fee'] ?? "0")}",
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontWeight: FontWeight.w600,
@@ -312,13 +359,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
             if (context.read<TenantController>().state['balance']  != "0")
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+               Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "No completed balance",
-                    style: TextStyle(
-                      fontSize: 25,
+                    style: TextStyles(context).getRegularStyle().copyWith(
+                      fontSize: 20,
                     ),
                   ),
                 ),

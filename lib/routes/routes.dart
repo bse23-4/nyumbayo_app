@@ -1,8 +1,10 @@
 
 
 import 'package:nyumbayo_app/views/Auth/splash_screen.dart';
-import '../views/Auth/ForgotPassword.dart';
-import '../views/Auth/MessagePage.dart';
+import '../views/Auth/VerifyAccount.dart';
+import '/views/Auth/ForgotPassword.dart';
+import '/views/Auth/MessagePage.dart';
+import '/views/OfflineView.dart';
 import '/exports/exports.dart';
 
 class Routes {
@@ -17,6 +19,8 @@ class Routes {
   static String payment = "/payments";
   static String forgotPassword = "/forgotPassword";
   static String splash = "/splash";
+  static String offline = "/offline";
+  static String verify = "/verify";
 
   // route pages with widgets
   static void push(Widget widget, BuildContext context) {
@@ -51,5 +55,7 @@ class Routes {
       Routes.splash:(context) => const SplashScreen(),
       Routes.forgotPassword: (context) => ForgotPassword(),
       Routes.messagePage: (context) => const MessagePage(),
+      Routes.offline: (context) => const OfflineView(),
+      Routes.verify: (context) => const VerifyAccount(),
   };
 }

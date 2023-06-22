@@ -19,6 +19,8 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String _msg = "";
+  String _pw_msg = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +47,64 @@ class _LoginState extends State<Login> {
                 child: Image.asset("assets/images/house.png"),
               ),
               CommonTextField(
+                enableBorder: true,
                 titleText: "Email",
                 hintText: "example@gmail.com",
                 icon: Icons.email,
+                validate: (x) {
+                  setState(() {
+                    if (x!.isEmpty) {
+                      _msg = "Email is required";
+                    } else if (!x.contains("@")) {
+                      _msg = "Invalid Email";
+                    }
+                  });
+                  return null;
+                },
                 padding: padding,
                 controller: emailController,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  _msg,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+              CommonTextField(
+                enableBorder: true,
+                titleText: "Password",
+                padding: padding,
+                hintText: "***********",
+                icon: Icons.lock,
+                controller: passwordController,
+                enableSuffix: true,
+                suffixIcon: _showpass == false
+                    ? Icons.visibility_off_outlined
+                    : Icons.remove_red_eye,
+                isObscureText: !_showpass,
+                validate: (x) {
+                  setState(() {
+                    if (x!.isEmpty) {
+                      _pw_msg = "Password is required";
+                    } else if (x.length < 6) {
+                      _pw_msg = "Password must be at least 6 characters";
+                    }
+                  });
+                  return null;
+                },
+                onTapSuffix: () {
+                  setState(() {
+                    _showpass = !_showpass;
+                  });
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  _pw_msg,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,50 +118,41 @@ class _LoginState extends State<Login> {
                   ),
                 ],
               ),
-              CommonTextField(
-                titleText: "Password",
-                padding: padding,
-                hintText: "***********",
-                icon: Icons.lock,
-                controller: passwordController,
-                enableSuffix: true,
-                suffixIcon: _showpass == false
-                    ? Icons.visibility_off_outlined
-                    : Icons.remove_red_eye,
-                isObscureText: !_showpass,
-                onTapSuffix: () {
-                  setState(() {
-                    _showpass = !_showpass;
-                  });
-                },
-              ),
-              const Space(
-                space: 0.03,
-              ),
               CommonButton(
                 padding: padding,
                 height: 50,
                 buttonText: "Login",
                 onTap: () {
-                  if (formKey.currentState!.validate()) {
+                  // check if all fields are detailed with data
+                  if (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty ||
+                      !formKey.currentState!.validate()) {
+                    showMessage(
+                        context: context,
+                        msg: "Please fill all the fields",
+                        type: 'danger');
+                  } else {
                     showProgress(context, text: "Logging in please wait...");
-                    Auth.signInTenant(
-                            emailController.text, passwordController.text)
+                    Auth.login(emailController.text, passwordController.text)
                         .then((value) {
-                      BlocProvider.of<UserdataController>(context)
-                          .captureData();
-                      Routes.pop(context);
-                      Routes.routeUntil(context, Routes.dashboard);
+                          Routes.pop(context);
+                      if (FirebaseAuth
+                              .instance.currentUser!.emailVerified ==
+                          false) {
+                        Routes.named(context, Routes.verify);
+                      } else {
+                        BlocProvider.of<UserdataController>(context)
+                            .captureData();
+                        Routes.pop(context);
+                        Routes.routeUntil(context, Routes.dashboard);
+                          showMessage(
+                          context: context, msg: "Logged in Successfully");
+                      }
                     }).whenComplete(() {
                       BlocProvider.of<UserdataController>(context)
                           .captureData();
-                      showMessage(
-                          context: context, msg: "Logged in Successfully");
+                    
                     });
-                  } else {
-                    showMessage(
-                        context: context, msg: "Please fill all the fields",type: 'danger'
-                    );
                   }
                 },
               ),

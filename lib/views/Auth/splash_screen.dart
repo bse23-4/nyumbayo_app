@@ -12,11 +12,16 @@ class _SplashScreenState extends State<SplashScreen> {
   initState() {
     Future.delayed(const Duration(seconds: 6)).then((value) {
       BlocProvider.of<UserdataController>(context).getUserData();
-      if (context.read<UserdataController>().state == "") {
-        Routes.routeUntil(context, Routes.login);
-      } else {
-        Routes.routeUntil(context, Routes.dashboard);
-      }
+      InternetConnectionChecker.createInstance().hasConnection.then((value) {
+        if (value == false) {
+          Routes.routeUntil(context, Routes.offline);
+        } else if (context.read<UserdataController>().state == "" &&
+            FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser!.emailVerified) {
+          Routes.routeUntil(context, Routes.login);
+        } else {
+          Routes.routeUntil(context, Routes.dashboard);
+        }
+      });
     });
     super.initState();
   }

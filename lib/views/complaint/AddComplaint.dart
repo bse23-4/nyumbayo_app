@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:nyumbayo_app/views/complaint/widgets/CameraWidget.dart';
+
+import '../../backend/complaints.dart';
 import '/exports/exports.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -201,7 +204,10 @@ class _AddComplaintState extends State<AddComplaint> {
                                         onClosing: () {},
                                         builder: (context) {
                                           return Container(
-                                            height: MediaQuery.of(context).size.width / 2,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2,
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(
@@ -210,74 +216,62 @@ class _AddComplaintState extends State<AddComplaint> {
                                               ),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(18.0),
+                                              padding:
+                                                  const EdgeInsets.all(18.0),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
-                                                  Column(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 40,
-                                                        child: TapEffect(
-                                                          child: const Icon(
-                                                              Icons.camera_sharp,
-                                                              size: 40),
-                                                          onClick: () {
-                                                            uploadImage()
-                                                                .then((value) {
-                                                              setState(() {
-                                                                _base64Image =
-                                                                    base64Encode(value
-                                                                        .readAsBytesSync());
-                                                                _byteImage = value
-                                                                    .readAsBytesSync();
-                                                              });
-                                                            }).whenComplete(() {
-                                                              showMessage(
-                                                                  context: context,
-                                                                  msg:
-                                                                      "Image Uploaded Successfully",
-                                                                  type: "success",);
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                     Text("Camera",style: TextStyles(context).getRegularStyle(),),
-                                                    ],
+                                                  CameraWidget(
+                                                    onClick: () {
+                                                      uploadImage()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          _base64Image =
+                                                              base64Encode(value
+                                                                  .readAsBytesSync());
+                                                          _byteImage = value
+                                                              .readAsBytesSync();
+                                                        });
+                                                      }).whenComplete(() {
+                                                        showMessage(
+                                                          context: context,
+                                                          msg:
+                                                              "Image Uploaded Successfully",
+                                                          type: "success",
+                                                        );
+                                                        Routes.pop(context);
+                                                      });
+                                                    },
+                                                    title: "Camera",
+                                                    icon: Icons.camera_sharp,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 40,
-                                                        child: TapEffect(
-                                                          child: const Icon(
-                                                            Icons.upload_file_rounded,
-                                                            size: 40,
-                                                          ),
-                                                          onClick: () {
-                                                            captureImage()
-                                                                .then((value) {
-                                                              setState(() {
-                                                                _base64Image =
-                                                                    base64Encode(value
-                                                                        .readAsBytesSync());
-                                                                _byteImage = value
-                                                                    .readAsBytesSync();
-                                                              });
-                                                            }).whenComplete(() {
-                                                              showMessage(
-                                                                context: context,
-                                                                msg:
-                                                                    "Image Uploaded Successfully",
-                                                                type: "success",
-                                                              );
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                      Text("Gallery",style: TextStyles(context).getRegularStyle(),),
-                                                    ],
-                                                  ),
+                                                  CameraWidget(
+                                                    onClick: () {
+                                                      captureImage()
+                                                          .then((value) {
+                                                        setState(() {
+                                                          _base64Image =
+                                                              base64Encode(value
+                                                                  .readAsBytesSync());
+                                                          _byteImage = value
+                                                              .readAsBytesSync();
+                                                        });
+                                                      }).whenComplete(() {
+                                                        showMessage(
+                                                          context: context,
+                                                          msg:
+                                                              "Image Uploaded Successfully",
+                                                          type: "success",
+                                                        );
+                                                        Routes.pop(context);
+                                                      });
+                                                    },
+                                                    title: "Gallery",
+                                                    icon: Icons
+                                                        .photo_library_rounded,
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -302,9 +296,29 @@ class _AddComplaintState extends State<AddComplaint> {
                       CommonButton(
                         buttonText: "Submit",
                         onTap: () {
-                          showProgress(context, text: "Submitting Complaint");
-                          if (_formKey.currentState!.validate()) {
-                            Database.insertOne("complaints", {
+                          if (options == "" || options.isEmpty) {
+                            showAlertMsg(
+                                 context,
+                                content: "Please select a complaint",
+                                );
+                          } else if (options == "Others" &&
+                              _titleController.text.isEmpty) {
+                            showAlertMsg(
+                                 context,
+                                content: "Please specify the complaint",
+                                );
+                          } else if (_descriptionController.text.isEmpty) {
+                            showAlertMsg(
+                                 context,
+                                content: "Please provide a description",
+                                );
+                          } else {
+                            showProgress(context, text: "Submitting Complaint");
+// Submitting the complaint to landlord via Firebase firestore
+                            Complaints.raiseComplaint({
+                              "tenant_id":
+                                  FirebaseAuth.instance.currentUser?.uid,
+                                  "property_id": context.read<TenantController>().state['property'],
                               "description": _descriptionController.text,
                               "title": options == 'Others'
                                   ? _titleController.text
@@ -312,7 +326,8 @@ class _AddComplaintState extends State<AddComplaint> {
                               "date": DateTime.now().toString(),
                               "status": "Pending",
                               "image": _base64Image ?? "",
-                            }).then((value) {
+                            })
+                                .then((value) {
                               Routes.pop(context);
                             }).whenComplete(() {
                               Routes.pop(context);
@@ -321,6 +336,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                   msg: "Complaint Submitted successfully",
                                   type: "success");
                             });
+                            // end of submitting of complaint
                           }
                         },
                         height: 55,

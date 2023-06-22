@@ -1,6 +1,9 @@
 // import 'dart:convert';
 
+import 'dart:convert';
+
 import '/exports/exports.dart';
+import 'ViewComplaint.dart';
 
 class Complaint extends StatefulWidget {
   const Complaint({super.key});
@@ -34,49 +37,57 @@ class _ComplaintState extends State<Complaint> {
               ),
             ),
             Expanded(
-              child: FutureBuilder(
-                  future: Future.delayed(Duration.zero),//Database.fetchAll("complaints"),
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection("complaints").snapshots(),
                   builder: (context, s) {
-                    // var data = s.data;
+                    var data = s.data;
                     // return s.hasData == false
-                    return s.connectionState == ConnectionState.waiting
+                    return s.hasData == false
                         ? const Loader(
                             text: "Complaints",
-                          )
-                        :  NoDataWidget(text: "No Complaints");
-                            // : s.data!.isEmpty
-                            // ? const NoDataWidget(text: "No Complaints") : Container();
-                            // : ListView.builder(
-                            //     itemCount: data?.length,
-                            //     itemBuilder: (ctx, i) {
-                            //       var t = data?[i];
-                            //       return ListTile(
-                            //         onTap: () {},
-                            //         leading: CircleAvatar(
-                            //           radius: 40,
-                            //           backgroundImage: MemoryImage(
-                            //             base64.decode(
-                            //               t?['image'],
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         title: Text("${t?['title']}",
-                            //             style: TextStyles(context)
-                            //                 .getRegularStyle()),
-                            //         subtitle: Text(
-                            //             formatDate(DateTime.parse(t?['date'])),
-                            //             style: TextStyles(context)
-                            //                 .getDescriptionStyle()),
-                            //         trailing: Text(
-                            //             "${t?['status']}"
-                            //                     .characters
-                            //                     .first
-                            //                     .toUpperCase() +
-                            //                 "${t?['status']}".substring(1),
-                            //             style: TextStyles(context)
-                            //                 .getDescriptionStyle()),
-                            //       );
-                            //     });
+                          ) : s.data!.docs.isEmpty ? const NoDataWidget(text: "No Complaints") : ListView.builder(
+                                itemCount: data?.docs.length,
+                                itemBuilder: (ctx, i) {
+                                  var t = data?.docs[i];
+                                  return ListTile(
+                                    onTap: () {
+                                      Routes.push(
+                                        ViewComplaint(
+                                          title: t?['title'],
+                                          description: t?['description'],
+                                          status: t?['status'],
+                                          image: t?['image'],
+                                          date: t?['date'],
+                                        ),
+                                        context,
+                                      );
+                                    },
+                                    leading: CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: MemoryImage(
+                                        base64.decode(
+                                          t?['image'],
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text("${t?['title']}",
+                                        style: TextStyles(context)
+                                            .getRegularStyle()),
+                                    subtitle: Text(
+                                        formatDate(DateTime.parse(t?['date'])),
+                                        style: TextStyles(context)
+                                            .getDescriptionStyle()),
+                                    trailing: Text(
+                                        "${t?['status']}"
+                                                .characters
+                                                .first
+                                                .toUpperCase() +
+                                            "${t?['status']}".substring(1),
+                                        style: TextStyles(context)
+                                            .getDescriptionStyle()),
+                                  );
+                                });
+                           
                   }),
             )
           ],
