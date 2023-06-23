@@ -1,15 +1,11 @@
-import 'package:flutter/foundation.dart';
 
 import '/exports/exports.dart';
-import 'package:nyumbayo_app/models/Complaints.dart';
 
 
 class Complaints {
 
- static Future<DocumentReference<Map<String, dynamic>>> raiseComplaint(var complaint) async {
+ static Future<void> raiseComplaint(var complaint) async {
 FirebaseFirestore db = FirebaseFirestore.instance;
-
- DocumentReference<Map<String, dynamic>> ref ;
     // adding different complaints
     
     // final Map<String, dynamic> c = {
@@ -27,7 +23,6 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 
     //creating the payments collection in the firestore database
 
- ref = await db.collection("complaints").add(complaint);
-  return ref;
+  await db.collection("complaints").doc(complaint['tenant_id']).set(complaint);
  }
 }

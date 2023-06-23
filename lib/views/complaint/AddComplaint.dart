@@ -186,7 +186,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                           fit: BoxFit.cover,
                                         )
                                       : Image.asset(
-                                          "assets/images/profile_pic.jpg",
+                                          "assets/images/house.png",
                                           fit: BoxFit.cover,
                                         ),
                                 ),
@@ -325,6 +325,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                   : options,
                               "date": DateTime.now().toString(),
                               "status": "Pending",
+                              'reason':'',
                               "image": _base64Image ?? "",
                             })
                                 .then((value) {

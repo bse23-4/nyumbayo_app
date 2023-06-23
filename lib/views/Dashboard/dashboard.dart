@@ -42,6 +42,8 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 2,
+        backgroundColor: Colors.grey.shade300,
         showSelectedLabels: true,
         unselectedLabelStyle: TextStyles(context).getRegularStyle().copyWith(
           fontSize: 12

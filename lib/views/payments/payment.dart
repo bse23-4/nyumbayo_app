@@ -63,7 +63,7 @@ class _PaymentScreenState extends State<PaymentScreen>
 
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<UserdataController>().state);
-  
+  EdgeInsets padding = MediaQuery.of(context).padding.copyWith(top:10,bottom: 10,left: 10,right: 10);
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller!,
@@ -73,12 +73,14 @@ class _PaymentScreenState extends State<PaymentScreen>
             children: [
               CommonAppbarView(
                 titleText: "Payment Process",
-                titlePadding: const EdgeInsets.all(20),
+                titlePadding: const EdgeInsets.only(top:20,left:20),
                 iconData: Icons.arrow_back_ios,
                 onBackClick: () => Navigator.pop(context),
-                topPadding: 20,
+                topPadding: 30,
               ),
+
               Stepper(
+              
                 currentStep: _currentStep,
                 onStepCancel: step3 == true
                     ? null
@@ -118,6 +120,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           CommonTextField(
+                            padding:  padding,
+                            enableBorder: true,
                             hintText: "e.g UGX 100,000",
                             controller: rentController,
                             titleText: "Rent: UGX: ${context.read<TenantController>().state['balance']}",
@@ -132,6 +136,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                             keyboardType: TextInputType.number,
                           ),
                           CommonTextField(
+                            padding:  padding,
+                            enableBorder: true,
                             controller: electricController,
                             hintText: "e.g 8,000",
                             titleText: "Electricity: UGX:${context.read<TenantController>().state['power_fee']}",
@@ -145,6 +151,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             keyboardType: TextInputType.number,
                           ),
                           CommonButton(
+                            padding:  padding,
                             buttonText: "Proceed to payment",
                             onTap: () {
                               if (electricController.text.isEmpty &&
@@ -214,6 +221,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                           CommonTextField(
                             titleText: "Phone Number",
                             hintText: "e.g 07xxxxxxx",
+                            enableBorder: true,
                             icon: Icons.phone,
                             contentPadding: const EdgeInsets.only(
                               left: 26,
