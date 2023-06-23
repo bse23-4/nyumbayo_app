@@ -43,7 +43,7 @@ class _ViewReportsState extends State<ViewReports>
           children: [
             CommonAppbarView(
               topPadding: 50,
-              titleText: "Complaints",
+              titleText: "Resolved Complaints",
               iconData: Icons.arrow_back,
               onBackClick: () => Navigator.of(context).pop(),
             ),

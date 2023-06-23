@@ -15,10 +15,10 @@ class Body extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 4,
-              decoration: BoxDecoration(
-                color: Colors.blue.shade500,
+              decoration:  BoxDecoration(
+                color: Colors.blue[800],
                 // shape: BoxShape.circle,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(100),
                   bottomLeft: Radius.circular(100),
                 ),

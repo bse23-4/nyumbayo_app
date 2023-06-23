@@ -11,7 +11,7 @@ class _AddPropertyState extends State<AddProperty>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   List<TextEditingController> formControllers =
-      List.generate(4, (index) => TextEditingController());
+      List.generate(5, (index) => TextEditingController());
 
   final List<Map<String, dynamic>> _propertyForm = [
     {
@@ -72,7 +72,7 @@ class _AddPropertyState extends State<AddProperty>
       const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 2);
   @override
   Widget build(BuildContext context) {
-    List<String> errorMsg = List.generate(4, (index) => "");
+    List<String> errorMsg = List.generate(5, (index) => "");
     // ignore: prefer_typing_uninitialized_variables
 
 // trigger user id

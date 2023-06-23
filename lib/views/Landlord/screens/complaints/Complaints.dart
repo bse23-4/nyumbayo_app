@@ -21,8 +21,8 @@ class _ComplaintsState extends State<Complaints> {
                     text: "Loading complaints...",
                   )
                 : snapshot.data!.docs.isEmpty
-                    ? const Center(
-                        child: Text("No complaints found"),
+                    ? const NoDataWidget(
+                        text: "No complaints available",
                       )
                     : ListView.builder(
                         itemCount: snapshot.data!.docs.length,
@@ -30,11 +30,12 @@ class _ComplaintsState extends State<Complaints> {
                           return ListTile(
                             leading: ClipRRect(
                               child: Image.memory(
-                                  base64Decode(
-                                      snapshot.data!.docs[index]['image']),
-                                  height: 40,
-                                  width: 40,
-                                  fit: BoxFit.cover),
+                                base64Decode(
+                                    snapshot.data!.docs[index]['image']),
+                                height: 40,
+                                width: 40,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             title: Text(snapshot.data!.docs[index]['title']),
                             subtitle:

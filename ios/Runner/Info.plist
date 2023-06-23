@@ -37,6 +37,19 @@
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UISupportedInterfaceOrientations</key>
+
+	<!-- <key>NSCameraUsageDescription</key>
+	<true/>
+	<string>Camera permission is required for profile uploading.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<true/>
+	<string>Microphone permission is required for audio recording.</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<true/>
+	<string>Photo library permission is required for profile uploading.</string> -->
+
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>

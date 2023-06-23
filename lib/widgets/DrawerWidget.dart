@@ -12,12 +12,12 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
  final credential = FirebaseAuth.instance;
  FirebaseFirestore firestore = FirebaseFirestore.instance;
- String userName = "";
+ String userName = "John Doe";
  @override
  void initState() { 
     firestore.collection("landlords").doc(credential.currentUser!.uid).get().then((value) {
       setState(() {
-        userName = value.data()?['name'] ?? "";
+        userName = value.data()?['name'] ?? "John Doe";
       });
     });
    super.initState();
@@ -30,18 +30,37 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: Column(
         children: [
            UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
-              // child: Text("${userName.split(" ")[0].characters.first}${userName.split(" ")[1].characters.first}",style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700),),
+            currentAccountPicture:  CircleAvatar(
+              child: Text("${userName.split(" ")[0].characters.first}${userName.split(" ")[1].characters.first}",style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700),),
             ),
             accountName: Text(userName),
             accountEmail:  Text("${credential.currentUser?.email}"),
           ),
+          ListTile(
+            title: const Text("Dashboard"),
+            leading: const Icon(Icons.dashboard_outlined),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(Routes.dashboard);
+            },
+          ),
+          const Divider(),
            ListTile(
             title: const Text("Add Property"),
             leading: const Icon(Icons.add_home_outlined),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).pushNamed(Routes.addProperty);
+            },
+          ),
+          const Divider(),
+
+           ListTile(
+            title: const Text("Settings"),
+            leading: const Icon(Icons.settings),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(Routes.settings);
             },
           ),
           const Divider(),

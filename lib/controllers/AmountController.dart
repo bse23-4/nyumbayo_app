@@ -4,8 +4,8 @@ import '/exports/exports.dart';
 
 class AmountController extends Cubit<double> {
   AmountController() : super(0);
-  void setAmount() {
-    FirebaseFirestore.instance.collection("tenants").get().then((value) {
+  void setAmount(String id) {
+    FirebaseFirestore.instance.collection("tenants").where("property",isEqualTo: id).get().then((value) {
       double total = 0;
       for (var element in value.docs) {
         

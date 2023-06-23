@@ -91,6 +91,7 @@ class CommonTextField extends StatelessWidget {
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     validator: validate,
                     decoration: InputDecoration(
+                      // border:const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)) ,
                       contentPadding: contentPadding ??  const EdgeInsets.only(
                         left: 20,
                         right: 16,

@@ -25,10 +25,10 @@ export '/widgets/DrawerWidget.dart';
 export '/routes/index.dart';
 
 // views
-export '/views/Login.dart';
+export '../views/Auth/Login.dart';
 export '/views/Landlord/Dashboard.dart';
 export '/views/Landlord/screens/Stats.dart';
-export '/views/SignUp.dart';
+export '../views/Auth/SignUp.dart';
 // tools
 export '/tools/TapEffect.dart';
 export '/tools/RemoveFocus.dart';
@@ -64,9 +64,11 @@ export 'package:firebase_auth/firebase_auth.dart';
 export 'package:google_fonts/google_fonts.dart';
 export 'package:http/http.dart';
 export 'package:fl_chart/fl_chart.dart';
+export 'package:image_picker/image_picker.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:d_chart/d_chart.dart';
 export 'package:provider/provider.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // pages

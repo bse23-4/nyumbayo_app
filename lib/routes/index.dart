@@ -2,6 +2,7 @@
 
 import 'package:nyumbayo_app/views/Offline.dart';
 
+import '../views/Landlord/screens/settings/SettingsView.dart';
 import '/exports/exports.dart';
 
 class Routes {
@@ -17,6 +18,7 @@ class Routes {
   static String onboard = "/onboarding";
   static String stats = "/stats";
   static String offline = "/offline";
+  static String settings = "/settings";
 
   // route pages with widgets
   static void push(Widget widget, BuildContext context) {
@@ -57,6 +59,7 @@ class Routes {
       Routes.signup: (context) => const SignUp(),
       Routes.stats: (context) => const Stats(),
       Routes.offline: (context) => const OfflinePage(),
+      Routes.settings: (context) => const SettingsView(),
     };
   }
 }

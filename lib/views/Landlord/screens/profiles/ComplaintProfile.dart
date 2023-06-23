@@ -8,6 +8,7 @@ import 'widgets/RejectBottomMenu.dart';
 class ComplaintProfile extends StatefulWidget {
   final String title;
   final String description;
+  final String tenantId;
   final String status;
   final String image;
   final String date;
@@ -17,7 +18,7 @@ class ComplaintProfile extends StatefulWidget {
       required this.description,
       required this.status,
       required this.image,
-      required this.date});
+      required this.date, required this.tenantId});
 
   @override
   State<ComplaintProfile> createState() => _ComplaintProfileState();
@@ -66,69 +67,75 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                 child: Column(
                   children: [
                     ListTile(
-                      title: Text(
-                        "Complaint title",
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
-                      ),
+                      title: const Text("Complaint title",
+                          style: TextStyle(fontSize: 16)),
                       trailing: Text(
                         widget.title,
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     ListTile(
-                      title: Text(
+                      title: const Text(
                         "Description",
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
+                        style: TextStyle(fontSize: 16),
                       ),
                       trailing: Text(
                         widget.description,
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     ListTile(
-                      title: Text(
+                      title: const Text(
                         "Date",
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
+                        style: TextStyle(fontSize: 16),
                       ),
                       trailing: Text(
                         formatDate(DateTime.parse(widget.date)),
-                        style: TextStyles(context)
-                            .getRegularStyle()
-                            .copyWith(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: (){
+                               context
+                                        .read<MainController>()
+                                        .captureTenantId(widget.tenantId);
+                                        showBottomMenu(context
+                                        .read<MainController>().tenantId);
+                            },
+                            icon: const Icon(Icons.check),
+                            label: const Text(
+                              "Resolve",
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.green,
+                            ),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed:() {
+                              context
+                                        .read<MainController>()
+                                        .captureTenantId(widget.tenantId);
+                               showRejectBottomMenu(context
+                                        .read<MainController>().tenantId);
+                            },
+                            icon: const Icon(Icons.close),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.red,
+                            ),
+                            label: const Text("Reject"),
+                          )
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
               const Space(space: 0.02),
-              Row(
-                children: [
-                  CommonButton(
-                    buttonText: "Resolve",
-                    height: 55,
-                    backgroundColor: Colors.green.shade500,
-                    // padding: padding,
-                    onTap: () => showBottomMenu(),
-                  ),
-                  CommonButton(
-                    buttonText: "Reject",
-                    height: 55,
-                    backgroundColor: Colors.red.shade500,
-                    // padding: padding,
-                    onTap: () => showRejectBottomMenu(),
-                  ),
-                ],
-              ),
             ],
           ),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -172,13 +179,13 @@ class _ComplaintProfileState extends State<ComplaintProfile>
   }
 
   // bottom menu
-  showBottomMenu() {
+ void showBottomMenu(String tenantId) {
     showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
           return BottomSheet(
-             backgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
             builder: (context) {
               return Container(
                 height: MediaQuery.of(context).size.height,
@@ -191,26 +198,27 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: const BottomMenu(),
+                child:  BottomMenu(id:tenantId),
               );
             },
             onClosing: () {},
           );
         });
-  }  
+  }
+
   // show rejection options
-  void showRejectBottomMenu() {
+  void showRejectBottomMenu(String tenantId) {
     showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
           return BottomSheet(
-             backgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
             builder: (context) {
               return Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(left: 10, right: 10,bottom:10),
+                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -218,7 +226,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: const RejectBottomMenu(),
+                child:  RejectBottomMenu(tenantId: tenantId),
               );
             },
             onClosing: () {},

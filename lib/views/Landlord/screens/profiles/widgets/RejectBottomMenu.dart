@@ -1,7 +1,10 @@
+import '/tools/index.dart';
+
 import '/exports/exports.dart';
 
 class RejectBottomMenu extends StatefulWidget {
-  const RejectBottomMenu({super.key});
+  final String tenantId;
+  const RejectBottomMenu({super.key, required this.tenantId});
 
   @override
   State<RejectBottomMenu> createState() => _RejectBottomMenuState();
@@ -79,22 +82,34 @@ class _RejectBottomMenuState extends State<RejectBottomMenu> {
           buttonText: "Reject",
           onTap: () {
             if (reason.isNotEmpty) {
-              Navigator.pop(context, reason);
+              handleIssue(widget.tenantId, "off", "Rejected",reason);
+
+              Navigator.pop(context);
 // success Message,
-ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-                dismissDirection: DismissDirection.up,
-                backgroundColor: Colors.green,
-                  content: Text("Rejected the complaint successfully",style: TextStyles(context).getRegularStyle().copyWith(fontSize: 18),),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  dismissDirection: DismissDirection.up,
+                  backgroundColor: Colors.green.shade300,
+                  content: Text(
+                    "Rejected the complaint successfully",
+                    style: TextStyles(context)
+                        .getRegularStyle()
+                        .copyWith(fontSize: 17),
+                  ),
                 ),
               );
             } else {
-            Routes.pop(context);
+              Routes.pop(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-                backgroundColor: Colors.red,
-                  content: Text("Please select a reason",style: TextStyles(context).getRegularStyle().copyWith(fontSize: 18),),
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                    "Please select a reason",
+                    style: TextStyles(context)
+                        .getRegularStyle()
+                        .copyWith(fontSize: 18),
+                  ),
                 ),
               );
             }

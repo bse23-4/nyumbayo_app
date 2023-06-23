@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
                 hintText: "example@gmail.com",
                 icon: Icons.email,
                 padding: padding,
+                enableBorder: true,
                 controller: emailController,
               ),
               CommonTextField(
@@ -52,6 +53,7 @@ class _LoginState extends State<Login> {
                 icon: Icons.lock,
                 controller: passwordController,
                 enableSuffix: true,
+                enableBorder: true,
                 suffixIcon: _showpass == false
                     ? Icons.visibility_off_outlined
                     : Icons.remove_red_eye,
@@ -96,7 +98,7 @@ class _LoginState extends State<Login> {
                       emailController.text.isNotEmpty) {
                   
                     Auth.signinLandlord(
-                            emailController.text, passwordController.text)
+                            emailController.text, passwordController.text,context)
                         .then((value) {
                             Routes.pop(context);
                       Routes.routeUntil(context, Routes.dashboard);

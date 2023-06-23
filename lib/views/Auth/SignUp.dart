@@ -1,8 +1,9 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, invalid_use_of_visible_for_testing_member
 
-import 'package:nyumbayo_app/models/User.dart';
+import '/models/User.dart';
 
 import '/exports/exports.dart';
+import 'emailVerification.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -19,15 +20,29 @@ class _SignUpState extends State<SignUp> {
   bool _cshowpass = false;
   final formKey = GlobalKey<FormState>();
   // controllers
-  final nameController =  TextEditingController();
-  final emailController =  TextEditingController();
-  final passwordController =  TextEditingController();
-  final confirmPassController =  TextEditingController();
-  final contactController =  TextEditingController();
-  final addressController =  TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPassController = TextEditingController();
+  final contactController = TextEditingController();
+  final addressController = TextEditingController();
   // end of controllers
+  Uint8List? _image;
+// function to load image
+  void loadImage() {
+    ImagePicker.platform.getImage(source: ImageSource.camera).then((value) {
+      value?.readAsBytes().then((value) {
+        setState(() {
+          _image = value;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // load png inform of uint8list
+
     return Scaffold(
       body: Form(
         key: formKey,
@@ -45,26 +60,60 @@ class _SignUpState extends State<SignUp> {
                         .headline4!
                         .copyWith(fontSize: 30)),
               ),
+
               AspectRatio(
                 aspectRatio: 2.5,
                 child: Image.asset("assets/6184498.png"),
+              ),
+                Padding(
+                  padding: padding,
+                  child: Text("User Profile",style: TextStyles(context).getDescriptionStyle(),),
+                ),
+              Padding(
+                padding: padding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _image != null
+                        ? Image.memory(_image!)
+                        : Icon(Icons.image),
+                    const Space(space: 0.03),
+                    IconButton(
+                      onPressed: () => loadImage(),
+                      icon: const Icon(Icons.camera_alt),
+                    ),
+                  ],
+                ),
               ),
               CommonTextField(
                 titleText: "Name",
                 hintText: "John Doe",
                 controller: nameController,
-                icon: Icons.email,
+                icon: Icons.person,
+                enableBorder: true,
                 padding: padding,
-              ),CommonTextField(
+              ),
+              CommonTextField(
+                enableBorder: true,
+                titleText: "Address",
+                hintText: "Kampala, Uganda",
+                controller: addressController,
+                icon: Icons.location_on,
+                padding: padding,
+              ),
+              CommonTextField(
+                enableBorder: true,
                 titleText: "Email",
                 hintText: "example@gmail.com",
                 controller: emailController,
                 icon: Icons.email,
                 padding: padding,
-              ), CommonTextField(
+              ),
+              CommonTextField(
                 titleText: "Contact",
                 hintText: "075xxxx-xxxx-xxxx",
                 controller: contactController,
+                enableBorder: true,
                 icon: Icons.phone,
                 keyboardType: TextInputType.phone,
                 padding: padding,
@@ -74,6 +123,7 @@ class _SignUpState extends State<SignUp> {
                 padding: padding,
                 controller: passwordController,
                 hintText: "***********",
+                enableBorder: true,
                 icon: Icons.lock,
                 enableSuffix: true,
                 suffixIcon: _showpass == false
@@ -86,7 +136,8 @@ class _SignUpState extends State<SignUp> {
                   });
                 },
               ),
-               CommonTextField(
+            
+              CommonTextField(
                 titleText: "Confirm Password",
                 padding: padding,
                 controller: confirmPassController,
@@ -96,6 +147,7 @@ class _SignUpState extends State<SignUp> {
                 suffixIcon: _cshowpass == false
                     ? Icons.visibility_off_outlined
                     : Icons.remove_red_eye,
+                enableBorder: true,
                 isObscureText: !_cshowpass,
                 onTapSuffix: () {
                   setState(() {
@@ -111,15 +163,37 @@ class _SignUpState extends State<SignUp> {
                 height: 50,
                 buttonText: "Login",
                 onTap: () {
-                  showProgress(context,text:"Creating landlord account in progress...");
+                  // check if all fields have data
+                  if (nameController.text.isEmpty ||
+                      emailController.text.isEmpty ||
+                      passwordController.text.isEmpty ||
+                      confirmPassController.text.isEmpty ||
+                      contactController.text.isEmpty ||
+                      addressController.text.isEmpty) {
+                    showMessage(
+                        context: context,
+                        msg: "Please fill all fields",
+                        type: 'danger');
+                  }
+                  showProgress(context,
+                      text: "Creating landlord account in progress...");
                   if (formKey.currentState!.validate()) {
-                   var user = Landlord(name: nameController.text, email: emailController.text, contact: contactController.text, address: addressController.text, password: passwordController.text);
-                   Auth.createLandlord(user).then((value){
-                        Routes.pop(context);
-                        Routes.named(context, Routes.login);
-                   }).whenComplete(() {
-                    showMessage(context: context,msg: "Account created successfully",type: "success");
-                   });
+                    var user = Landlord(
+                        name: nameController.text,
+                        email: emailController.text,
+                        contact: contactController.text,
+                        address: addressController.text,
+                        password: passwordController.text,
+                        profile: base64.encode(_image!));
+                    Auth.createLandlord(user, context).then((value) {
+                      Routes.pop(context);
+                      Routes.push(const EmailVerificationView(), context);
+                    }).whenComplete(() {
+                      showMessage(
+                          context: context,
+                          msg: "Account created successfully",
+                          type: "success");
+                    });
                   }
                 },
               ),

@@ -1,7 +1,9 @@
+import '/tools/index.dart';
 import '/exports/exports.dart';
 
 class BottomMenu extends StatefulWidget {
-  const BottomMenu({super.key});
+  final String id;
+  const BottomMenu({Key? key, required this.id}):super(key:key);
 
   @override
   State<BottomMenu> createState() => _BottomMenuState();
@@ -120,74 +122,37 @@ class _BottomMenuState extends State<BottomMenu> {
             padding: const EdgeInsets.only(left: 15, right: 15),
           ),
         const Divider(),
-        CommonButton(
-          buttonText: "Save Changes",
-          onTap: () {
-            Routes.pop(context);
-            // resolve complaint basing on either hours, minutes, days or weeks
-            resolveComplaint(option, () {
-              _hoursController.clear();
-              _minutesController.clear();
-              _daysController.clear();
-              _weeksController.clear();
-              showMessage(context:context,msg: "Duration ended for $option",type:'success');
-            });
-          },
-          padding: const EdgeInsets.only(left: 15, right: 15),
+        Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15 , bottom: 15, top: 15),
+          child: FilledButton.icon(
+            style: FilledButton.styleFrom(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            icon:const Icon(Icons.save),
+            label:const Text( "Save Changes"),
+            onPressed: () {
+              Routes.pop(context);
+              handleIssue(widget.id, "on", "Resolved",'');
+              // resolve complaint basing on either hours, minutes, days or weeks
+              resolveComplaint(option, [_hoursController, _minutesController, _daysController, _weeksController], () {
+                _hoursController.clear();
+                _minutesController.clear();
+                _daysController.clear();
+                _weeksController.clear();
+                // execute this after specified time
+                 handleIssue(widget.id, "off", "Resolved",'Your time period has expired');
+                // showMessage(context:context,msg: "Duration ended for $option",type:'success');
+              });
+
+              showMessage(context:context,msg:"Saved changes",type:'success');
+            },
+          ),
         )
       ],
     );
   }
-
-  // resolve complaint
-  void resolveComplaint(String option, FutureOr<Null> Function()? onDurationEnd) {
-    if (option == "hours") {
-      // resolve complaint after hours
-      final int hours = int.parse(_hoursController.text);
-      final int seconds = hours * 3600;
-      final int milliseconds = seconds * 1000;
-      // resolve complaint after milliseconds
-      Future.delayed(Duration(milliseconds: milliseconds), () {
-        // resolve complaint
-        onDurationEnd!();
-        print("Complaint resolved after $hours hours");
-      });
-    } else if (option == "minutes") {
-      // resolve complaint after minutes
-      final int minutes = int.parse(_minutesController.text);
-      final int seconds = minutes * 60;
-      final int milliseconds = seconds * 1000;
-      // resolve complaint after milliseconds
-      Future.delayed(Duration(milliseconds: milliseconds), () {
-        // resolve complaint
-        onDurationEnd!();
-        print("Complaint resolved after $minutes minutes");
-      });
-    } else if (option == "days") {
-      // resolve complaint after days
-      final int days = int.parse(_daysController.text);
-      final int hours = days * 24;
-      final int seconds = hours * 3600;
-      final int milliseconds = seconds * 1000;
-      // resolve complaint after milliseconds
-      Future.delayed(Duration(milliseconds: milliseconds), () {
-        // resolve complaint
-        onDurationEnd!();
-        print("Complaint resolved after $days days");
-      });
-    } else if (option == "weeks") {
-      // resolve complaint after weeks
-      final int weeks = int.parse(_weeksController.text);
-      final int days = weeks * 7;
-      final int hours = days * 24;
-      final int seconds = hours * 3600;
-      final int milliseconds = seconds * 1000;
-      // resolve complaint after milliseconds
-      Future.delayed(Duration(milliseconds: milliseconds), () {
-        // resolve complaint
-        onDurationEnd!();
-        print("Complaint resolved after $weeks weeks");
-      });
-    }
-  }
 }
+// ltd@sunbird.ai

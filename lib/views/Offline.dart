@@ -1,3 +1,5 @@
+import 'package:nyumbayo_app/tools/Reload.dart';
+
 import '/exports/exports.dart';
 
 class OfflinePage extends StatefulWidget {
@@ -10,18 +12,20 @@ class OfflinePage extends StatefulWidget {
 class _OfflinePageState extends State<OfflinePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
+
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Space(space: 0.3),
-          Icon(Icons.wifi_off_sharp, color: Colors.red, size: 100),
-          Space(space: 0.3),
-          Text("No Internet Connection"),
-          Space(space: 0.3),
-          Text("Please check your internet connection"),
-          Space(space: 0.3),
-          Space(space: 0.3),
-          Space(space: 0.3),
+        
+          const Icon(Icons.wifi_off_sharp, color: Colors.red, size: 100),
+      
+          Center(child: Text("No Internet Connection",style: TextStyles(context).getRegularStyle(),)),
+    
+          const Text("Please check your internet connection",style:  TextStyle(fontSize: 18),),
+        const Space(space: 0.03),
+        ElevatedButton.icon(onPressed: () => ReloadApp.restartApp(context), icon: Icon(Icons.refresh_rounded), label: const Text("Refresh"))
         ],
       ),
     );
