@@ -13,6 +13,9 @@ class _InventoryState extends State<Inventory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Inventory"),
+      ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection("payments").snapshots(),
           builder: (context, snapshot) {
@@ -22,7 +25,7 @@ class _InventoryState extends State<Inventory> {
                   )
                 : snapshot.data!.docs.isEmpty
                     ? const NoDataWidget(
-                        text: "No inventory data.",
+                        text: "No inventory data available.",
                       )
                     : PdfPreview(
                         initialPageFormat: PdfPageFormat.standard,

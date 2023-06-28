@@ -343,8 +343,6 @@ class _PaymentScreenState extends State<PaymentScreen>
                                         body: "Payment made successfully");
                                         // navigate to dashboard
                                     Routes.push(const Dashboard(), context);
-                                  }).whenComplete(() {
-                                  
                                   });
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
