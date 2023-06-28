@@ -1,4 +1,5 @@
 import '/exports/exports.dart';
+
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
 
@@ -8,11 +9,11 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen>
     with SingleTickerProviderStateMixin {
-   AnimationController? _controller;
+  AnimationController? _controller;
 
   @override
   void initState() {
-     BlocProvider.of<UserdataController>(context).getUserData();
+    BlocProvider.of<UserdataController>(context).getUserData();
 
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<UserdataController>().state);
@@ -59,11 +60,13 @@ class _PaymentScreenState extends State<PaymentScreen>
   @override
   Widget build(BuildContext context) {
     // initialisations
-     BlocProvider.of<UserdataController>(context).getUserData();
+    BlocProvider.of<UserdataController>(context).getUserData();
 
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<UserdataController>().state);
-  EdgeInsets padding = MediaQuery.of(context).padding.copyWith(top:10,bottom: 10,left: 10,right: 10);
+    EdgeInsets padding = MediaQuery.of(context)
+        .padding
+        .copyWith(top: 10, bottom: 10, left: 10, right: 10);
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller!,
@@ -73,28 +76,30 @@ class _PaymentScreenState extends State<PaymentScreen>
             children: [
               CommonAppbarView(
                 titleText: "Payment Process",
-                titlePadding: const EdgeInsets.only(top:20,left:20),
+                titlePadding: const EdgeInsets.only(top: 20, left: 20),
                 iconData: Icons.arrow_back_ios,
                 onBackClick: () => Navigator.pop(context),
                 topPadding: 30,
               ),
-
               Stepper(
-              
                 currentStep: _currentStep,
                 onStepCancel: step3 == true
                     ? null
                     : () {
                         setState(() {
                           _index = 0;
-                          _currentStep > 0 ? _currentStep -= 1 : _currentStep = 0;
+                          _currentStep > 0
+                              ? _currentStep -= 1
+                              : _currentStep = 0;
                         });
                       },
                 onStepContinue: step3 == true
                     ? null
                     : () {
                         setState(() {
-                          _currentStep < 2 ? _currentStep += 1 : _currentStep = 0;
+                          _currentStep < 2
+                              ? _currentStep += 1
+                              : _currentStep = 0;
                           if (_currentStep == 1) {
                             step1 = false;
                             step3 = false;
@@ -120,14 +125,16 @@ class _PaymentScreenState extends State<PaymentScreen>
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           CommonTextField(
-                            padding:  padding,
+                            padding: padding,
                             enableBorder: true,
                             hintText: "e.g UGX 100,000",
                             controller: rentController,
-                            titleText: "Rent: UGX: ${context.read<TenantController>().state['balance']}",
+                            titleText:
+                                "Rent: UGX: ${context.read<TenantController>().state['balance']}",
                             validate: (valid) {
                               setState(() {
-                                errorText1 = "The rent amount field is required";
+                                errorText1 =
+                                    "The rent amount field is required";
                               });
                               return null;
                             },
@@ -136,11 +143,12 @@ class _PaymentScreenState extends State<PaymentScreen>
                             keyboardType: TextInputType.number,
                           ),
                           CommonTextField(
-                            padding:  padding,
+                            padding: padding,
                             enableBorder: true,
                             controller: electricController,
                             hintText: "e.g 8,000",
-                            titleText: "Electricity: UGX:${context.read<TenantController>().state['power_fee']}",
+                            titleText:
+                                "Electricity: UGX:${context.read<TenantController>().state['power_fee']}",
                             validate: (valid) {
                               setState(() {
                                 errorText1 = "Electricity amount is required";
@@ -151,7 +159,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             keyboardType: TextInputType.number,
                           ),
                           CommonButton(
-                            padding:  padding,
+                            padding: padding,
                             buttonText: "Proceed to payment",
                             onTap: () {
                               if (electricController.text.isEmpty &&
@@ -161,7 +169,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                                     content: Text(errorText1),
                                     backgroundColor: Colors.redAccent,
                                     // behavior: SnackBarBehavior.floating,
-                                    duration: const Duration(milliseconds: 1900),
+                                    duration:
+                                        const Duration(milliseconds: 1900),
                                   ),
                                 );
                               } else {
@@ -185,15 +194,21 @@ class _PaymentScreenState extends State<PaymentScreen>
                     content: Column(
                       children: [
                         RadioMenuButton(
-                            value: mtn,
-                            groupValue: 1,
-                            onChanged: (v) {
-                              setState(() {
-                                mtn = 1;
-                                airtel = 0;
-                              });
-                            },
-                            child: const Text("MTN")),
+                          value: mtn,
+                          groupValue: 1,
+                          onChanged: (v) {
+                            setState(() {
+                              mtn = 1;
+                              airtel = 0;
+                            });
+                          },
+                          child: const Text(
+                            "MTN",
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                        ),
                         RadioMenuButton(
                           value: airtel,
                           groupValue: 1,
@@ -203,9 +218,13 @@ class _PaymentScreenState extends State<PaymentScreen>
                               mtn = 0;
                             });
                           },
-                          child: const Text("Airtel"),
+                          child: const Text(
+                            "Airtel",
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
                         )
-                       
                       ],
                     ),
                     isActive: step2,
@@ -236,71 +255,104 @@ class _PaymentScreenState extends State<PaymentScreen>
                             buttonText: "Make Payment",
                             onTap: () {
                               if (phoneNumberController.text.isEmpty == false) {
-                                 if(context.read<TenantController>().state['contact'] == phoneNumberController.text){
-                                showDialog(
-                                  barrierDismissible: true,
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      backgroundColor: Colors.transparent,
-                                      child: Card(
-                                        child: SizedBox(
-                                          height: 90,
-                                          child: Row(
-                                            children: [
-                                              const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 18.0),
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                              const SizedBox(
-                                                width: 50,
-                                              ),
-                                              Text(
-                                                "Payment in progress ",
-                                                style: TextStyles(context)
-                                                    .getRegularStyle(),
-                                              ),
-                                            ],
+                                if (context
+                                        .read<TenantController>()
+                                        .state['contact'] ==
+                                    phoneNumberController.text) {
+                                  showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        child: Card(
+                                          child: SizedBox(
+                                            height: 90,
+                                            child: Row(
+                                              children: [
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 18.0),
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                const SizedBox(
+                                                  width: 50,
+                                                ),
+                                                Text(
+                                                  "Payment in progress ",
+                                                  style: TextStyles(context)
+                                                      .getRegularStyle(),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
+                                      );
+                                    },
+                                  );
+
+                                  FirebaseFirestore.instance
+                                      .collection("tenants")
+                                      .doc(context
+                                          .read<UserdataController>()
+                                          .state)
+                                      .update({
+                                    "amountPaid": rentController.text.isEmpty
+                                        ? context
+                                            .read<TenantController>()
+                                            .state['amountPaid']
+                                        : (int.parse(context
+                                                    .read<TenantController>()
+                                                    .state['amountPaid']) +
+                                                int.parse(rentController.text))
+                                            .toString(),
+                                    "balance": (int.parse(context
+                                                .read<TenantController>()
+                                                .state['balance']) -
+                                            int.parse(rentController.text))
+                                        .toString(),
+                                    "power_fee": electricController.text.isEmpty
+                                        ? context
+                                            .read<TenantController>()
+                                            .state['power_fee']
+                                        : (int.parse(context
+                                                    .read<TenantController>()
+                                                    .state['power_fee']) -
+                                                int.parse(
+                                                    electricController.text))
+                                            .toString(),
+                                  }).then((event) {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "Payment made successfully",
+                                          style: TextStyles(context)
+                                              .getRegularStyle(),
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        // behavior: SnackBarBehavior.floating,
+                                        duration:
+                                            const Duration(milliseconds: 1900),
                                       ),
                                     );
-                                  },
-                                );
-                                 
-                                 FirebaseFirestore.instance.collection("tenants").doc(context.read<UserdataController>().state).update({
-                                  "amountPaid": rentController.text.isEmpty? context.read<TenantController>().state['amountPaid'] : (int.parse(context.read<TenantController>().state['amountPaid']) + int.parse(rentController.text)).toString(),
-                                  "balance": (int.parse(context.read<TenantController>().state['balance']) - int.parse(rentController.text)).toString(),
-                                  "power_fee": electricController.text.isEmpty ? context.read<TenantController>().state['power_fee'] : (int.parse(context.read<TenantController>().state['power_fee']) - int.parse(electricController.text)).toString(),
-                                }).then((event) {
-                                  Navigator.pop(context);
+                                    // trigger notification
+                                      sendNotification(
+                                        title: "Payment",
+                                        body: "Payment made successfully");
+                                        // navigate to dashboard
+                                    Routes.push(const Dashboard(), context);
+                                  }).whenComplete(() {
+                                  
+                                  });
+                                } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        "Payment made successfully",
-                                        style:
-                                            TextStyles(context).getRegularStyle(),
-                                      ),
-                                      backgroundColor: Colors.green,
-                                      // behavior: SnackBarBehavior.floating,
-                                      duration:
-                                          const Duration(milliseconds: 1900),
-                                    ),
-                                  );
-                                 Routes.push(const Dashboard(), context);
-                              
-                                }).whenComplete(() {
-                                  sendNotification(title: "Payment", body: "Payment made successfully");
-                                });
-                                 }else{
-                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
                                         "Phone number does not match",
-                                        style:
-                                            TextStyles(context).getRegularStyle(),
+                                        style: TextStyles(context)
+                                            .getRegularStyle(),
                                       ),
                                       backgroundColor: Colors.redAccent,
                                       // behavior: SnackBarBehavior.floating,
@@ -308,7 +360,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                                           const Duration(milliseconds: 1900),
                                     ),
                                   );
-                                 }
+                                }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -319,7 +371,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                                     ),
                                     backgroundColor: Colors.redAccent,
                                     // behavior: SnackBarBehavior.floating,
-                                    duration: const Duration(milliseconds: 1900),
+                                    duration:
+                                        const Duration(milliseconds: 1900),
                                   ),
                                 );
                               }

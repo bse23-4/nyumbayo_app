@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:nyumbayo_app/tools/Reload.dart';
 
 import 'Observers/IntervalObserver.dart';
 import 'firebase_options.dart';
@@ -63,28 +64,30 @@ Future<void> main() async {
 
   // end of firebase messaging
   Timer.periodic(const Duration(seconds: 7), (timer) {
-    // sendNotification();
+    // sendNotification();  Maurice256
   });
   Bloc.observer = const Observer();
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => UserdataController()),
-        BlocProvider(create: (_) => AmountController()),
-        BlocProvider(create: (_) => TenantController()),
-        BlocProvider(create: (_) => PowerStatusController()),
-        ChangeNotifierProvider(create: (_) => MainController()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: Routes.splash,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Color.fromARGB(0, 121, 169, 240),
+    ReloadApp(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => UserdataController()),
+          BlocProvider(create: (_) => AmountController()),
+          BlocProvider(create: (_) => TenantController()),
+          BlocProvider(create: (_) => PowerStatusController()),
+          ChangeNotifierProvider(create: (_) => MainController()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: Routes.splash,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(0, 121, 169, 240),
+            ),
+            useMaterial3: true,
           ),
-          useMaterial3: true,
+          routes: Routes.routes,
         ),
-        routes: Routes.routes,
       ),
     ),
   );

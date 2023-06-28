@@ -9,20 +9,15 @@ class Payments {
     // adding different payments
 
     final p = <String, dynamic>{
-      "issue": pay.rentBalance,
-      "maintenance": pay.powerBill,
-      "negotiationsForPower": pay.percentageBalance,
-      "others": pay.completedPayments,
-      "status": pay.landlordId,
-      "tenantName": pay.tenantName,
-      "category": pay.totalBalance,
-      "datetime": pay.now,
+      "balance": pay.balance,
+      "tenant_id": pay.tenantId,
+      "amountPaid": pay.amount,
+      "property": pay.property,
+      "date": pay.date,
     };
 
     //creating the payments collection in the firestore database
     
-    db.collection("pay").add(p).then((DocumentReference doc) =>
-        // ignore: avoid_print
-        print('Successfully added new payment ${doc.id}'));
+    await db.collection("payment").add(p);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:nyumbayo_app/tools/Reload.dart';
+
 import '/exports/exports.dart';
 
 class OfflineView extends StatefulWidget {
@@ -12,6 +14,8 @@ class _OfflineViewState extends State<OfflineView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: SvgPicture.asset(
@@ -45,7 +49,7 @@ class _OfflineViewState extends State<OfflineView> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+            ReloadApp.restartApp(context);
             },
             child: const Text('Retry'),
           ),

@@ -23,6 +23,6 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 
     //creating the payments collection in the firestore database
 
-  await db.collection("complaints").doc(complaint['tenant_id']).set(complaint);
+  await db.collection("complaints").add(complaint);
  }
 }

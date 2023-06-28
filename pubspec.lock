@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  barcode:
+    dependency: transitive
+    description:
+      name: barcode
+      sha256: "789f898eef0bd88312470bdb2cc996f895ad7dd5f89e9adde84b204546a90b45"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
   basic_utils:
     dependency: transitive
     description:
@@ -41,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.4"
+  bidi:
+    dependency: transitive
+    description:
+      name: bidi
+      sha256: dc00274c7edabae2ab30c676e736ea1eb0b1b7a1b436cb5fe372e431ccb39ab0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   bloc:
     dependency: transitive
     description:
@@ -696,6 +712,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
+  pdf:
+    dependency: "direct main"
+    description:
+      name: pdf
+      sha256: "9f75fc7f5580ea5e635b5724de58fb27f684c9ad03ed46fdc1aac768e4557315"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.10.4"
   pedantic:
     dependency: transitive
     description:
@@ -752,6 +776,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  printing:
+    dependency: "direct main"
+    description:
+      name: printing
+      sha256: e7c383dca95ee7b88c02dc1c66638628d3dcdc2fb2cc47e7a595facd47e46b56
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.11.0"
   process:
     dependency: transitive
     description:
@@ -768,6 +800,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   rational:
     dependency: transitive
     description:
@@ -1030,5 +1070,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.0.0-417 <4.0.0"
-  flutter: ">=3.7.0-0"
+  dart: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"

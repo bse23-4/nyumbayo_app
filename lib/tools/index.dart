@@ -4,7 +4,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import '/exports/exports.dart';
+
 void showMessage(
     {String type = 'info',
     String? msg,
@@ -16,7 +19,10 @@ void showMessage(
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       behavior: float ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
-      content: Text(msg ?? '',style: TextStyle(fontSize: 17),),
+      content: Text(
+        msg ?? '',
+        style: TextStyle(fontSize: 17),
+      ),
       backgroundColor: type == 'info'
           ? Colors.lightBlue
           : type == 'warning'
@@ -31,23 +37,36 @@ void showMessage(
     ),
   );
 }
+
 /// alert dialog
-showAlertMsg(BuildContext context,{String content = "", String title = ""}) {
-  showDialog(context: context, builder: (context){
-    return  AlertDialog(
-      title: Text(title,style: TextStyles(context).getRegularStyle(),),
-      content: Text(content,style: TextStyles(context).getRegularStyle(),),
-      actions: [
-        TextButton(
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          child: Text("OK",style: TextStyles(context).getRegularStyle(),),
-        )
-      ],
-    );
-  });
+showAlertMsg(BuildContext context, {String content = "", String title = ""}) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyles(context).getRegularStyle(),
+          ),
+          content: Text(
+            content,
+            style: TextStyles(context).getRegularStyle(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "OK",
+                style: TextStyles(context).getRegularStyle(),
+              ),
+            )
+          ],
+        );
+      });
 }
+
 /// show progress widget
 void showProgress(BuildContext context, {String? text = 'Task'}) {
   showCupertinoModalPopup(
@@ -80,53 +99,130 @@ void showProgress(BuildContext context, {String? text = 'Task'}) {
   );
 }
 
-
 String formatNumberWithCommas(int number) {
   final formatter = NumberFormat('#,###');
   return formatter.format(number);
 }
 
- Future<void> requestPermissions() async {
+Future<void> requestPermissions() async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-    if (Platform.isAndroid) {
-      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+      FlutterLocalNotificationsPlugin();
+  if (Platform.isAndroid) {
+    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
 
-       await androidImplementation?.requestPermission();
-      // setState(() {
-      //   _notificationsEnabled = granted ?? false;
-      // });
-    }
+    await androidImplementation?.requestPermission();
+    // setState(() {
+    //   _notificationsEnabled = granted ?? false;
+    // });
   }
+}
 
-  // function to detect the start of a new month
+// function to detect the start of a new month
 bool isStartOfMonth(DateTime date) {
   return date.day == 1;
 }
+
 // function to handle date
 String formatDate(DateTime date) {
   return DateFormat('dd-MM-yyyy').format(date);
 }
+
 // fuction to handle time
 String formatTime(DateTime date) {
   return DateFormat('hh:mm a').format(date);
 }
+
 // function to handle date
 String formatDateTime(DateTime date) {
   return DateFormat('dd-MM-yyyy hh:mm a').format(date);
 }
+
 // function to handle image upload in form of base64
 Future<File> uploadImage() async {
-   final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   var file = await _picker.pickImage(source: ImageSource.camera);
   return (File(file!.path));
 }
+
 // function to handle image upload in form of base64
 Future<File> captureImage() async {
-   final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   var file = await _picker.pickImage(source: ImageSource.gallery);
   return (File(file!.path));
 }
 
+// function used to generate receipt
+Future<Uint8List> pdfFile(
+    PdfPageFormat format, Map<String, dynamic> paymentData) async {
+  final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+
+  pdf.addPage(
+    pw.Page(
+      pageFormat: format,
+      build: (pw.Context context) => pw.Center(
+          child: pw.Padding(
+        padding: const pw.EdgeInsets.all(10),
+        child: pw.Column(
+          children: [
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(15),
+              child: pw.PdfLogo(),
+            ),
+            pw.SizedBox(height: 50),
+
+            // pw.Signature(),
+
+            pw.Divider(),
+
+            pw.Center(
+                child: pw.Text("Products summary",
+                    style: pw.TextStyle(
+                        fontSize: 20, fontWeight: pw.FontWeight.bold))),
+            pw.SizedBox(height: 20),
+            pw.Divider(),
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(15),
+              child: pw.Table(
+                children: [
+                  pw.TableRow(
+                    children: [
+                      pw.Text("Name"),
+                      pw.Text("Date of payment"),
+                      pw.Text("Amount Paid"),
+                      pw.Text("Balance"),
+                      pw.Text("Property"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            pw.SizedBox(height: 20),
+            pw.Divider(),
+            pw.SizedBox(height: 20),
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(15),
+              child: pw.Table(
+                children: [
+                  pw.TableRow(
+                    children: [
+                      pw.Text(paymentData['name']),
+                      pw.Text(paymentData['dateOfPayment']),
+                      pw.Text(paymentData['amountPaid']),
+                      pw.Text(paymentData['balance']),
+                      pw.Text(paymentData['property']),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      )),
+    ),
+  );
+
+  return pdf.save();
+}

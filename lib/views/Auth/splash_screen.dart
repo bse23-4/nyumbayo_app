@@ -9,13 +9,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  initState() {
-    Future.delayed(const Duration(seconds: 6)).then((value) {
+  initState() { 
+        BlocProvider.of<UserdataController>(context).captureData();
+    Future.delayed(const Duration(seconds: 3)).then((value) {
       BlocProvider.of<UserdataController>(context).getUserData();
       InternetConnectionChecker.createInstance().hasConnection.then((value) {
         if (value == false) {
           Routes.routeUntil(context, Routes.offline);
-        } else if (context.read<UserdataController>().state == "" &&
+        } else if (context.read<UserdataController>().state.isEmpty || context.read<TenantController>().state.isEmpty ||
             FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser!.emailVerified) {
           Routes.routeUntil(context, Routes.login);
         } else {
@@ -28,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserdataController>(context).getUserData();
     return Builder(
       // future: Future.delayed(const Duration(seconds: 3)),
       builder: (context) {
@@ -45,9 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 const Space(space: 0.05),
                 SpinKitDualRing(color: Theme.of(context).primaryColor),
                 const Space(space: 0.05),
-                const Text(
-                  "Loading...",
-                  style: TextStyle(
+                 Text(
+                  FirebaseAuth.instance.currentUser == null ?"Loading user authentication" :"Loading user session",
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   ),

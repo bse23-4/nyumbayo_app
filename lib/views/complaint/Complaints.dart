@@ -38,14 +38,21 @@ class _ComplaintState extends State<Complaint> {
             ),
             Expanded(
               child: StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection("complaints").snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection("complaints")
+                      .snapshots(),
                   builder: (context, s) {
                     var data = s.data;
                     // return s.hasData == false
                     return s.hasData == false
                         ? const Loader(
                             text: "Complaints",
-                          ) : s.data!.docs.isEmpty ? const NoDataWidget(text: "No Complaints") : ListView.builder(
+                          )
+                        : s.data!.docs.isEmpty
+                            ? const NoDataWidget(
+                                text: "No Complaints",
+                              )
+                            : ListView.builder(
                                 itemCount: data?.docs.length,
                                 itemBuilder: (ctx, i) {
                                   var t = data?.docs[i];
@@ -87,7 +94,6 @@ class _ComplaintState extends State<Complaint> {
                                             .getDescriptionStyle()),
                                   );
                                 });
-                           
                   }),
             )
           ],

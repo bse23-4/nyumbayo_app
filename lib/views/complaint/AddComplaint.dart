@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:nyumbayo_app/views/complaint/widgets/CameraWidget.dart';
 
 import '../../backend/complaints.dart';
@@ -20,6 +21,15 @@ class _AddComplaintState extends State<AddComplaint> {
   Uint8List? _byteImage;
   String? _base64Image;
   String options = "";
+
+  // funtion to load asset as uint8list
+  String loadAsset()  {
+    String data = "";
+     rootBundle.load('assets/images/house.png').then((value){
+       data = base64.encode(value.buffer.asUint8List());
+     });
+    return data;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +81,9 @@ class _AddComplaintState extends State<AddComplaint> {
                         value: "Plumbing issues",
                         groupValue: options,
                         onChanged: (v) {
-                          print(v);
+                          if (kDebugMode) {
+                            print(v);
+                          }
                           setState(() {
                             options = v ?? "";
                           });
@@ -229,8 +241,10 @@ class _AddComplaintState extends State<AddComplaint> {
                                                           .then((value) {
                                                         setState(() {
                                                           _base64Image =
-                                                              base64Encode(value
-                                                                  .readAsBytesSync());
+                                                              base64Encode(
+                                                            value
+                                                                .readAsBytesSync(),
+                                                          );
                                                           _byteImage = value
                                                               .readAsBytesSync();
                                                         });
@@ -298,37 +312,39 @@ class _AddComplaintState extends State<AddComplaint> {
                         onTap: () {
                           if (options == "" || options.isEmpty) {
                             showAlertMsg(
-                                 context,
-                                content: "Please select a complaint",
-                                );
+                              context,
+                              content: "Please select a complaint",
+                            );
                           } else if (options == "Others" &&
                               _titleController.text.isEmpty) {
                             showAlertMsg(
-                                 context,
-                                content: "Please specify the complaint",
-                                );
+                              context,
+                              content: "Please specify the complaint",
+                            );
                           } else if (_descriptionController.text.isEmpty) {
                             showAlertMsg(
-                                 context,
-                                content: "Please provide a description",
-                                );
+                              context,
+                              content: "Please provide a description",
+                            );
                           } else {
                             showProgress(context, text: "Submitting Complaint");
 // Submitting the complaint to landlord via Firebase firestore
                             Complaints.raiseComplaint({
                               "tenant_id":
                                   FirebaseAuth.instance.currentUser?.uid,
-                                  "property_id": context.read<TenantController>().state['property'],
+                              "property_id": context
+                                  .read<TenantController>()
+                                  .state['property'],
                               "description": _descriptionController.text,
                               "title": options == 'Others'
                                   ? _titleController.text
                                   : options,
                               "date": DateTime.now().toString(),
                               "status": "Pending",
-                              'reason':'',
-                              "image": _base64Image ?? "",
-                            })
-                                .then((value) {
+                              'reason': '',
+                              "accessKey":"0",
+                              "image": _base64Image!,
+                            }).then((value) {
                               Routes.pop(context);
                             }).whenComplete(() {
                               Routes.pop(context);

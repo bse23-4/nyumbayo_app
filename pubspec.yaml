@@ -38,6 +38,8 @@ dependencies:
   mongo_dart: ^0.9.1
   internet_connection_checker: ^1.0.0+1
   image_picker: ^0.8.7+5
+  pdf: ^3.10.4
+  printing: ^5.11.0
   
 
 dev_dependencies:
@@ -65,6 +67,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/images/
     - assets/images/welcome/
     - assets/images/splash/
