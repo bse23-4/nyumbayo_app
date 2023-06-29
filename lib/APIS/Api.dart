@@ -13,22 +13,41 @@ class Api {
       "https://api.thingspeak.com/update?api_key=EIGVFVMPGBKK86VQ&field1=";
 
   static Future<String> getCurrentPowerStatus() async {
-    var response = await Client().get(Uri.parse(power_status_api));
-    Map<String, String> data = json.decode(response.body);
-    return data['field1'] ?? "0";
+    String msgCoded = "";
+    try {
+      var response = await Client().get(Uri.parse(power_status_api));
+      Map<String, String> data = json.decode(response.body);
+      msgCoded = data['field1'] ?? "0";
+    } on ClientException catch (e, _) {
+      debugPrint(e.message);
+    }
+    return msgCoded;
   }
 
   // control tenant's power
   static Future<Response> controlPower(String powerStatus) async {
-    var response = await Client().post(
-      Uri.parse(power_status_api_write + powerStatus),
-    );
+    Response response = Response("", 200);
+    try {
+      response = await Client().post(
+        Uri.parse(power_status_api_write + powerStatus),
+      );
+    } on ClientException catch (e, _) {
+      debugPrint(e.message);
+    }
+
     return response;
   }
+
   // units consumed
   static Future<String> getPowerConsumed() async {
-    var response = await Client().get(Uri.parse(power_consumed_api));
-    var result = json.decode(response.body);
-    return result["field1"];
+    String msg = "";
+    try {
+      var response = await Client().get(Uri.parse(power_consumed_api));
+      var result = json.decode(response.body);
+      msg = result["field1"];
+    } on Exception catch (e, _) {
+      debugPrint(_.toString());
+    }
+    return msg;
   }
 }

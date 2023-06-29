@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
       InternetConnectionChecker.createInstance().hasConnection.then((value) {
         if (value == false) {
           Routes.routeUntil(context, Routes.offline);
-        } else if (context.read<UserdataController>().state.isEmpty || context.read<TenantController>().state.isEmpty ||
+        } else if (context.read<UserdataController>().state.isEmpty  ||
             FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser!.emailVerified) {
           Routes.routeUntil(context, Routes.login);
         } else {
@@ -29,6 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+        // BlocProvider.of<TenantController>(context).fetchTenants(context.read<UserdataController>().state);
+
     return Builder(
       // future: Future.delayed(const Duration(seconds: 3)),
       builder: (context) {

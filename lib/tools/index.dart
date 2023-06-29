@@ -153,6 +153,38 @@ Future<File> captureImage() async {
   return (File(file!.path));
 }
 
+void showProgressLoader(BuildContext context) {
+  showDialog(
+    barrierDismissible: true,
+    context: context,
+    builder: (context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Card(
+          child: SizedBox(
+            height: 90,
+            child: Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 18.0),
+                  child: CircularProgressIndicator(),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                Text(
+                  "Payment in progress ",
+                  style: TextStyles(context).getRegularStyle(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 // function used to generate receipt
 Future<Uint8List> pdfFile(
     PdfPageFormat format, Map<String, dynamic> paymentData) async {
@@ -171,13 +203,10 @@ Future<Uint8List> pdfFile(
               child: pw.PdfLogo(),
             ),
             pw.SizedBox(height: 50),
-
-            // pw.Signature(),
-
+            pw.Signature(name: "NyumbaYo Tenant"),
             pw.Divider(),
-
             pw.Center(
-                child: pw.Text("Products summary",
+                child: pw.Text("Payment summary",
                     style: pw.TextStyle(
                         fontSize: 20, fontWeight: pw.FontWeight.bold))),
             pw.SizedBox(height: 20),
@@ -198,7 +227,6 @@ Future<Uint8List> pdfFile(
                 ],
               ),
             ),
-
             pw.SizedBox(height: 20),
             pw.Divider(),
             pw.SizedBox(height: 20),
@@ -208,11 +236,16 @@ Future<Uint8List> pdfFile(
                 children: [
                   pw.TableRow(
                     children: [
-                      pw.Text(paymentData['name']),
-                      pw.Text(paymentData['dateOfPayment']),
-                      pw.Text(paymentData['amountPaid']),
-                      pw.Text(paymentData['balance']),
-                      pw.Text(paymentData['property']),
+                      pw.Text("Mugamba Bruno"),
+                      pw.Text("28/06/2000"),
+                      pw.Text("110000"),
+                      pw.Text("99000"),
+                      pw.Text("Kafralona Houses"),
+                      // pw.Text(paymentData['name']),
+                      // pw.Text(paymentData['dateOfPayment']),
+                      // pw.Text(paymentData['amountPaid']),
+                      // pw.Text(paymentData['balance']),
+                      // pw.Text(paymentData['property']),
                     ],
                   ),
                 ],

@@ -9,8 +9,8 @@ class MainController extends ChangeNotifier{
   // getters
   bool get power => _power;
   // power consumed
-  String _powerConsumed = "";
-  String get powerConsumed => _powerConsumed;
+  double _powerConsumed = 0;
+  double get powerConsumed => _powerConsumed;
   List<Map<String,dynamic>> get complaints => _complaints;
   bool get online => _online;
   // setter
@@ -48,10 +48,14 @@ class MainController extends ChangeNotifier{
   // complaints
   void fetchPowerConsumed(){
     Api.getPowerConsumed().then((value) {
-      _powerConsumed = value;
+      _powerConsumed = double.parse(value);
       notifyListeners();
     });
   }
+  // function to computed tenant electricity bill based on the units consumed
+  double computeBill(double units){
+   return (units*500);
+    }
   checkOnline(){
     InternetConnectionChecker.createInstance().hasConnection.asStream().listen((event) {
       _online = event;

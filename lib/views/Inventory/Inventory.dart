@@ -30,8 +30,8 @@ class _InventoryState extends State<Inventory> {
                     : PdfPreview(
                         initialPageFormat: PdfPageFormat.standard,
                         build: (format) => pdfFile(
-                          format,
-                          snapshot.data!.docs[0].data(),
+                          format,{}
+                          // snapshot.data!.docs[0].data(),
                         ),
                         pdfFileName: "inventory.pdf",
                       );

@@ -1,3 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:nyumbayo_app/models/Tenants.dart';
+
+import '../../backend/payments.dart';
+import '../../models/Payment.dart';
 import '/exports/exports.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -67,6 +73,9 @@ class _PaymentScreenState extends State<PaymentScreen>
     EdgeInsets padding = MediaQuery.of(context)
         .padding
         .copyWith(top: 10, bottom: 10, left: 10, right: 10);
+
+    context.watch<MainController>().fetchPowerConsumed();
+
     return Scaffold(
       body: BottomTopMoveAnimationView(
         animationController: _controller!,
@@ -256,41 +265,15 @@ class _PaymentScreenState extends State<PaymentScreen>
                             onTap: () {
                               if (phoneNumberController.text.isEmpty == false) {
                                 if (context
-                                        .read<TenantController>()
-                                        .state['contact'] ==
-                                    phoneNumberController.text) {
-                                  showDialog(
-                                    barrierDismissible: true,
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        backgroundColor: Colors.transparent,
-                                        child: Card(
-                                          child: SizedBox(
-                                            height: 90,
-                                            child: Row(
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 18.0),
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                                const SizedBox(
-                                                  width: 50,
-                                                ),
-                                                Text(
-                                                  "Payment in progress ",
-                                                  style: TextStyles(context)
-                                                      .getRegularStyle(),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
+                                            .read<TenantController>()
+                                            .state['contact'] ==
+                                        phoneNumberController.text ||
+                                    context
+                                            .read<TenantController>()
+                                            .state['acontact'] ==
+                                        phoneNumberController.text) {
+                              //  show payment loader
+                              showProgressLoader(context);
 
                                   FirebaseFirestore.instance
                                       .collection("tenants")
@@ -323,27 +306,58 @@ class _PaymentScreenState extends State<PaymentScreen>
                                                     electricController.text))
                                             .toString(),
                                   }).then((event) {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          "Payment made successfully",
-                                          style: TextStyles(context)
-                                              .getRegularStyle(),
-                                        ),
-                                        backgroundColor: Colors.green,
-                                        // behavior: SnackBarBehavior.floating,
-                                        duration:
-                                            const Duration(milliseconds: 1900),
+                                    // Routes.pop(context);
+                                  
+                                   
+
+                                    Routes.push(const Dashboard(), context);
+
+                                  
+ // save payment details
+                                        showMessage(
+                                        context: context,
+                                        msg: "Payment made successfully",
+                                        type: 'success');
+                                    // navigate to dashboard
+                                  })
+                                  .whenComplete(() {
+
+                                    // trigger notification
+                                    sendNotification(
+                                      title: "Payment",
+                                      body: "Payment made successfully",
+                                    );
+                                  });
+                                  // record payment
+                                     Payments.makePayments(
+                                      Payment(
+                                        amount:
+                                            rentController.text.isEmpty
+                                        ? context
+                                            .read<TenantController>()
+                                            .state['amountPaid']
+                                        : (int.parse(context
+                                                    .read<TenantController>()
+                                                    .state['amountPaid']) +
+                                                int.parse(rentController.text))
+                                            .toString(),
+                                        balance: context
+                                            .read<TenantController>()
+                                            .state['balance'],
+                                        tenantId: context
+                                            .read<UserdataController>()
+                                            .state,
+                                        property: context
+                                            .read<TenantController>()
+                                            .state['property'],
+                                        date: DateTime.now().toString(),
+                                        tenantName: context
+                                            .read<TenantController>()
+                                            .state['name'],
+                                        electricityBill:
+                                            "${context.watch<MainController>().computeBill(context.watch<MainController>().powerConsumed)}",
                                       ),
                                     );
-                                    // trigger notification
-                                      sendNotification(
-                                        title: "Payment",
-                                        body: "Payment made successfully");
-                                        // navigate to dashboard
-                                    Routes.push(const Dashboard(), context);
-                                  });
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

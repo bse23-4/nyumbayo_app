@@ -55,7 +55,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     // compute percentage for electricity
     // double powerPercentage = ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
     // logic for tunning oof power
-    if ((percentage.isNaN == false && percentage > 80)) {
+    if ((percentage.isNaN == false && percentage >= 80)) {
       Provider.of<MainController>(context, listen: true).controlPower(
           context.read<UserdataController>().state, percentage.toInt(),
           x: 1);
@@ -170,7 +170,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       DashTile(
                           title: "Electricity",
                           value:
-                              "${context.watch<MainController>().powerConsumed}/="),
+                              "${context.watch<MainController>().computeBill(context.watch<MainController>().powerConsumed)}/="),
                       const Space(space: 0.01),
                       Padding(
                         padding: const EdgeInsets.only(
