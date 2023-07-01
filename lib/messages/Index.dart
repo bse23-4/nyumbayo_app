@@ -9,18 +9,10 @@ void sendNotification({required String title, required String body}) async {
         AndroidNotificationDetails(
       'channel_id',
       'channel_name',
-    
       vibrationPattern: Int64List.fromList([100, 200, 300, 400, 500, 400, 300, 200, 400]),
       channelDescription: 'channel_description',
-      importance: Importance.max,
-      styleInformation: BigPictureStyleInformation(
-        const DrawableResourceAndroidBitmap('android12splash'),
-        largeIcon: const DrawableResourceAndroidBitmap('android12splash'),
-        contentTitle: title,
-        summaryText: body,
-        htmlFormatContentTitle: true,
-        htmlFormatSummaryText: true,),
-      priority: Priority.high,
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
       enableLights: true,
       
       color: Colors.blue,

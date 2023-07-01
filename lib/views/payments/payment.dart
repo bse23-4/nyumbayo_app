@@ -1,9 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:nyumbayo_app/models/Tenants.dart';
 
-import '../../backend/payments.dart';
-import '../../models/Payment.dart';
+import '/backend/payments.dart';
+import '/models/Payment.dart';
 import '/exports/exports.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -58,7 +57,7 @@ class _PaymentScreenState extends State<PaymentScreen>
   bool step1 = true;
   bool step2 = false;
   bool step3 = false;
-  int mtn = 0;
+  int mode = 0;
   int airtel = 0;
   int _index = 0;
   final _amountPayKey = GlobalKey<FormState>();
@@ -203,12 +202,11 @@ class _PaymentScreenState extends State<PaymentScreen>
                     content: Column(
                       children: [
                         RadioMenuButton(
-                          value: mtn,
+                          value: mode,
                           groupValue: 1,
                           onChanged: (v) {
                             setState(() {
-                              mtn = 1;
-                              airtel = 0;
+                              mode = 1;
                             });
                           },
                           child: const Text(
@@ -219,12 +217,11 @@ class _PaymentScreenState extends State<PaymentScreen>
                           ),
                         ),
                         RadioMenuButton(
-                          value: airtel,
-                          groupValue: 1,
+                          value: mode,
+                          groupValue: 0,
                           onChanged: (v) {
                             setState(() {
-                              airtel = 1;
-                              mtn = 0;
+                              mode = 0;
                             });
                           },
                           child: const Text(
@@ -247,7 +244,9 @@ class _PaymentScreenState extends State<PaymentScreen>
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           CommonTextField(
+                            padding: padding,
                             titleText: "Phone Number",
+                            keyboardType: TextInputType.phone,
                             hintText: "e.g 07xxxxxxx",
                             enableBorder: true,
                             icon: Icons.phone,
@@ -272,8 +271,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                                             .read<TenantController>()
                                             .state['acontact'] ==
                                         phoneNumberController.text) {
-                              //  show payment loader
-                              showProgressLoader(context);
+                                  //  show payment loader
+                                  showProgressLoader(context);
 
                                   FirebaseFirestore.instance
                                       .collection("tenants")
@@ -306,58 +305,53 @@ class _PaymentScreenState extends State<PaymentScreen>
                                                     electricController.text))
                                             .toString(),
                                   }).then((event) {
-                                    // Routes.pop(context);
-                                  
-                                   
+                                      // record payment
+                                  Payments.makePayments(context.read<UserdataController>().state,
+                                    Payment(
+                                      status: "",
+                                      paymentMode: mode == 0 ? "Airtel" : "MTN",
+                                      amount: rentController.text.isEmpty
+                                          ? context
+                                              .read<TenantController>()
+                                              .state['amountPaid']
+                                          : (int.parse(context
+                                                      .read<TenantController>()
+                                                      .state['amountPaid']) +
+                                                  int.parse(
+                                                      rentController.text))
+                                              .toString(),
+                                      balance: context
+                                          .read<TenantController>()
+                                          .state['balance'],
+                                      
+                                      property: context
+                                          .read<TenantController>()
+                                          .state['property'],
+                                      date: DateTime.now().toString(),
+                                      tenantName: context
+                                          .read<TenantController>()
+                                          .state['name'],
+                                      electricityBill:
+                                          "${context.read<MainController>().computeBill(context.read<MainController>().powerConsumed)}",
+                                    ),
+                                  );
 
                                     Routes.push(const Dashboard(), context);
 
-                                  
- // save payment details
-                                        showMessage(
+                                    // save payment details
+                                    showMessage(
                                         context: context,
                                         msg: "Payment made successfully",
                                         type: 'success');
                                     // navigate to dashboard
-                                  })
-                                  .whenComplete(() {
-
+                                  }).whenComplete(() {
                                     // trigger notification
                                     sendNotification(
                                       title: "Payment",
                                       body: "Payment made successfully",
                                     );
                                   });
-                                  // record payment
-                                     Payments.makePayments(
-                                      Payment(
-                                        amount:
-                                            rentController.text.isEmpty
-                                        ? context
-                                            .read<TenantController>()
-                                            .state['amountPaid']
-                                        : (int.parse(context
-                                                    .read<TenantController>()
-                                                    .state['amountPaid']) +
-                                                int.parse(rentController.text))
-                                            .toString(),
-                                        balance: context
-                                            .read<TenantController>()
-                                            .state['balance'],
-                                        tenantId: context
-                                            .read<UserdataController>()
-                                            .state,
-                                        property: context
-                                            .read<TenantController>()
-                                            .state['property'],
-                                        date: DateTime.now().toString(),
-                                        tenantName: context
-                                            .read<TenantController>()
-                                            .state['name'],
-                                        electricityBill:
-                                            "${context.watch<MainController>().computeBill(context.watch<MainController>().powerConsumed)}",
-                                      ),
-                                    );
+                                
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

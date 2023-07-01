@@ -9,18 +9,27 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  initState() { 
-        BlocProvider.of<UserdataController>(context).captureData();
+  initState() {
+    BlocProvider.of<UserdataController>(context).captureData();
+     BlocProvider.of<UserdataController>(context).getUserData();
+
     Future.delayed(const Duration(seconds: 3)).then((value) {
       BlocProvider.of<UserdataController>(context).getUserData();
       InternetConnectionChecker.createInstance().hasConnection.then((value) {
         if (value == false) {
           Routes.routeUntil(context, Routes.offline);
-        } else if (context.read<UserdataController>().state.isEmpty  ||
-            FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser!.emailVerified) {
-          Routes.routeUntil(context, Routes.login);
         } else {
-          Routes.routeUntil(context, Routes.dashboard);
+          if (FirebaseAuth.instance.currentUser?.emailVerified == false ||
+              FirebaseAuth.instance.currentUser == null) {
+            Routes.routeUntil(context, Routes.login);
+          } else {
+            if (context.read<TenantController>().state.isEmpty &&
+                context.read<UserdataController>().state.isEmpty) {
+              Routes.routeUntil(context, Routes.login);
+            } else {
+              Routes.routeUntil(context, Routes.dashboard);
+            }
+          }
         }
       });
     });
@@ -29,7 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-        // BlocProvider.of<TenantController>(context).fetchTenants(context.read<UserdataController>().state);
+   
+ BlocProvider.of<UserdataController>(context).captureData();
+ BlocProvider.of<UserdataController>(context).getUserData();
+ if (BlocProvider.of<UserdataController>(context).state.isNotEmpty) {
+     BlocProvider.of<TenantController>(context).fetchTenants(context.read<UserdataController>().state);
+ }
 
     return Builder(
       // future: Future.delayed(const Duration(seconds: 3)),
@@ -47,8 +61,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 const Space(space: 0.05),
                 SpinKitDualRing(color: Theme.of(context).primaryColor),
                 const Space(space: 0.05),
-                 Text(
-                  FirebaseAuth.instance.currentUser == null ?"Loading user authentication" :"Loading user session",
+                Text(
+                  FirebaseAuth.instance.currentUser == null
+                      ? "Loading user authentication"
+                      : "Loading user session",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

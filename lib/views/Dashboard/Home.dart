@@ -1,3 +1,6 @@
+import 'package:nyumbayo_app/views/Inventory/Preview.dart';
+import 'package:nyumbayo_app/views/reports/GraphicalReport.dart';
+
 import '../Inventory/Inventory.dart';
 import '/exports/exports.dart';
 import '/views/payments/payment.dart';
@@ -383,10 +386,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Routes.push(const Inventory(),context),
-        label: const Text("View Inventory"),
-        icon: const Icon(Icons.inventory),
+      floatingActionButton: SizedBox(
+        height: 150,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton.extended(
+                heroTag: null,
+                icon: const Icon(Icons.analytics),
+                   onPressed: () => Routes.push(const GraphicalReport(), context),
+                label: const Text("Analytics"),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton.extended(
+                heroTag: null,
+                onPressed: () => Routes.push(const Preview(), context),
+                label: const Text("Inventory"),
+                icon: const Icon(Icons.inventory),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

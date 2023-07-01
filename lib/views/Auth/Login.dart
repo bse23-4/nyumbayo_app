@@ -136,13 +136,13 @@ class _LoginState extends State<Login> {
                         .then((value) {
                           Routes.pop(context);
                       if (FirebaseAuth
-                              .instance.currentUser!.emailVerified ==
+                              .instance.currentUser?.emailVerified ==
                           false) {
                         Routes.named(context, Routes.verify);
                       } else {
                         BlocProvider.of<UserdataController>(context)
                             .captureData();
-                        Routes.pop(context);
+                        
                         Routes.routeUntil(context, Routes.dashboard);
                           showMessage(
                           context: context, msg: "Logged in Successfully");

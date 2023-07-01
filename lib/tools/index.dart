@@ -21,7 +21,7 @@ void showMessage(
       behavior: float ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
       content: Text(
         msg ?? '',
-        style: TextStyle(fontSize: 17),
+        style: const TextStyle(fontSize: 17),
       ),
       backgroundColor: type == 'info'
           ? Colors.lightBlue
@@ -188,8 +188,28 @@ void showProgressLoader(BuildContext context) {
 // function used to generate receipt
 Future<Uint8List> pdfFile(
     PdfPageFormat format, Map<String, dynamic> paymentData) async {
+  
   final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+  List<pw.Text> heads = [
+    pw.Text("Tenant's Name",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+    pw.Text("Date of payment",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+    pw.Text("Payment Gateway",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+    pw.Text("Amount Paid",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+    pw.Text("Balance",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+    pw.Text("Payment status",style:pw.TextStyle(fontSize: 16,fontWeight: pw.FontWeight.bold)),
+  ];
 
+
+  //
+  List<pw.Widget> body = [
+    pw.Text(paymentData['tenantName'],style:const pw.TextStyle(fontSize: 16)),
+    pw.Text(paymentData['date'],style:const pw.TextStyle(fontSize: 16)),
+    pw.Text(paymentData['paymentMode'],style:const pw.TextStyle(fontSize: 16)),
+    pw.Text(paymentData['amountPaid'],style:const pw.TextStyle(fontSize: 16)),
+    pw.Text(paymentData['balance'],style:const pw.TextStyle(fontSize: 16)),
+    pw.Text(paymentData['paymentStatus'],style:const pw.TextStyle(fontSize: 16)),
+    
+  ];
   pdf.addPage(
     pw.Page(
       pageFormat: format,
@@ -198,15 +218,19 @@ Future<Uint8List> pdfFile(
         padding: const pw.EdgeInsets.all(10),
         child: pw.Column(
           children: [
+                  pw.Center(
+                child: pw.Text((paymentData['property']),
+                    style: pw.TextStyle(
+                        fontSize: 20, fontWeight: pw.FontWeight.bold))),
             pw.Padding(
               padding: const pw.EdgeInsets.all(15),
               child: pw.PdfLogo(),
             ),
             pw.SizedBox(height: 50),
-            pw.Signature(name: "NyumbaYo Tenant"),
-            pw.Divider(),
+            pw.Signature(name: "NyumbaYo Tenant",),
+      
             pw.Center(
-                child: pw.Text("Payment summary",
+                child: pw.Text("Payment receipt",
                     style: pw.TextStyle(
                         fontSize: 20, fontWeight: pw.FontWeight.bold))),
             pw.SizedBox(height: 20),
@@ -214,48 +238,30 @@ Future<Uint8List> pdfFile(
             pw.Padding(
               padding: const pw.EdgeInsets.all(15),
               child: pw.Table(
-                children: [
-                  pw.TableRow(
-                    children: [
-                      pw.Text("Name"),
-                      pw.Text("Date of payment"),
-                      pw.Text("Amount Paid"),
-                      pw.Text("Balance"),
-                      pw.Text("Property"),
-                    ],
-                  ),
-                ],
+                children: List.generate(
+                  body.length,
+                  (index) => pw.TableRow(children: [
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.all(15),
+                      child: heads[index],
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.all(15),
+                      child: body[index],
+                    ),
+                  ]),
+                ),
               ),
             ),
-            pw.SizedBox(height: 20),
-            pw.Divider(),
-            pw.SizedBox(height: 20),
-            pw.Padding(
-              padding: const pw.EdgeInsets.all(15),
-              child: pw.Table(
-                children: [
-                  pw.TableRow(
-                    children: [
-                      pw.Text("Mugamba Bruno"),
-                      pw.Text("28/06/2000"),
-                      pw.Text("110000"),
-                      pw.Text("99000"),
-                      pw.Text("Kafralona Houses"),
-                      // pw.Text(paymentData['name']),
-                      // pw.Text(paymentData['dateOfPayment']),
-                      // pw.Text(paymentData['amountPaid']),
-                      // pw.Text(paymentData['balance']),
-                      // pw.Text(paymentData['property']),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+         pw.Divider()
           ],
         ),
       )),
     ),
+    
   );
 
   return pdf.save();
 }
+
+

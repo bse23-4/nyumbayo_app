@@ -1,3 +1,4 @@
+import '../reports/GraphicalReport.dart';
 import '/exports/exports.dart';
 
 import 'Home.dart';
