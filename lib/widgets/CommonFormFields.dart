@@ -231,7 +231,35 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                               hintText: widget.formFields[index - 1]['hint'],
                               titleText: widget.formFields[index - 1]['title'],
                             )
-                          :
+                          :(widget.formFields[index - 1]['phone'] != null)?
+                            CommonTextField(
+                              keyboardType:widget.formFields[index - 1]['type'],
+                              maxLength: 10,
+                              icon: widget.formFields[index - 1]['icon'],
+                              enableSuffix: widget.formFields[index - 1]
+                                      ['enableSuffix'] ??
+                                  showPassword,
+                              enableBorder: true,
+                              suffixIcon: widget.formFields[index - 1]
+                                  ['suffix'],
+                              fieldColor: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.white
+                                  : const Color.fromARGB(66, 75, 74, 74),
+                              errorText: widget.errorMsgs[index - 1],
+                              padding: widget.padding,
+                             contentPadding:const EdgeInsets.only(
+                        left: 20,
+                        right: 16,
+                        top: 206,
+                        bottom: 0,
+                      ),
+                              isObscureText: widget.formFields[index - 1]
+                                  ['password'],
+                              controller: widget.formControllers[index - 1],
+                              hintText: widget.formFields[index - 1]['hint'],
+                              titleText: widget.formFields[index - 1]['title'],
+                            ):
                           // dropdown menu
                           (widget.formFields[index - 1]['menu'] != null)
                               ? const SingleChildScrollView(
@@ -265,11 +293,13 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                               :
                               // other fields
                               CommonTextField(
+                                
                                   icon: widget.formFields[index - 1]['icon'],
                                   enableSuffix: widget.formFields[index - 1]
                                           ['enableSuffix'] ??
                                       showPassword,
                                   enableBorder: true,
+                                  keyboardType:widget.formFields[index - 1]['type'],
                                   suffixIcon: widget.formFields[index - 1]
                                       ['suffix'],
                                   fieldColor: Theme.of(context).brightness ==
@@ -309,9 +339,6 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                   if (formKey.currentState!.validate() == true) {
                     widget.onSubmit!();
 
-                    List<String> e = widget.errorMsgs
-                        .where((element) => element.isEmpty)
-                        .toList();
                     //  this checks if the provided fields are empty hence no errors raised for empty fields
                     // if (e.isEmpty) {
                     // }

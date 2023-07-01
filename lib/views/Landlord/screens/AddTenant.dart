@@ -48,10 +48,13 @@ class _AddTenantState extends State<AddTenant>
       "icon": Icons.phone,
       "hint": "e.g 075xxxxx",
       "password": false,
+      "phone": 0,
       "type": TextInputType.phone,
-    }, {
+    },
+    {
       "title": "Another Contact",
       "icon": Icons.phone,
+      "phone": 0,
       "hint": "e.g 077xxxxx",
       "password": false,
       "type": TextInputType.phone,
@@ -76,7 +79,8 @@ class _AddTenantState extends State<AddTenant>
       "hint": "e.g 5000",
       "password": false,
       "type": TextInputType.number,
-    }, {
+    },
+    {
       "title": "Amount Paid",
       "icon": Icons.monetization_on_outlined,
       "hint": "e.g 5000",
@@ -128,29 +132,47 @@ class _AddTenantState extends State<AddTenant>
                       formControllers[7].text.isEmpty) {
                     showMessage(
                         context: context,
-                        msg: "Please fill in all the fields",type:"danger");
+                        msg: "Please fill in all the fields",
+                        type: "danger");
                     return;
                   } else {
-                  showProgress(context, text: "Saving tenant details..");
-                  // if()
-                  var prop = Tenants(
-                    name: formControllers[0].text,
-                    email: formControllers[1].text,
-                    contact: formControllers[2].text,
-                    acontact: formControllers[3].text,
-                    address: formControllers[4].text,
-                    roomNumber: formControllers[5].text,
-                    monthlyRent: formControllers[6].text,
-                    amountPaid: formControllers[7].text,
-                  );
-                  TenantData.saveTenantDetails(prop,context.read<PropertyIdController>().state).then((value) {
-                    Routes.pop(context);
-                  }).whenComplete(() {
-                    Routes.named(context, Routes.dashboard);
-                    showMessage(
-                        context: context,
-                        msg: "Tenant details saved successfully..");
-                  });
+                    showProgress(context, text: "Saving tenant details..");
+                    // if()
+                    var prop = Tenants(
+                      name: formControllers[0].text,
+                      email: formControllers[1].text,
+                      contact: formControllers[2].text,
+                      acontact: formControllers[3].text,
+                      address: formControllers[4].text,
+                      roomNumber: formControllers[5].text,
+                      monthlyRent: formControllers[6].text,
+                      amountPaid: formControllers[7].text,
+                    );
+                    TenantData.saveTenantDetails(
+                            prop,
+                            context.read<PropertyIdController>().state,
+                            context.read<UserdataController>().state)
+                        .then((value) {
+                      Routes.pop(context);
+                      if (value == "weak-password") {
+                        showMessage(
+                            context: context,
+                            msg: "The password provided is too weak",
+                            type: 'danger');
+                      } else if (value == "email-already-in-use") {
+                        showMessage(
+                            context: context,
+                            msg:
+                                "The email provided is already in use by another account",
+                            type: 'danger');
+                      } else {
+                        Routes.named(context, Routes.dashboard);
+                        showMessage(
+                            context: context,
+                            msg: "Tenant details saved successfully..");
+                      }
+                     
+                    });
                   }
                 },
               ),

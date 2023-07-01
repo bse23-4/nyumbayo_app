@@ -54,7 +54,7 @@ class Routes {
       Routes.addTenant: (context) => const AddTenant(),
       Routes.complaints: (context) => const ViewReports(),
       Routes.tenants: (context) => const ViewTenants(),
-      Routes.payment:(context) => const PaymentScreen(),
+  
       Routes.onboard: (context) => const OnboardingScreen(),
       Routes.signup: (context) => const SignUp(),
       Routes.stats: (context) => const Stats(),

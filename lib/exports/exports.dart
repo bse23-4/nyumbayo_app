@@ -77,7 +77,6 @@ export '/views/Landlord/screens/Chart.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
 export '/views/Landlord/screens/ViewReports.dart';
-export '/views/Landlord/screens/payments/Payment.dart';
 export '/views/Landlord/screens/profiles/TenantProfile.dart';
 export '/views/Landlord/screens/profiles/ComplaintProfile.dart';
 export '/views/Onboarding.dart';

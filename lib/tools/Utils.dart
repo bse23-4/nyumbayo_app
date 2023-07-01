@@ -101,75 +101,73 @@ void showMessage(
 
 /// show progress widget
 void showProgress(BuildContext context, {String? text = 'Task'}) {
-  showModal(
-    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-    context: context,
-    builder: (context) => BottomSheet(
-      enableDrag: false,
-      backgroundColor: Colors.black12,
-      onClosing: () {},
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SpinKitDualRing(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Theme.of(context).primaryColor),
-          const Space(
-            space: 0.03,
-          ),
-          Text(
-            "$text..",
-            style: TextStyles(context)
-                .getRegularStyle()
-                .copyWith(color: Colors.white),
-          )
-        ],
-      ),
-    ),
-  );
+  showDialog(
+      context: context,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.width / 4,
+        child: AlertDialog(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SpinKitDualRing(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Theme.of(context).primaryColor),
+                  Text(
+                    "$text..",
+                    style: TextStyles(context)
+                        .getRegularStyle()
+                        ,
+                  )
+                ],
+              ),
+            ),
+      ));
 }
-
 
 String formatNumberWithCommas(int number) {
   final formatter = NumberFormat('#,###');
   return formatter.format(number);
 }
+
 //  date format
 String formatDate(DateTime date) {
   return DateFormat('dd-MM-yyyy').format(date);
 }
 
-void showAlertWindow(BuildContext context,{String title= "", String content = ""}){
-   showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.width / 3,
-                        child: AlertDialog(
-                          title: const Center(
-                            child: Text(
-                                "Are you sur you want to resolve this issue?"),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: const Text("Approve"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text(
-                                "Reject this issue",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    });
+String formatTime(DateTime date){
+  return DateFormat('hh:mm a').format(date);
+}
+
+void showAlertWindow(BuildContext context,
+    {String title = "", String content = ""}) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.width / 3,
+          child: AlertDialog(
+            title: const Center(
+              child: Text("Are you sur you want to resolve this issue?"),
+            ),
+            actions: [
+              TextButton(
+                child: const Text("Approve"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  "Reject this issue",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      });
 }

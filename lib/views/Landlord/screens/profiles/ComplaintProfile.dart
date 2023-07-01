@@ -18,7 +18,8 @@ class ComplaintProfile extends StatefulWidget {
       required this.description,
       required this.status,
       required this.image,
-      required this.date, required this.tenantId});
+      required this.date,
+      required this.tenantId});
 
   @override
   State<ComplaintProfile> createState() => _ComplaintProfileState();
@@ -81,7 +82,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                       ),
                       trailing: Text(
                         widget.description,
-                        style: const TextStyle(fontSize: 16),
+                        // style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     ListTile(
@@ -90,7 +91,21 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                         style: TextStyle(fontSize: 16),
                       ),
                       trailing: Text(
-                        formatDate(DateTime.parse(widget.date)),
+                        formatDate(
+                          DateTime.parse(widget.date),
+                        ),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text(
+                        "Time",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      trailing: Text(
+                        formatTime(
+                          DateTime.parse(widget.date),
+                        ),
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
@@ -100,12 +115,12 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           OutlinedButton.icon(
-                            onPressed: (){
-                               context
-                                        .read<MainController>()
-                                        .captureTenantId(widget.tenantId);
-                                        showBottomMenu(context
-                                        .read<MainController>().tenantId);
+                            onPressed: () {
+                              context
+                                  .read<MainController>()
+                                  .captureTenantId(widget.tenantId);
+                              showBottomMenu(
+                                  context.read<MainController>().tenantId);
                             },
                             icon: const Icon(Icons.check),
                             label: const Text(
@@ -116,12 +131,12 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                             ),
                           ),
                           OutlinedButton.icon(
-                            onPressed:() {
+                            onPressed: () {
                               context
-                                        .read<MainController>()
-                                        .captureTenantId(widget.tenantId);
-                               showRejectBottomMenu(context
-                                        .read<MainController>().tenantId);
+                                  .read<MainController>()
+                                  .captureTenantId(widget.tenantId);
+                              showRejectBottomMenu(
+                                  context.read<MainController>().tenantId);
                             },
                             icon: const Icon(Icons.close),
                             style: OutlinedButton.styleFrom(
@@ -179,7 +194,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
   }
 
   // bottom menu
- void showBottomMenu(String tenantId) {
+  void showBottomMenu(String tenantId) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -198,7 +213,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child:  BottomMenu(id:tenantId),
+                child: BottomMenu(id: tenantId),
               );
             },
             onClosing: () {},
@@ -226,7 +241,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child:  RejectBottomMenu(tenantId: tenantId),
+                child: RejectBottomMenu(tenantId: tenantId),
               );
             },
             onClosing: () {},

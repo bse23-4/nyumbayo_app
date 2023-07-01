@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard> {
     Provider.of<MainController>(context, listen: true)
         .setAmount(context.read<PropertyIdController>().state);
 // listen to incoming notifications
-context.watch<MainController>().listenToNewComplaints();
+// context.read<MainController>().listenToNewComplaints();
 // 
     context
         .watch<MainController>()
@@ -77,7 +77,7 @@ context.watch<MainController>().listenToNewComplaints();
         .watch<MainController>()
         .fetchResolvedComplaints(context.read<PropertyIdController>().state);
     getPropertyName(context.read<PropertyIdController>().state);
-    List<Map<String, dynamic>> _data = [
+    List<Map<String, dynamic>> data = [
       {
         "title": "Tenants",
         "total": BlocProvider.of<TenantController>(context).state.length,
@@ -97,6 +97,7 @@ context.watch<MainController>().listenToNewComplaints();
         "color": Colors.blue.shade200,
       },
     ];
+
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
@@ -188,12 +189,12 @@ context.watch<MainController>().listenToNewComplaints();
                       child: GridView.count(
                         crossAxisCount: 2,
                         children: List.generate(
-                          _data.length,
+                          data.length,
                           (index) => TapEffect(
                             onClick: () => Navigator.of(context)
-                                .pushNamed(_data[index]['route']),
+                                .pushNamed(data[index]['route']),
                             child: Card(
-                              color: _data[index]["color"],
+                              color: data[index]["color"],
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -207,7 +208,7 @@ context.watch<MainController>().listenToNewComplaints();
                                     child: RichText(
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
-                                        text: _data[index]["title"],
+                                        text: data[index]["title"],
                                         style: TextStyles(context)
                                             .getRegularStyle()
                                             .copyWith(
@@ -215,7 +216,7 @@ context.watch<MainController>().listenToNewComplaints();
                                                 fontSize: 17),
                                         children: [
                                           TextSpan(
-                                            text: "\n ${_data[index]['total']}",
+                                            text: "\n ${data[index]['total']}",
                                             style: TextStyles(context)
                                                 .getBoldStyle()
                                                 .copyWith(

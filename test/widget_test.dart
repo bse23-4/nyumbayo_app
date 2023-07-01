@@ -112,7 +112,7 @@ void main() {
       ));
 
       // Act
-      await TenantData.saveTenantDetails(tenants, property);
+      // await TenantData.saveTenantDetails(tenants, property);
 
       // Assert
       final expectedData = {

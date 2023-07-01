@@ -84,6 +84,7 @@ class CommonTextField extends StatelessWidget {
                     controller: controller,
                     maxLength: maxLength,
                     maxLines: 1,
+                
                     onChanged: onChanged,
                     style: TextStyles(context).getRegularStyle(),
                     obscureText: isObscureText,

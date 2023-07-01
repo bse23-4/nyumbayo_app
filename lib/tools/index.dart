@@ -32,7 +32,9 @@ void resolveComplaint(String option, List<TextEditingController> controllers,
     Future.delayed(Duration(milliseconds: milliseconds), () {
       // resolve complaint
       onDurationEnd!();
-      print("Complaint resolved after $hours hours");
+      if (kDebugMode) {
+        print("Complaint resolved after $hours hours");
+      }
     });
   } else if (option == "minutes") {
     // resolve complaint after minutes
@@ -44,7 +46,9 @@ void resolveComplaint(String option, List<TextEditingController> controllers,
       // resolve complaint
       onDurationEnd!();
 
-      print("Complaint resolved after $minutes minutes");
+      if (kDebugMode) {
+        print("Complaint resolved after $minutes minutes");
+      }
     });
   } else if (option == "days") {
     // resolve complaint after days
@@ -81,6 +85,7 @@ void handleIssue(
       .collection("tenants")
       .doc(id)
       .update({'power_status': powerStatus});
+      debugPrint("complaint status: $complaintStatus");
   // resolve complaint.
   await FirebaseFirestore.instance
       .collection("complaints")
