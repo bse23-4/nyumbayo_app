@@ -11,7 +11,7 @@ class MonthlyPayment {
 class LineGraph extends StatelessWidget {
   final List<MonthlyPayment> data;
 
-  LineGraph(this.data);
+  const LineGraph(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class LineGraph extends StatelessWidget {
           ),
         ),
         // leftTitles: const AxisTitles(
-        //   sideTitles: SideTitles(
+        //   sideTitles: SideTitles(  // <-- HERE
         //     showTitles: true,
         //   ),
         // )),

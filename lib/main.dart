@@ -45,9 +45,6 @@ Future<void> main() async {
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onDidReceiveNotificationResponse: (payload) async {
-    if (kDebugMode) {
-      print(payload);
-    }
   });
 
   await Firebase.initializeApp(
@@ -57,9 +54,7 @@ Future<void> main() async {
   // firebase messaging
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   FirebaseMessaging.onMessage.listen((event) {
-    if (kDebugMode) {
-      print(event);
-    }
+    
   });
 
   // end of firebase messaging
@@ -77,16 +72,29 @@ Future<void> main() async {
           BlocProvider(create: (_) => PowerStatusController()),
           ChangeNotifierProvider(create: (_) => MainController()),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: Routes.splash,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(0, 121, 169, 240),
-            ),
-            useMaterial3: true,
-          ),
-          routes: Routes.routes,
+        child: Builder(
+          builder: (context) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: Routes.splash,
+               theme: ThemeData().copyWith(
+                    appBarTheme: const AppBarTheme(backgroundColor: Colors.blue),
+                    colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 5, 70, 150)),
+                    useMaterial3: true,
+                    textTheme:
+                        GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+                            .apply(
+                      bodyColor: ThemeData().brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                      displayColor: ThemeData().brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                    ),
+                  ),
+              routes: Routes.routes,
+            );
+          }
         ),
       ),
     ),

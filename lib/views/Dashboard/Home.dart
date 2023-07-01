@@ -159,7 +159,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                       const Space(space: 0.02),
                       DashTile(
-                          title: "Rent",
+                          title: "Rent Balance",
                           value:
                               "${context.read<TenantController>().state['balance']}/="),
                       SizedBox(
@@ -184,7 +184,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             const Text(
                               "Click here to make payment",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                   fontSize: 17),
                             ),

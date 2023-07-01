@@ -58,7 +58,7 @@ class _ViewComplaintState extends State<ViewComplaint>
               ),
               const Divider(),
               SizedBox(
-                height: MediaQuery.of(context).size.width * 0.6,
+                height: MediaQuery.of(context).size.width * 0.7,
                 child: Card(
                   margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
                   child: Column(
@@ -83,9 +83,21 @@ class _ViewComplaintState extends State<ViewComplaint>
                           style: TextStyles(context).getRegularStyle(),
                         ),
                         trailing: Chip(
-                          label: Text(widget.status,style:TextStyles(context).getRegularStyle().copyWith(color: Colors.white),),
-                          avatar:  Icon(widget.status == "Pending"? Icons.pending_rounded :Icons.check_circle_rounded,color: Colors.white,),
-                          backgroundColor: widget.status == "Pending"? Colors.orangeAccent[700] :Colors.green[700],
+                          label: Text(
+                            widget.status,
+                            style: TextStyles(context)
+                                .getRegularStyle()
+                                .copyWith(color: Colors.white),
+                          ),
+                          avatar: Icon(
+                            widget.status == "Pending"
+                                ? Icons.pending_rounded
+                                : Icons.check_circle_rounded,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: widget.status == "Pending"
+                              ? Colors.orangeAccent[700]
+                              : Colors.green[700],
                         ),
                       ),
                       ListTile(
@@ -93,7 +105,21 @@ class _ViewComplaintState extends State<ViewComplaint>
                           "Date",
                           style: TextStyles(context).getRegularStyle(),
                         ),
-                        trailing: Text(widget.date),
+                        trailing: Text(
+                          formatDate(
+                            DateTime.parse(widget.date),
+                          ),
+                        ),
+                      ),ListTile(
+                        title: Text(
+                          "Time of submission",
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
+                        trailing: Text(
+                          formatTime(
+                            DateTime.parse(widget.date),
+                          ),
+                        ),
                       ),
                     ],
                   ),
