@@ -26,7 +26,10 @@ class _AddComplaintState extends State<AddComplaint> {
   String loadAsset()  {
     String data = "";
      rootBundle.load('assets/images/house.png').then((value){
-       data = base64.encode(value.buffer.asUint8List());
+      setState((){
+          data = base64.encode(value.buffer.asUint8List());
+      });
+      
      });
     return data;
   }
@@ -346,12 +349,11 @@ class _AddComplaintState extends State<AddComplaint> {
                               "image": _base64Image!,
                             }).then((value) {
                               Routes.pop(context);
-                            }).whenComplete(() {
-                              Routes.pop(context);
                               showMessage(
                                   context: context,
                                   msg: "Complaint Submitted successfully",
                                   type: "success");
+                                  Routes.pop(context);
                             });
                             // end of submitting of complaint
                           }

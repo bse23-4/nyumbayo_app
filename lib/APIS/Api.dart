@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:io';
 
 import '/exports/exports.dart';
 
@@ -32,6 +33,8 @@ class Api {
         Uri.parse(power_status_api_write + powerStatus),
       );
     } on ClientException catch (e, _) {
+      // debugPrint(e.message);
+    } on HandshakeException catch(e,_){
       debugPrint(e.message);
     }
 
@@ -46,7 +49,7 @@ class Api {
       var result = json.decode(response.body);
       msg = result["field1"];
     } on Exception catch (e, _) {
-      debugPrint(_.toString());
+    //  
     }
     return msg;
   }

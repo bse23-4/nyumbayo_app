@@ -58,7 +58,7 @@ class _ViewComplaintState extends State<ViewComplaint>
               ),
               const Divider(),
               SizedBox(
-                height: MediaQuery.of(context).size.width * 0.7,
+                height: MediaQuery.of(context).size.width * 0.8,
                 child: Card(
                   margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
                   child: Column(
@@ -68,14 +68,19 @@ class _ViewComplaintState extends State<ViewComplaint>
                           "Title",
                           style: TextStyles(context).getRegularStyle(),
                         ),
-                        trailing: Text(widget.title),
+                        trailing: Text(
+                          widget.title,
+                          style: TextStyles(context).getRegularStyle(),
+                        ),
                       ),
                       ListTile(
                         title: Text(
                           "Description",
                           style: TextStyles(context).getRegularStyle(),
                         ),
-                        trailing: Text(widget.description),
+                        trailing: Text(
+                          widget.description,
+                          style: TextStyles(context).getRegularStyle(),),
                       ),
                       ListTile(
                         title: Text(
@@ -92,12 +97,16 @@ class _ViewComplaintState extends State<ViewComplaint>
                           avatar: Icon(
                             widget.status == "Pending"
                                 ? Icons.pending_rounded
-                                : Icons.check_circle_rounded,
+                                : widget.status == 'Rejected'
+                                    ? Icons.cancel
+                                    : Icons.check_circle_rounded,
                             color: Colors.white,
                           ),
                           backgroundColor: widget.status == "Pending"
                               ? Colors.orangeAccent[700]
-                              : Colors.green[700],
+                              : widget.status == 'Rejected'
+                                  ? Colors.red[700]
+                                  : Colors.green[700],
                         ),
                       ),
                       ListTile(
@@ -108,9 +117,12 @@ class _ViewComplaintState extends State<ViewComplaint>
                         trailing: Text(
                           formatDate(
                             DateTime.parse(widget.date),
+
                           ),
+                           style: TextStyles(context).getRegularStyle(),
                         ),
-                      ),ListTile(
+                      ),
+                      ListTile(
                         title: Text(
                           "Time of submission",
                           style: TextStyles(context).getRegularStyle(),
@@ -119,6 +131,7 @@ class _ViewComplaintState extends State<ViewComplaint>
                           formatTime(
                             DateTime.parse(widget.date),
                           ),
+                           style: TextStyles(context).getRegularStyle(),
                         ),
                       ),
                     ],
@@ -153,24 +166,31 @@ class _ViewComplaintState extends State<ViewComplaint>
                     ),
               ),
               background: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: MemoryImage(
-                          base64.decode(widget.image),
-                        ),
-                        fit: BoxFit.cover),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: MemoryImage(
+                      base64.decode(widget.image),
+                    ),
+                    fit: BoxFit.cover,
+                    colorFilter: const ColorFilter.mode(
+                        Colors.black26, BlendMode.darken),
                   ),
-                  child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                      child: SizedBox(
-                        width: 100,
-                        height: 50,
-                        child: Image.memory(
-                          base64.decode(widget.image),
-                          // fit: BoxFit.cover,
-                        ),
-                      ))),
+                ),
+                child: BackdropFilter(
+                  blendMode: BlendMode.modulate,
+                  filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Image.memory(
+                      base64.decode(widget.image),
+                      width: 50,
+                      // fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ];

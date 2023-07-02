@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import '/backend/payments.dart';
 import '/models/Payment.dart';
 import '/exports/exports.dart';
@@ -305,53 +304,115 @@ class _PaymentScreenState extends State<PaymentScreen>
                                                     electricController.text))
                                             .toString(),
                                   }).then((event) {
-                                      // record payment
-                                  Payments.makePayments(context.read<UserdataController>().state,
-                                    Payment(
-                                      status: "",
-                                      paymentMode: mode == 0 ? "Airtel" : "MTN",
-                                      amount: rentController.text.isEmpty
-                                          ? context
-                                              .read<TenantController>()
-                                              .state['amountPaid']
-                                          : (int.parse(context
-                                                      .read<TenantController>()
-                                                      .state['amountPaid']) +
-                                                  int.parse(
-                                                      rentController.text))
-                                              .toString(),
-                                      balance: context
-                                          .read<TenantController>()
-                                          .state['balance'],
-                                      
-                                      property: context
-                                          .read<TenantController>()
-                                          .state['property'],
-                                      date: DateTime.now().toString(),
-                                      tenantName: context
-                                          .read<TenantController>()
-                                          .state['name'],
-                                      electricityBill:
-                                          "${context.read<MainController>().computeBill(context.read<MainController>().powerConsumed)}",
-                                    ),
-                                  );
-
-                                    Routes.push(const Dashboard(), context);
-
-                                    // save payment details
-                                    showMessage(
+                                    Routes.pop(context);
+                                    showDialog(
                                         context: context,
-                                        msg: "Payment made successfully",
-                                        type: 'success');
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title:
+                                                const Text("Confirm payment"),
+                                            content: TextFormField(
+                                              maxLength: 4,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              controller:
+                                                  TextEditingController(),
+                                              decoration: const InputDecoration(
+                                                  hintText: "####",
+                                                  labelText: "Enter your pin",
+                                                  labelStyle:
+                                                      TextStyle(fontSize: 17)),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  // record payment
+                                                  Payments.makePayments(
+                                                    context
+                                                        .read<
+                                                            UserdataController>()
+                                                        .state,
+                                                    Payment(
+                                                      status: "",
+                                                      paymentMode: mode == 0
+                                                          ? "Airtel"
+                                                          : "MTN",
+                                                      amount: rentController
+                                                              .text.isEmpty
+                                                          ? context
+                                                                  .read<
+                                                                      TenantController>()
+                                                                  .state[
+                                                              'amountPaid']
+                                                          : (int.parse(context
+                                                                          .read<
+                                                                              TenantController>()
+                                                                          .state[
+                                                                      'amountPaid']) +
+                                                                  int.parse(
+                                                                      rentController
+                                                                          .text))
+                                                              .toString(),
+                                                      balance: context
+                                                          .read<
+                                                              TenantController>()
+                                                          .state['balance'],
+                                                      property: context
+                                                          .read<
+                                                              TenantController>()
+                                                          .state['property'],
+                                                      date: DateTime.now()
+                                                          .toString(),
+                                                      tenantName: context
+                                                          .read<
+                                                              TenantController>()
+                                                          .state['name'],
+                                                      electricityBill:
+                                                          "${context.read<MainController>().computeBill(context.read<MainController>().powerConsumed)}",
+                                                    ),
+                                                  ).then((x) {
+                                                     Routes.push(const Dashboard(),
+                                                      context);
+
+                                                  // save payment details
+                                                  showMessage(
+                                                      context: context,
+                                                      msg:
+                                                          "Payment made successfully",
+                                                      type: 'success');
+                                                    // trigger notification
+                                                    sendNotification(
+                                                      title: "Payment",
+                                                      body:
+                                                          "Payment made successfully",
+                                                    );
+                                                  });
+                                                 
+                                                },
+                                                child: Text(
+                                                  "Confirm",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Routes.pop(context),
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        });
+
                                     // navigate to dashboard
-                                  }).whenComplete(() {
-                                    // trigger notification
-                                    sendNotification(
-                                      title: "Payment",
-                                      body: "Payment made successfully",
-                                    );
                                   });
-                                
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

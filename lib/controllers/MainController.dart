@@ -76,12 +76,13 @@ void propertyName(String name) {
       .doc(name)
       .get()
       .then((value) {
-        print(value.data());
-    _property = value.data()?['name'];
+    _property = value.data()?['name'] ?? "";
     notifyListeners();
   });
 
 }
+
+
   checkOnline() {
     InternetConnectionChecker.createInstance()
         .hasConnection

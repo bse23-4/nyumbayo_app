@@ -69,31 +69,33 @@ showAlertMsg(BuildContext context, {String content = "", String title = ""}) {
 
 /// show progress widget
 void showProgress(BuildContext context, {String? text = 'Task'}) {
-  showCupertinoModalPopup(
-    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+   showDialog(
     context: context,
-    builder: (context) => BottomSheet(
-      enableDrag: false,
-      backgroundColor: Colors.black12,
-      onClosing: () {},
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SpinKitDualRing(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Theme.of(context).primaryColor),
-          const Space(
-            space: 0.03,
+    builder: (context) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: Card(
+        child: SizedBox(
+          height: 90,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 18.0),
+                child: SpinKitDualRing(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Theme.of(context).primaryColor),
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              Text(
+                "$text..",
+                textAlign: TextAlign.center,
+                style: TextStyles(context).getRegularStyle(),
+              ),
+            ],
           ),
-          Text(
-            "$text..",
-            style: TextStyles(context)
-                .getRegularStyle()
-                .copyWith(color: Colors.white),
-          )
-        ],
+        ),
       ),
     ),
   );
@@ -141,16 +143,24 @@ String formatDateTime(DateTime date) {
 
 // function to handle image upload in form of base64
 Future<File> uploadImage() async {
-  final ImagePicker _picker = ImagePicker();
-  var file = await _picker.pickImage(source: ImageSource.camera);
+  final ImagePicker picker = ImagePicker();
+  var file = await picker.pickImage(source: ImageSource.camera);
   return (File(file!.path));
 }
 
 // function to handle image upload in form of base64
 Future<File> captureImage() async {
-  final ImagePicker _picker = ImagePicker();
-  var file = await _picker.pickImage(source: ImageSource.gallery);
+  final ImagePicker picker = ImagePicker();
+  var file = await picker.pickImage(source: ImageSource.gallery);
   return (File(file!.path));
+}
+
+// function to determine the tenant's end of month
+String getEndOfMonth(DateTime date) {
+  DateTime registrationDate = DateTime(2023, 6, 15); // Replace with the tenant's registration date
+  DateTime nextMonth = DateTime(registrationDate.year, registrationDate.month + 1, 1);
+  DateTime endOfMonth = nextMonth.subtract(const Duration(days: 1));
+  return DateFormat('dd-MM-yyyy').format(endOfMonth);
 }
 
 void showProgressLoader(BuildContext context) {
