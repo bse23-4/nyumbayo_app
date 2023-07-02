@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
   Uint8List? _image;
 // function to load image
   void loadImage() {
-    ImagePicker.platform.getImage(source: ImageSource.camera).then((value) {
+    ImagePicker.platform.getImage(source: ImageSource.gallery).then((value) {
       value?.readAsBytes().then((value) {
         setState(() {
           _image = value;
@@ -49,38 +49,57 @@ class _SignUpState extends State<SignUp> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            // mainAxisAlignment: MainAxisAlignment.c,
             children: [
               const Space(space: 0.03),
               Padding(
-                padding: const EdgeInsets.all(28.0),
+                padding: const EdgeInsets.all(18.0),
                 child: Text("Sign up",
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
                         .copyWith(fontSize: 30)),
               ),
-
               AspectRatio(
-                aspectRatio: 2.5,
+                aspectRatio: 2.2,
                 child: Image.asset("assets/6184498.png"),
               ),
-                Padding(
-                  padding: padding,
-                  child: Text("User Profile",style: TextStyles(context).getDescriptionStyle(),),
+              Padding(
+                padding: padding,
+                child: Text(
+                  "User Profile",
+                  style: TextStyles(context).getDescriptionStyle(),
                 ),
+              ),
               Padding(
                 padding: padding,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _image != null
-                        ? Image.memory(_image!)
-                        : Icon(Icons.image),
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.memory(_image!),
+                            ),
+                          )
+                        : SizedBox(
+                            width: 70,
+                            height: 70,
+                            child: Image.asset("assets/default.png")),
                     const Space(space: 0.03),
-                    IconButton(
-                      onPressed: () => loadImage(),
-                      icon: const Icon(Icons.camera_alt),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IconButton(
+                        onPressed: () => loadImage(),
+                        icon: const Icon(Icons.camera_alt, size: 30),
+                      ),
                     ),
                   ],
                 ),
@@ -136,7 +155,6 @@ class _SignUpState extends State<SignUp> {
                   });
                 },
               ),
-            
               CommonTextField(
                 titleText: "Confirm Password",
                 padding: padding,
@@ -188,11 +206,6 @@ class _SignUpState extends State<SignUp> {
                     Auth.createLandlord(user, context).then((value) {
                       Routes.pop(context);
                       Routes.push(const EmailVerificationView(), context);
-                    }).whenComplete(() {
-                      showMessage(
-                          context: context,
-                          msg: "Account created successfully",
-                          type: "success");
                     });
                   }
                 },

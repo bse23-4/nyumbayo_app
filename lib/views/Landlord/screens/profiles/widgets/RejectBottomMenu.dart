@@ -4,7 +4,8 @@ import '/exports/exports.dart';
 
 class RejectBottomMenu extends StatefulWidget {
   final String tenantId;
-  const RejectBottomMenu({super.key, required this.tenantId});
+  final String complaintId;
+  const RejectBottomMenu({super.key, required this.tenantId, required this.complaintId});
 
   @override
   State<RejectBottomMenu> createState() => _RejectBottomMenuState();
@@ -82,7 +83,7 @@ class _RejectBottomMenuState extends State<RejectBottomMenu> {
           buttonText: "Reject",
           onTap: () {
             if (reason.isNotEmpty) {
-              handleIssue(widget.tenantId, "off", "Rejected",reason);
+              handleIssue(widget.tenantId, widget.complaintId, "off", "Rejected",reason);
 
               Navigator.pop(context);
 // success Message,

@@ -14,9 +14,9 @@ class _ComplaintsState extends State<Complaints> {
       body: NestedScrollView(
         body: StreamBuilder(
           stream:
-              FirebaseFirestore.instance.collection('Complaints').snapshots(),
+              FirebaseFirestore.instance.collection('complaints').snapshots(),
           builder: (context, snapshot) {
-            return snapshot.data == null
+            return snapshot.connectionState == ConnectionState.waiting
                 ? const Loader(
                     text: "Loading complaints...",
                   )

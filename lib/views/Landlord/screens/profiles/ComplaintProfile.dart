@@ -6,6 +6,7 @@ import 'widgets/BottomMenu.dart';
 import 'widgets/RejectBottomMenu.dart';
 
 class ComplaintProfile extends StatefulWidget {
+  final String id;
   final String title;
   final String description;
   final String tenantId;
@@ -14,6 +15,7 @@ class ComplaintProfile extends StatefulWidget {
   final String date;
   const ComplaintProfile(
       {super.key,
+      required this.id,
       required this.title,
       required this.description,
       required this.status,
@@ -109,44 +111,51 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          OutlinedButton.icon(
-                            onPressed: () {
-                              context
-                                  .read<MainController>()
-                                  .captureTenantId(widget.tenantId);
-                              showBottomMenu(
-                                  context.read<MainController>().tenantId);
-                            },
-                            icon: const Icon(Icons.check),
-                            label: const Text(
-                              "Resolve",
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.green,
-                            ),
+                
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("complaints").doc(widget.id).snapshots(),
+                      builder: (context, snapshot) {
+                        return snapshot.hasData ? snapshot.data!.data()!['status'] == 'pending'? Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  context
+                                      .read<MainController>()
+                                      .captureTenantId(widget.tenantId);
+                                  showBottomMenu(
+                                      context.read<MainController>().tenantId,widget.id);
+                                },
+                                icon: const Icon(Icons.check),
+                                label: const Text(
+                                  "Resolve",
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.green,
+                                ),
+                              ),
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  context
+                                      .read<MainController>()
+                                      .captureTenantId(widget.tenantId);
+                                  showRejectBottomMenu(
+                                      context.read<MainController>().tenantId,widget.id);
+                                },
+                                icon: const Icon(Icons.close),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.red,
+                                ),
+                                label: const Text("Reject"),
+                              )
+                            ],
                           ),
-                          OutlinedButton.icon(
-                            onPressed: () {
-                              context
-                                  .read<MainController>()
-                                  .captureTenantId(widget.tenantId);
-                              showRejectBottomMenu(
-                                  context.read<MainController>().tenantId);
-                            },
-                            icon: const Icon(Icons.close),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.red,
-                            ),
-                            label: const Text("Reject"),
-                          )
-                        ],
-                      ),
+                        ) : Container() : Container();
+                      }
                     ),
+                
                   ],
                 ),
               ),
@@ -194,7 +203,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
   }
 
   // bottom menu
-  void showBottomMenu(String tenantId) {
+  void showBottomMenu(String tenantId,String complaintId) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -213,7 +222,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: BottomMenu(id: tenantId),
+                child: BottomMenu(id: tenantId, complaintId: complaintId,),
               );
             },
             onClosing: () {},
@@ -222,7 +231,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
   }
 
   // show rejection options
-  void showRejectBottomMenu(String tenantId) {
+  void showRejectBottomMenu(String tenantId,String complaintId) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -241,7 +250,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: RejectBottomMenu(tenantId: tenantId),
+                child: RejectBottomMenu(tenantId: tenantId, complaintId: complaintId,),
               );
             },
             onClosing: () {},

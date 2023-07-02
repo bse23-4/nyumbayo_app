@@ -1,8 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 import '../../exports/exports.dart';
 
@@ -68,7 +65,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
               style: TextStyle(fontSize: 35, fontWeight: FontWeight.w400),
             ),
           ),
-          SizedBox(width: 200,height: 200,child:  Image.asset("assets/email_verify.png"),),
+          SizedBox(width: 200,height: 200,child:  SvgPicture.asset("assets/email_verify.svg"),),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),

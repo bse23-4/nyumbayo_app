@@ -135,7 +135,14 @@ class _AddTenantState extends State<AddTenant>
                         msg: "Please fill in all the fields",
                         type: "danger");
                     return;
-                  } else {
+                  } else if( formControllers[2].text ==
+                      formControllers[3].text){
+                    showMessage(
+                        context: context,
+                        msg: "Please enter a different phone number.",
+                        type:'warning'
+                    );
+                      }else{
                     showProgress(context, text: "Saving tenant details..");
                     // if()
                     var prop = Tenants(

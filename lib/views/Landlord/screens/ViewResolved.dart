@@ -22,6 +22,7 @@ class _ViewReportsState extends State<ViewReports>
         vsync: this, value: 0, duration: const Duration(milliseconds: 900));
     _controller.forward();
   }
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> resolved = [];
 
   @override
   void dispose() {
@@ -55,6 +56,12 @@ class _ViewReportsState extends State<ViewReports>
                         isEqualTo: context.read<PropertyIdController>().state)
                     .snapshots(),
                 builder: (context, snap) {
+                  if(snap.hasData){
+                    setState(() {
+                    resolved =  snap.data!.docs.where((element) => element.data()['status'] == "Resolved").toList();
+                      
+                    });
+                  }
                   return snap.hasData == false
                       ? const Loader(
                           text: "Raised complaints",
@@ -63,24 +70,24 @@ class _ViewReportsState extends State<ViewReports>
                           ? const NoDataWidget(text: "No Complaints flagged...")
                           : ListView(
                               children: List.generate(
-                                snap.data!.docs.length,
+                                resolved.length,
                                 (index) => TapEffect(
                                   onClick: () {
                                     context
                                         .read<MainController>()
-                                        .captureTenantId(snap.data!.docs[index]
+                                        .captureTenantId(resolved[index]
                                             ['tenant_id']);
                                     Routes.push(
                                       ComplaintProfile(
-                                        date: snap.data!.docs[index]['date'],
-                                        title: snap.data!.docs[index]['title'],
-                                        description: snap.data!.docs[index]
+                                        date: resolved[index]['date'],
+                                        title: resolved[index]['title'],
+                                        description: resolved[index]
                                             ['description'],
-                                        status: snap.data!.docs[index]
+                                        status: resolved[index]
                                             ['status'],
-                                        image: snap.data!.docs[index]['image'],
-                                        tenantId: snap.data!.docs[index]
-                                            ['tenant_id'],
+                                        image: resolved[index]['image'],
+                                        tenantId: resolved[index]
+                                            ['tenant_id'], id: resolved[index].id,
                                       ),
                                       context,
                                     );
@@ -88,14 +95,14 @@ class _ViewReportsState extends State<ViewReports>
                                   child: SettingCard(
                                     padding: padding,
                                     titleText:
-                                        "${snap.data!.docs[index]['title']}",
+                                        "${resolved[index]['title']}",
                                     subText: "Tap to view details",
                                     leading: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: CircleAvatar(
                                         backgroundImage: MemoryImage(
                                           base64.decode(
-                                            snap.data!.docs[index]['image'],
+                                            resolved[index]['image'],
                                           ),
                                         ),
                                         radius: 25,

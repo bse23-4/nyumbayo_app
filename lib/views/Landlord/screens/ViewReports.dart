@@ -72,6 +72,7 @@ class _ViewReportsState extends State<ViewReports>
                                             ['tenant_id']);
                                     Routes.push(
                                       ComplaintProfile(
+                                        id:snap.data!.docs[index].id,
                                         date: snap.data!.docs[index]['date'],
                                         title: snap.data!.docs[index]['title'],
                                         description: snap.data!.docs[index]

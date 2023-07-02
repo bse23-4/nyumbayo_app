@@ -2,8 +2,9 @@ import '/tools/index.dart';
 import '/exports/exports.dart';
 
 class BottomMenu extends StatefulWidget {
-  final String id;
-  const BottomMenu({Key? key, required this.id}):super(key:key);
+final String id;
+final String complaintId;
+  const BottomMenu({Key? key, required this.id,required this.complaintId}):super(key:key);
 
   @override
   State<BottomMenu> createState() => _BottomMenuState();
@@ -135,7 +136,7 @@ class _BottomMenuState extends State<BottomMenu> {
             label:const Text( "Save Changes"),
             onPressed: () {
               Routes.pop(context);
-              handleIssue(widget.id, "on", "Resolved",'');
+              handleIssue(widget.id, widget.complaintId,"on", "Resolved",'');
               // resolve complaint basing on either hours, minutes, days or weeks
               resolveComplaint(option, [_hoursController, _minutesController, _daysController, _weeksController], () {
                 _hoursController.clear();
@@ -143,7 +144,7 @@ class _BottomMenuState extends State<BottomMenu> {
                 _daysController.clear();
                 _weeksController.clear();
                 // execute this after specified time
-                 handleIssue(widget.id, "off", "Resolved",'Your time period has expired');
+                 handleIssue(widget.id,  widget.complaintId,"off", "Resolved",'Your time period has expired');
                 // showMessage(context:context,msg: "Duration ended for $option",type:'success');
               });
 

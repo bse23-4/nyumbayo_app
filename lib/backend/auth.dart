@@ -4,7 +4,7 @@ import '/exports/exports.dart';
 // import '/models/User.dart';
 
 FirebaseFirestore _db = FirebaseFirestore.instance;
-
+FirebaseAuth _auth = FirebaseAuth.instance;
 class Auth {
   static void signinUser(UserAuth user) async {
 // Add a new document with a generated ID
@@ -36,9 +36,9 @@ class Auth {
     String msg = "";
 
     // Add a new document with a generated ID
-    final credential = FirebaseAuth.instance;
+   
     try {
-      await credential.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e, _) {
       if (e.code == 'wrong-passord') {
@@ -56,11 +56,10 @@ class Auth {
   static Future<void> createLandlord(
       Landlord user, BuildContext context) async {
     String msg = "";
-    // Add a new document with a generated ID
-    final credential = FirebaseAuth.instance;
+  
     //creating the user collection in the firestore database
     try {
-      await credential.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
           email: user.email, password: user.password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -76,15 +75,14 @@ class Auth {
       "email": user.email,
       "contact": user.contact,
       "address": user.address,
-      "profile": user.password,
-
+      "profile": user.profile,
     };
-    await FirebaseFirestore.instance.collection("landlords").add(ur);
+    await FirebaseFirestore.instance.collection("landlords").doc(_auth.currentUser!.uid).set(ur);
     showMessage(context: context, msg: msg);
     // return await Database.insertOne("landlords",ur);
   }
 
   static Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await _auth.signOut();
   }
 }

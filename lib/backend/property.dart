@@ -10,16 +10,15 @@ class Properties {
                         "rooms": formControllers[3].text,
                         "date": DateTime.now().toString(),
      */
-    final Map<String, dynamic> p = {
+    var p = {
       "name": prop["name"],
       "address": prop["address"],
       "floors": prop["floors"],
       "rooms": prop["rooms"],
       "date": prop["date"],
       "landlord_id": user_id,
-      "monthlyRent": prop["monthlyRent"],
     };
     //creating the property collection in the firestore database
-    return await Database.insertOne("properties",p);
+    await FirebaseFirestore.instance.collection("property").add(p);
   }
 }

@@ -1,5 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 
+import '../../controllers/TenantController.dart';
 import '/exports/exports.dart';
 
 class Dashboard extends StatefulWidget {
@@ -43,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
       property = "Select a property";
     } else {
       FirebaseFirestore.instance
-          .collection("properties")
+          .collection("property")
           .doc(id)
           .get()
           .then((value) {
@@ -66,7 +67,7 @@ class _DashboardState extends State<Dashboard> {
     Provider.of<MainController>(context, listen: true)
         .setAmount(context.read<PropertyIdController>().state);
 // listen to incoming notifications
-// context.read<MainController>().listenToNewComplaints();
+
 // 
     context
         .watch<MainController>()
@@ -143,87 +144,99 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: Body(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: BlocBuilder<AmountController, double>(
-                    builder: (context, state) {
-                      return RichText(
-                        text: TextSpan(
-                          text:
-                              "UGX ${formatNumberWithCommas(context.watch<MainController>().amt.toInt())}\n",
-                          style: TextStyles(context)
-                              .getBoldStyle()
-                              .copyWith(fontSize: 40, color: Colors.white),
-                          children: [
-                            TextSpan(
-                              text: "Available collections",
+      body: StreamBuilder(
+        stream:FirebaseFirestore.instance
+      .collection('complaints')
+      .orderBy('date', descending: true)
+      .snapshots(),
+        builder: (context, snapshot) {
+       
+          if (snapshot.hasData) {
+           context.watch<MainController>().listenToNewComplaints(snapshot.data!);
+          }
+          return Body(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18.0, right: 18),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: BlocBuilder<AmountController, double>(
+                        builder: (context, state) {
+                          return RichText(
+                            text: TextSpan(
+                              text:
+                                  "UGX ${formatNumberWithCommas(context.watch<MainController>().amt.toInt())}\n",
                               style: TextStyles(context)
-                                  .getRegularStyle()
-                                  .copyWith(fontSize: 19),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.42,
-                  width: MediaQuery.of(context).size.width * 1,
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 1,
-                    // shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                                  .getBoldStyle()
+                                  .copyWith(fontSize: 40, color: Colors.white),
+                              children: [
+                                TextSpan(
+                                  text: "Available collections",
+                                  style: TextStyles(context)
+                                      .getRegularStyle()
+                                      .copyWith(fontSize: 19),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: List.generate(
-                          data.length,
-                          (index) => TapEffect(
-                            onClick: () => Navigator.of(context)
-                                .pushNamed(data[index]['route']),
-                            child: Card(
-                              color: data[index]["color"],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              margin: const EdgeInsets.all(10),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  height: 150,
-                                  width: 150,
-                                  child: Center(
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                        text: data[index]["title"],
-                                        style: TextStyles(context)
-                                            .getRegularStyle()
-                                            .copyWith(
-                                                color: Colors.black,
-                                                fontSize: 17),
-                                        children: [
-                                          TextSpan(
-                                            text: "\n ${data[index]['total']}",
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.42,
+                      width: MediaQuery.of(context).size.width * 1,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 1,
+                        // shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            children: List.generate(
+                              data.length,
+                              (index) => TapEffect(
+                                onClick: () => Navigator.of(context)
+                                    .pushNamed(data[index]['route']),
+                                child: Card(
+                                  color: data[index]["color"],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  margin: const EdgeInsets.all(10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: 150,
+                                      width: 150,
+                                      child: Center(
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                            text: data[index]["title"],
                                             style: TextStyles(context)
-                                                .getBoldStyle()
+                                                .getRegularStyle()
                                                 .copyWith(
                                                     color: Colors.black,
-                                                    fontSize: 29),
-                                          )
-                                        ],
+                                                    fontSize: 17),
+                                            children: [
+                                              TextSpan(
+                                                text: "\n ${data[index]['total']}",
+                                                style: TextStyles(context)
+                                                    .getBoldStyle()
+                                                    .copyWith(
+                                                        color: Colors.black,
+                                                        fontSize: 29),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -234,61 +247,59 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                  ),
-                ),
-                const Space(space: 0.02),
-                TapEffect(
-                  onClick: () {
-                    Routes.named(context, Routes.stats);
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: MediaQuery.of(context).size.height * 0.36,
-                    child: Card(
-                      color: Colors.white,
-                      // shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      elevation: 1,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 18.0, right: 10, bottom: 8, left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Payment Summary",
-                                    style: TextStyles(context)
-                                        .getBoldStyle()
-                                        .copyWith(color: Colors.black),
-                                  ),
+                    const Space(space: 0.02),
+                    TapEffect(
+                      onClick: () {
+                        Routes.named(context, Routes.stats);
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 0.36,
+                        child: Card(
+                          color: Colors.white,
+                          // shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          elevation: 1,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 18.0, right: 10, bottom: 8, left: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(18.0),
+                                      child: Text(
+                                        "Payment Stats",
+                                        style: TextStyle(color: Colors.black,fontSize:19),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "View all",
+                                        style: TextStyles(context)
+                                            .getBoldStyle()
+                                            .copyWith(color: Colors.blue.shade900),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "View all",
-                                    style: TextStyles(context)
-                                        .getBoldStyle()
-                                        .copyWith(color: Colors.blue.shade900),
-                                  ),
-                                )
-                              ],
-                            ),
+                              ),
+                              const Icon(Icons.bar_chart,size:140)
+                            ],
                           ),
-                          Chart()
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }
       ),
       drawer: const DrawerWidget(),
       floatingActionButton: FloatingActionButton.extended(
@@ -298,10 +309,4 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-}
-
-class SalesData {
-  SalesData(this.year, this.sales);
-  final String year;
-  final double sales;
 }

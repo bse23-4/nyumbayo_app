@@ -80,7 +80,7 @@ void resolveComplaint(String option, List<TextEditingController> controllers,
 
 // function to turn on or off power from tenant.
 void handleIssue(
-    String id, String powerStatus, String complaintStatus, String msg) async {
+    String id,String complaintId, String powerStatus, String complaintStatus, String msg) async {
   await FirebaseFirestore.instance
       .collection("tenants")
       .doc(id)
@@ -89,7 +89,7 @@ void handleIssue(
   // resolve complaint.
   await FirebaseFirestore.instance
       .collection("complaints")
-      .doc(id)
+      .doc(complaintId)
       .update({'status': complaintStatus, 'reason': msg});
 }
 
@@ -174,3 +174,10 @@ void sendNotification(
     platformChannelSpecifics,
   );
 }
+
+// logic to listen to new camplaints submitted
+// Assuming you have a Firestore instance set up
+final firestoreInstance = FirebaseFirestore.instance;
+
+
+

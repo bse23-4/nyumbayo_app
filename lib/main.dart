@@ -3,6 +3,8 @@ import 'package:nyumbayo_app/tools/index.dart';
 
 import '/exports/exports.dart';
 import 'Observers/IntervalObserver.dart';
+import 'controllers/LandlordController.dart';
+import 'controllers/TenantController.dart';
 import 'firebase_options.dart';
 import 'tools/Reload.dart';
 
@@ -17,7 +19,7 @@ Future<void> main() async {
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.light,
+      // statusBarIconBrightness: Brightness.light,
     ),
   );
   await Firebase.initializeApp(
@@ -27,12 +29,11 @@ Future<void> main() async {
   initializeNotifications();
   // end of app notification initialization
 
-  // 
+  //
   @pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // handle action
-
-}
+  void notificationTapBackground(NotificationResponse notificationResponse) {
+    // handle action
+  }
 
   Bloc.observer = const Observer();
   runApp(
@@ -52,6 +53,9 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
             create: (context) => TenantController(),
           ),
           BlocProvider(
+            create: (context) => LandlordController(),
+          ),
+          BlocProvider(
             create: (context) => AmountController(),
           ),
           BlocProvider(
@@ -69,10 +73,10 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
           builder: (context, theme) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-             
               theme: theme.copyWith(
                 appBarTheme: const AppBarTheme(backgroundColor: Colors.blue),
-                colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 5, 70, 150)),
+                colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color.fromARGB(255, 5, 70, 150)),
                 useMaterial3: true,
                 textTheme:
                     GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
@@ -85,7 +89,7 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
                       : Colors.white,
                 ),
               ),
-              initialRoute:  Routes.onboard,
+              initialRoute: Routes.onboard,
               routes: Routes.routes(context),
             );
           },

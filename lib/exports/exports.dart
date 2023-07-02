@@ -10,7 +10,6 @@ export 'dart:io';
 export '/controllers/ThemeController.dart';
 export '/controllers/PowerConnectionController.dart';
 export '/controllers/UserdataController.dart';
-export '/controllers/TenantsController.dart';
 export '/controllers/PropertyIdController.dart';
 export '/controllers/AmountController.dart';
 export '/controllers/PropertyController.dart';
@@ -27,7 +26,6 @@ export '/routes/index.dart';
 // views
 export '../views/Auth/Login.dart';
 export '/views/Landlord/Dashboard.dart';
-export '/views/Landlord/screens/Stats.dart';
 export '../views/Auth/SignUp.dart';
 // tools
 export '/tools/TapEffect.dart';
@@ -73,7 +71,7 @@ export 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // pages
 export '/views/Landlord/screens/AddTenant.dart';
-export '/views/Landlord/screens/Chart.dart';
+export '../views/Landlord/screens/reports/AnalysisPage.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
 export '/views/Landlord/screens/ViewReports.dart';

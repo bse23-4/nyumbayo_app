@@ -11,7 +11,7 @@ class _AddPropertyState extends State<AddProperty>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   List<TextEditingController> formControllers =
-      List.generate(5, (index) => TextEditingController());
+      List.generate(4, (index) => TextEditingController());
 
   final List<Map<String, dynamic>> _propertyForm = [
     {
@@ -42,13 +42,6 @@ class _AddPropertyState extends State<AddProperty>
       "password": false,
       "type": TextInputType.phone,
     },
-    {
-      "title": "Monthly rent",
-      "icon": Icons.room_outlined,
-      "hint": "e.g 07",
-      "password": false,
-      "type": TextInputType.number,
-    }
   ];
   @override
   void initState() {
@@ -72,7 +65,7 @@ class _AddPropertyState extends State<AddProperty>
       const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 2);
   @override
   Widget build(BuildContext context) {
-    List<String> errorMsg = List.generate(5, (index) => "");
+    List<String> errorMsg = List.generate(4, (index) => "");
     // ignore: prefer_typing_uninitialized_variables
 
 // trigger user id
@@ -112,10 +105,9 @@ class _AddPropertyState extends State<AddProperty>
                         "address": formControllers[1].text,
                         "floors": formControllers[2].text,
                         "rooms": formControllers[3].text,
-                        "monthlyRent": formControllers[4].text,
                         "date": DateTime.now().toString(),
                       };
-                      showProgress(context, text: "Adding new property...");
+                      showProgress(context, text: "Adding new property");
                       Properties.addProperty(
                               data, context.read<UserdataController>().state)
                           .then((value) {

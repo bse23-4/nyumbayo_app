@@ -102,27 +102,34 @@ void showMessage(
 /// show progress widget
 void showProgress(BuildContext context, {String? text = 'Task'}) {
   showDialog(
-      context: context,
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.width / 4,
-        child: AlertDialog(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SpinKitDualRing(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Theme.of(context).primaryColor),
-                  Text(
-                    "$text..",
-                    style: TextStyles(context)
-                        .getRegularStyle()
-                        ,
-                  )
-                ],
+    context: context,
+    builder: (context) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: Card(
+        child: SizedBox(
+          height: 90,
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 18.0),
+                child: SpinKitDualRing(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Theme.of(context).primaryColor),
               ),
-            ),
-      ));
+              const SizedBox(
+                width: 50,
+              ),
+              Text(
+                "$text..",
+                style: TextStyles(context).getRegularStyle(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 String formatNumberWithCommas(int number) {
@@ -135,7 +142,7 @@ String formatDate(DateTime date) {
   return DateFormat('dd-MM-yyyy').format(date);
 }
 
-String formatTime(DateTime date){
+String formatTime(DateTime date) {
   return DateFormat('hh:mm a').format(date);
 }
 
