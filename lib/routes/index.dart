@@ -2,6 +2,7 @@
 
 import 'package:nyumbayo_app/views/Offline.dart';
 
+import '../views/Landlord/screens/ViewResolved.dart';
 import '../views/Landlord/screens/reports/MonthlyCollections.dart';
 import '../views/Landlord/screens/settings/SettingsView.dart';
 import '/exports/exports.dart';
@@ -15,6 +16,7 @@ class Routes {
   static String tenants = "/tenants";
   static String properties = "/properties";
   static String complaints = "/complaints";
+  static String resolved = "/resolved";
   static String payment = "/payments";
   static String onboard = "/onboarding";
   static String stats = "/stats";
@@ -63,6 +65,7 @@ class Routes {
       Routes.stats: (context) => const AnalysisPage(),
       Routes.offline: (context) => const OfflinePage(),
       Routes.settings: (context) => const SettingsView(),
+      Routes.resolved: (context) => const ViewResolvedReports(),
     };
   }
 }

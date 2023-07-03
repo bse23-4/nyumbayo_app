@@ -28,6 +28,7 @@ class _ViewReportsState extends State<ViewReports>
     _controller.dispose();
     super.dispose();
   }
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> pending = [];
 
   EdgeInsets padding =
       const EdgeInsets.only(top: 5, right: 15, left: 15, bottom: 2);
@@ -43,7 +44,7 @@ class _ViewReportsState extends State<ViewReports>
           children: [
             CommonAppbarView(
               topPadding: 50,
-              titleText: "Complaints",
+              titleText: "Pending Complaints",
               iconData: Icons.arrow_back,
               onBackClick: () => Navigator.of(context).pop(),
             ),
@@ -55,6 +56,9 @@ class _ViewReportsState extends State<ViewReports>
                         isEqualTo: context.read<PropertyIdController>().state)
                     .snapshots(),
                 builder: (context, snap) {
+                          if(snap.hasData){
+             pending = snap.data!.docs.where((element) => element.data()['status'] == "Pending").toList();
+            }
                   return snap.hasData == false
                       ? const Loader(
                           text: "Raised complaints",
@@ -63,24 +67,24 @@ class _ViewReportsState extends State<ViewReports>
                           ? const NoDataWidget(text: "No Complaints flagged...")
                           : ListView(
                               children: List.generate(
-                                snap.data!.docs.length,
+                                pending.length,
                                 (index) => TapEffect(
                                   onClick: () {
                                     context
                                         .read<MainController>()
-                                        .captureTenantId(snap.data!.docs[index]
+                                        .captureTenantId(pending[index]
                                             ['tenant_id']);
                                     Routes.push(
                                       ComplaintProfile(
-                                        id:snap.data!.docs[index].id,
-                                        date: snap.data!.docs[index]['date'],
-                                        title: snap.data!.docs[index]['title'],
-                                        description: snap.data!.docs[index]
+                                        id:pending[index].id,
+                                        date: pending[index]['date'],
+                                        title: pending[index]['title'],
+                                        description: pending[index]
                                             ['description'],
-                                        status: snap.data!.docs[index]
+                                        status: pending[index]
                                             ['status'],
-                                        image: snap.data!.docs[index]['image'],
-                                        tenantId: snap.data!.docs[index]
+                                        image: pending[index]['image'],
+                                        tenantId: pending[index]
                                             ['tenant_id'],
                                       ),
                                       context,
@@ -89,14 +93,14 @@ class _ViewReportsState extends State<ViewReports>
                                   child: SettingCard(
                                     padding: padding,
                                     titleText:
-                                        "${snap.data!.docs[index]['title']}",
+                                        "${pending[index]['title']}",
                                     subText: "Tap to view details",
                                     leading: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: CircleAvatar(
                                         backgroundImage: MemoryImage(
                                           base64.decode(
-                                            snap.data!.docs[index]['image'],
+                                            pending[index]['image'],
                                           ),
                                         ),
                                         radius: 25,

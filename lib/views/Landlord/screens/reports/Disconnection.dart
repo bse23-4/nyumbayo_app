@@ -30,15 +30,19 @@ class TenantConnectionChart extends StatelessWidget {
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, x) {
-                      return Text(data[value.toInt()].property);
+                      return Transform.translate(
+                        offset: const Offset(-20, 36),
+                        child: Transform.rotate(
+                          angle: -45,
+                          child: Text(
+                            data[value.toInt()].property,
+                            style: TextStyles(context).getDescriptionStyle(),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
-                // leftTitles: SideTitles(
-                //   showTitles: true,
-                //   textStyle: TextStyle(color: Colors.black),
-                //   margin: 16,
-                // ),
               ),
               gridData: FlGridData(show: true),
               borderData: FlBorderData(
@@ -119,8 +123,7 @@ class TenantChartScreen extends StatefulWidget {
   const TenantChartScreen({super.key});
 
   @override
-  State<TenantChartScreen> createState() =>
-      _TenantChartScreenState();
+  State<TenantChartScreen> createState() => _TenantChartScreenState();
 }
 
 class _TenantChartScreenState extends State<TenantChartScreen> {
@@ -131,15 +134,15 @@ class _TenantChartScreenState extends State<TenantChartScreen> {
   Widget build(BuildContext context) {
     List<PowerConnection> collectionData = [];
 
-    FirebaseFirestore.instance
-        .collection("property")
-        .doc(context.read<PropertyIdController>().state)
-        .get()
-        .then((value) {
-      setState(() {
-        x = value.data()?['name'] ?? "";
-      });
-    });
+    // FirebaseFirestore.instance
+    //     .collection("property")
+    //     .doc(context.read<PropertyIdController>().state)
+    //     .get()
+    //     .then((value) {
+    //   setState(() {
+    //     x = value.data()?['name'] ?? "";
+    //   });
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -155,30 +158,29 @@ class _TenantChartScreenState extends State<TenantChartScreen> {
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Loader();
+                return const Loader(text: "Disconnection data",);
               } else {
                 var d = snapshot.data!.docs;
-                setState(() {
-                  connected = d
-                      .where(
-                          (element) => element.data()['power_status'] == 'on')
-                      .toList()
-                      .length
-                      .toDouble();
-                  disconnected = d
-                      .where(
-                          (element) => element.data()['power_status'] == 'off')
-                      .toList()
-                      .length
-                      .toDouble();
-                });
+
+                connected = d
+                    .where((element) => element.data()['power_status'] == 'on')
+                    .toList()
+                    .length
+                    .toDouble();
+                disconnected = d
+                    .where((element) => element.data()['power_status'] == 'off')
+                    .toList()
+                    .length
+                    .toDouble();
+
                 collectionData = [
                   PowerConnection("Connected", connected, Colors.green),
-                  PowerConnection(
-                      "Disconnected", disconnected, Colors.red)
+                  PowerConnection("Disconnected", disconnected, Colors.red)
                 ];
               }
-              return snapshot.data!.docs.isNotEmpty ? TenantConnectionChart(collectionData) : const NoDataWidget(text: "No data available");
+              return snapshot.data!.docs.isNotEmpty
+                  ? TenantConnectionChart(collectionData)
+                  : const NoDataWidget(text: "No data available");
             }),
       ),
     );

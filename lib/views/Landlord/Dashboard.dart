@@ -94,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
       {
         "title": "Resolved Complaints",
         "total": context.watch<MainController>().resolved_complaints.length,
-        "route": Routes.complaints,
+        "route": Routes.resolved,
         "color": Colors.blue.shade200,
       },
     ];

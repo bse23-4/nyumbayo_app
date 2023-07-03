@@ -2,15 +2,15 @@
 
 import '/exports/exports.dart';
 
-class ViewReports extends StatefulWidget {
+class ViewResolvedReports extends StatefulWidget {
   // final String property_id;
-  const ViewReports({Key? key}) : super(key: key);
+  const ViewResolvedReports({Key? key}) : super(key: key);
 
   @override
-  State<ViewReports> createState() => _ViewReportsState();
+  State<ViewResolvedReports> createState() => _ViewResolvedReportsState();
 }
 
-class _ViewReportsState extends State<ViewReports>
+class _ViewResolvedReportsState extends State<ViewResolvedReports>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -22,6 +22,7 @@ class _ViewReportsState extends State<ViewReports>
         vsync: this, value: 0, duration: const Duration(milliseconds: 900));
     _controller.forward();
   }
+
   List<QueryDocumentSnapshot<Map<String, dynamic>>> resolved = [];
 
   @override
@@ -56,11 +57,11 @@ class _ViewReportsState extends State<ViewReports>
                         isEqualTo: context.read<PropertyIdController>().state)
                     .snapshots(),
                 builder: (context, snap) {
-                  if(snap.hasData){
-                    setState(() {
-                    resolved =  snap.data!.docs.where((element) => element.data()['status'] == "Resolved").toList();
-                      
-                    });
+                  if (snap.hasData) {
+                    resolved = snap.data!.docs
+                        .where(
+                            (element) => element.data()['status'] == "Resolved")
+                        .toList();
                   }
                   return snap.hasData == false
                       ? const Loader(
@@ -75,27 +76,25 @@ class _ViewReportsState extends State<ViewReports>
                                   onClick: () {
                                     context
                                         .read<MainController>()
-                                        .captureTenantId(resolved[index]
-                                            ['tenant_id']);
+                                        .captureTenantId(
+                                            resolved[index]['tenant_id']);
                                     Routes.push(
                                       ComplaintProfile(
                                         date: resolved[index]['date'],
                                         title: resolved[index]['title'],
                                         description: resolved[index]
                                             ['description'],
-                                        status: resolved[index]
-                                            ['status'],
+                                        status: resolved[index]['status'],
                                         image: resolved[index]['image'],
-                                        tenantId: resolved[index]
-                                            ['tenant_id'], id: resolved[index].id,
+                                        tenantId: resolved[index]['tenant_id'],
+                                        id: resolved[index].id,
                                       ),
                                       context,
                                     );
                                   },
                                   child: SettingCard(
                                     padding: padding,
-                                    titleText:
-                                        "${resolved[index]['title']}",
+                                    titleText: "${resolved[index]['title']}",
                                     subText: "Tap to view details",
                                     leading: Padding(
                                       padding: const EdgeInsets.all(5.0),

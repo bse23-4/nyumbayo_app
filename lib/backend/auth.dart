@@ -83,6 +83,8 @@ class Auth {
   }
 
   static Future<void> signOut() async {
+SharedPreferences _sharedPref = await SharedPreferences.getInstance();
+    _sharedPref.clear();
     await _auth.signOut();
   }
 }

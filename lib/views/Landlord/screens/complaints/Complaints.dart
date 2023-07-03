@@ -8,6 +8,7 @@ class Complaints extends StatefulWidget {
 }
 
 class _ComplaintsState extends State<Complaints> {
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> pending = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,31 +17,34 @@ class _ComplaintsState extends State<Complaints> {
           stream:
               FirebaseFirestore.instance.collection('complaints').snapshots(),
           builder: (context, snapshot) {
+            if(snapshot.hasData){
+             pending = snapshot.data!.docs.where((element) => element.data()['status'] == "Pending").toList();
+            }
             return snapshot.connectionState == ConnectionState.waiting
                 ? const Loader(
-                    text: "Loading complaints...",
+                    text: "complaints...",
                   )
-                : snapshot.data!.docs.isEmpty
+                : pending.isEmpty
                     ? const NoDataWidget(
                         text: "No complaints available",
                       )
                     : ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: pending.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: ClipRRect(
                               child: Image.memory(
                                 base64Decode(
-                                    snapshot.data!.docs[index]['image']),
+                                    pending[index]['image']),
                                 height: 40,
                                 width: 40,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            title: Text(snapshot.data!.docs[index]['title']),
+                            title: Text(pending[index]['title']),
                             subtitle:
-                                Text(snapshot.data!.docs[index]['description']),
-                            trailing: Text(snapshot.data!.docs[index]['']),
+                                Text(pending[index]['description']),
+                            trailing: Text(pending[index]['']),
                           );
                         });
           },
