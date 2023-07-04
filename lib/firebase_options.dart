@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCwgfv7aU46aMWP0ztSuQwtplKd45AAiVQ',
-    appId: '1:308725614476:android:c04ddb0263be9b67d978a9',
-    messagingSenderId: '308725614476',
-    projectId: 'nyumba-fbd07',
-    storageBucket: 'nyumba-fbd07.appspot.com',
+    apiKey: 'AIzaSyC3B_xfoQdx_M4aHfjlNh3Ex9K4KOQxdj4',
+    appId: '1:1022378897645:android:9cb21e8591d5e731d05ce4',
+    messagingSenderId: '1022378897645',
+    projectId: 'nyumba-yo',
+    storageBucket: 'nyumba-yo.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDo57OD62tatPKZIp9b-T08TRIoDo_hcV0',
-    appId: '1:308725614476:ios:824a52e1021220e1d978a9',
-    messagingSenderId: '308725614476',
-    projectId: 'nyumba-fbd07',
-    storageBucket: 'nyumba-fbd07.appspot.com',
-    iosClientId: '308725614476-qs7qimrohrlenfk482vo1bjtssgbtbcl.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAutqh1baA3C7Yh8ugkG8UgB-cRYNDLiDA',
+    appId: '1:1022378897645:ios:d1c8788619ced7fdd05ce4',
+    messagingSenderId: '1022378897645',
+    projectId: 'nyumba-yo',
+    storageBucket: 'nyumba-yo.appspot.com',
+    iosClientId: '1022378897645-qr6ek53hs35372a4c2dav9dsa8i7q9k3.apps.googleusercontent.com',
     iosBundleId: 'com.app.nyumbayoApp',
   );
 }

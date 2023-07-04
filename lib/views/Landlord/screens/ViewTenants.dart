@@ -76,10 +76,13 @@ class _ViewTenantsState extends State<ViewTenants>
                   ),
                   builder: (context, snapshot) {
                     return snapshot.connectionState == ConnectionState.waiting
+                    // loading ...
                         ? const Loader(
                             text: "Tenants...",
                           )
-                        : BlocProvider.of<TenantController>(context)
+                        :
+
+                         BlocProvider.of<TenantController>(context)
                                 .state
                                 .isEmpty
                             ?  const Center(
@@ -97,7 +100,9 @@ class _ViewTenantsState extends State<ViewTenants>
                                   ],
                                 ),
                               )
-                            : ListView.builder(
+                            :
+                            // list tenants
+                            ListView.builder(
                                 itemBuilder: (BuildContext context, int index) {
                                   return TapEffect(
                                     onClick: () {
@@ -139,26 +144,6 @@ class _ViewTenantsState extends State<ViewTenants>
                                     BlocProvider.of<TenantController>(context)
                                         .state
                                         .length,
-                                // children:
-
-                                //  List.generate(
-                                //   20,
-                                //   (index) => TapEffect(
-                                //     onClick: () => Routes.push(TenantProfile(), context),
-                                //     child: SettingCard(
-                                //       padding: padding,
-                                //       titleText: "John Doe",
-                                //       subText: "Tap to view details",
-                                //       leading: const Padding(
-                                //         padding: EdgeInsets.all(5.0),
-                                //         child: CircleAvatar(
-                                //           radius: 25,
-                                //           child: Icon(Icons.person),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                               );
                   }),
             ),

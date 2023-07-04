@@ -20,7 +20,7 @@ String errorCode = "";
       "roomNumber": prop.roomNumber,
       "monthlyRent": prop.monthlyRent,
       "amountPaid": prop.amountPaid,
-      "power_status": "on",
+      "power_status": "off",
       "landlord_id":landlordId,
       "landlord_power_control": "off",
       "power_fee":"0",
@@ -28,7 +28,7 @@ String errorCode = "";
       "property": property,
       "date": DateTime.now().toString(),
     };
-    await FirebaseFirestore.instance.collection("tenants").doc(usr.user?.uid).set(p);
+    await FirebaseFirestore.instance.collection("tenants").doc(usr.user!.uid).set(p);
 
   } on FirebaseAuthException catch (e,_) {
     errorCode = e.code;

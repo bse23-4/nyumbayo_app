@@ -36,22 +36,26 @@ class _LoginState extends State<Login> {
               ),
               AspectRatio(
                 aspectRatio: 1.6,
-                child: Image.asset("assets/6184498.png"),
+                child: Image.asset("assets/6184498.png"),// SvgPicture.asset('assets/')
               ),
+
               CommonTextField(
                 titleText: "Email",
                 hintText: "example@gmail.com",
                 icon: Icons.email,
+                keyboardType: TextInputType.emailAddress,
                 padding: padding,
                 enableBorder: true,
                 controller: emailController,
               ),
+              
               CommonTextField(
                 titleText: "Password",
                 padding: padding,
                 hintText: "***********",
                 icon: Icons.lock,
                 controller: passwordController,
+                keyboardType: TextInputType.text,
                 enableSuffix: true,
                 enableBorder: true,
                 suffixIcon: _showpass == false
@@ -68,6 +72,7 @@ class _LoginState extends State<Login> {
                 space: 0.03,
               ),
               CommonButton(
+                backgroundColor:Colors.blue,
                 padding: padding,
                 height: 50,
                 buttonText: "Login",
@@ -96,11 +101,10 @@ class _LoginState extends State<Login> {
                         type: 'danger');
                   } else if (passwordController.text.isNotEmpty &&
                       emailController.text.isNotEmpty) {
-                  
-                    Auth.signinLandlord(
-                            emailController.text, passwordController.text,context)
+                    Auth.signinLandlord(emailController.text,
+                            passwordController.text, context)
                         .then((value) {
-                            Routes.pop(context);
+                      Routes.pop(context);
                       Routes.routeUntil(context, Routes.dashboard);
                       BlocProvider.of<UserdataController>(context)
                           .captureData();
@@ -120,12 +124,16 @@ class _LoginState extends State<Login> {
                 child: Row(
                   children: [
                     Text("Don't have account",
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black)),
                     TextButton(
                       onPressed: () {
                         Routes.routeUntil(context, Routes.signup);
                       },
-                      child: const Text("Sign Up"),
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
                     )
                   ],
                 ),

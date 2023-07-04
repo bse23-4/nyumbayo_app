@@ -79,13 +79,13 @@ class _TenantProfileState extends State<TenantProfile>
                             text: "${widget.tenantDetails["name"]}\n",
                             style: TextStyles(context)
                                 .getBoldStyle()
-                                .copyWith(fontSize: 26),
+                                .copyWith(fontSize: 26,color: Colors.black),
                             children: [
                               TextSpan(
                                 text: "${widget.tenantDetails["email"]}\n",
                                 style: TextStyles(context)
                                     .getDescriptionStyle()
-                                    .copyWith(fontSize: 16),
+                                    .copyWith(fontSize: 16,color: Colors.black),
                               ),
                             ],
                           ),
@@ -124,99 +124,100 @@ class _TenantProfileState extends State<TenantProfile>
               ),
             ),
             const Divider(),
-            BlocBuilder<PowerConnectionController, bool>(
-              builder: (context, state) {
-                return SwitchListTile.adaptive(
-                  secondary: const Icon(Icons.power_settings_new,color: Colors.red ,),
-                  value: state,
-                  onChanged: (value) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            child: Container(
-                              height: 140,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  const Icon(
-                                    Icons.warning_amber_rounded,
-                                    size: 40,
-                                    color: Colors.amber,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      state
-                                          ? "Confirm turning off the power?"
-                                          : "Confirm turning on the power?",
-                                      style: TextStyles(context)
-                                          .getRegularStyle()
-                                          .copyWith(fontSize: 16),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Routes.pop(context);
-                                            context
-                                                .read<
-                                                    PowerConnectionController>()
-                                                .setPowerState(
-                                                    widget.id,!state);
-                                                    Api.triggerPower(state == false ?1.toString():0.toString());
-                                            // FirebaseFirestore.instance
-                                            //     .collection("tenants")
-                                            //     .doc(widget.id)
-                                            //     .update({
-                                            //   "landlord_power_control":
-                                            //       state ? "off" : "on"
-                                            // });
-                                          },
-                                          child: Text(
-                                            state ? "Turn off" : "Turn on",
-                                            style: TextStyles(context)
-                                                .getRegularStyle()
-                                                .copyWith(color: Colors.blue),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Routes.pop(context),
-                                          child: Text(
-                                            "Cancel",
-                                            style: TextStyles(context)
-                                                .getRegularStyle()
-                                                .copyWith(color: Colors.red),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                  },
-                  title: Text("Power Switch",
-                      style: TextStyles(context).getBoldStyle()),
-                  subtitle: Text(
-                    state ? "Power connection on" : "Power connection off",
-                  ),
-                );
-              },
-            ),
+            // BlocBuilder(
+            //   builder: (context, state) {
+            //     return SwitchListTile.adaptive(
+            //       secondary: const Icon(Icons.power_settings_new,color: Colors.red ,),
+            //       value: state,
+            //       onChanged: (value) {
+            //         showDialog(
+            //             context: context,
+            //             builder: (context) {
+            //               return Dialog(
+            //                 child: Container(
+            //                   height: 140,
+            //                   width: MediaQuery.of(context).size.width,
+            //                   decoration: const BoxDecoration(
+            //                     color: Colors.white,
+            //                     borderRadius: BorderRadius.only(
+            //                       topLeft: Radius.circular(20),
+            //                       topRight: Radius.circular(20),
+            //                     ),
+            //                   ),
+            //                   child: Column(
+            //                     children: [
+            //                       const Icon(
+            //                         Icons.warning_amber_rounded,
+            //                         size: 40,
+            //                         color: Colors.amber,
+            //                       ),
+            //                       Padding(
+            //                         padding: const EdgeInsets.all(8.0),
+            //                         child: Text(
+            //                           state
+            //                               ? "Confirm turning off the power?"
+            //                               : "Confirm turning on the power?",
+            //                           style: TextStyles(context)
+            //                               .getRegularStyle()
+            //                               .copyWith(fontSize: 16),
+            //                         ),
+            //                       ),
+            //                       Padding(
+            //                         padding: const EdgeInsets.only(right: 8.0),
+            //                         child: Row(
+            //                           mainAxisAlignment: MainAxisAlignment.end,
+            //                           children: [
+            //                             TextButton(
+            //                               onPressed: () {
+            //                                 Routes.pop(context);
+            //                                 context
+            //                                     .read<
+            //                                         PowerConnectionController>()
+            //                                     .setPowerState(
+            //                                         widget.id,!state);
+            //                                         Api.triggerPower(state == false ?1.toString():0.toString());
+            //                                 // FirebaseFirestore.instance
+            //                                 //     .collection("tenants")
+            //                                 //     .doc(widget.id)
+            //                                 //     .update({
+            //                                 //   "landlord_power_control":
+            //                                 //       state ? "off" : "on"
+            //                                 // });
+            //                               },
+            //                               child: Text(
+            //                                 state ? "Turn off" : "Turn on",
+            //                                 style: TextStyles(context)
+            //                                     .getRegularStyle()
+            //                                     .copyWith(color: Colors.blue),
+            //                               ),
+            //                             ),
+            //                             TextButton(
+            //                               onPressed: () => Routes.pop(context),
+            //                               child: Text(
+            //                                 "Cancel",
+            //                                 style: TextStyles(context)
+            //                                     .getRegularStyle()
+            //                                     .copyWith(color: Colors.red),
+            //                               ),
+            //                             )
+            //                           ],
+            //                         ),
+            //                       )
+            //                     ],
+            //                   ),
+            //                 ),
+            //               );
+            //             });
+            //       },
+            //       title: Text("Power Switch",
+            //           style: TextStyles(context).getBoldStyle()),
+            //       subtitle: Text(
+            //         state ? "Power connection on" : "Power connection off",
+            //       ),
+            //     );
+            //   },
+            // ),
+           
             const Space(space: 0.04),
           ],
         ),

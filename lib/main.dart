@@ -44,9 +44,6 @@ Future<void> main() async {
             create: (context) => ThemeController(),
           ),
           BlocProvider(
-            create: (context) => PowerConnectionController(),
-          ),
-          BlocProvider(
             create: (context) => UserdataController(),
           ),
           BlocProvider(
@@ -64,15 +61,16 @@ Future<void> main() async {
           BlocProvider(
             create: (context) => PropertyIdController(),
           ),
-          BlocProvider(create: (context) => ComplaintsController()),
           ChangeNotifierProvider(
             create: (context) => MainController(),
           ),
         ],
         child: BlocBuilder<ThemeController, ThemeData>(
+          // overall app theme
           builder: (context, theme) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              // app theme
               theme: theme.copyWith(
                 appBarTheme: const AppBarTheme(backgroundColor: Colors.blue),
                 colorScheme: ColorScheme.fromSeed(

@@ -8,13 +8,11 @@ export 'dart:io';
 
 // controllers
 export '/controllers/ThemeController.dart';
-export '/controllers/PowerConnectionController.dart';
 export '/controllers/UserdataController.dart';
 export '/controllers/PropertyIdController.dart';
 export '/controllers/AmountController.dart';
 export '/controllers/PropertyController.dart';
 export '/controllers/MainController.dart';
-export '/controllers/ComplaintController.dart';
 
 // widgets
 export '/widgets/Body.dart';
@@ -74,7 +72,7 @@ export '/views/Landlord/screens/AddTenant.dart';
 export '../views/Landlord/screens/reports/AnalysisPage.dart';
 export '/views/Landlord/screens/AddProperty.dart';
 export '/views/Landlord/screens/ViewTenants.dart';
-export '/views/Landlord/screens/ViewReports.dart';
+export '../views/Landlord/screens/ViewPending.dart';
 export '/views/Landlord/screens/profiles/TenantProfile.dart';
 export '/views/Landlord/screens/profiles/ComplaintProfile.dart';
 export '/views/Onboarding.dart';
@@ -88,7 +86,5 @@ export "/models/Tenants.dart";
 
 // backend 
 export '/backend/auth.dart';
-export '/backend/complaints.dart';
 export '/backend/property.dart';
 export '/backend/TenantData.dart';
-export '/DB/database.dart';

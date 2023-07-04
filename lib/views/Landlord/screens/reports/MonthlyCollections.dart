@@ -32,7 +32,17 @@ class MonthlyCollectionChart extends StatelessWidget {
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, x) {
-                      return Text(data[value.toInt()].property);
+                      return Transform.translate(
+                        offset: const Offset(-20, 36),
+                        child: Transform.rotate(
+                          angle: -45,
+                          child: Text(
+                            formatDate(
+                              DateTime.parse(data[value.toInt()].property),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -69,29 +79,32 @@ class MonthlyCollectionChart extends StatelessWidget {
         ),
         const Space(space: 0.13),
         SizedBox(
-          width: 160,
-          child: Card(
-            child: SizedBox(
-              height: 120,
-              child: Column(
-                children: List.generate(
-                  data.length,
-                  (index) => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      LegendIcon(color: data[index].color),
-                      const SizedBox(width: 4),
-                      Text(
-                        data[index].property,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
+          height: 250,
+          child: Column(
+            children: List.generate(
+              data.length,
+              (index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      formatDate(
+                        DateTime.parse(data[index].property),
+                      )
+                    ),
+                   
+                    Text(
+                      data[index].collection.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
+        const Space(space: 0.13),
       ],
     );
   }
@@ -121,16 +134,21 @@ class MonthlyPropertyCollection extends StatefulWidget {
   const MonthlyPropertyCollection({super.key});
 
   @override
-  State<MonthlyPropertyCollection> createState() => _MonthlyPropertyCollectionState();
+  State<MonthlyPropertyCollection> createState() =>
+      _MonthlyPropertyCollectionState();
 }
 
 class _MonthlyPropertyCollectionState extends State<MonthlyPropertyCollection> {
   String x = "";
   @override
   Widget build(BuildContext context) {
-     List<MonthlyCollection> collectionData = [];
+    List<MonthlyCollection> collectionData = [];
 
-    FirebaseFirestore.instance.collection("property").doc(context.read<PropertyIdController>().state).get().then((value) {
+    FirebaseFirestore.instance
+        .collection("property")
+        .doc(context.read<PropertyIdController>().state)
+        .get()
+        .then((value) {
       setState(() {
         x = value.data()?['name'] ?? "";
       });
@@ -144,17 +162,27 @@ class _MonthlyPropertyCollectionState extends State<MonthlyPropertyCollection> {
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection('payments').where("property",isEqualTo: context.read<PropertyIdController>().state)
+                .collection('payments')
+                .where("property",
+                    isEqualTo: context.read<PropertyIdController>().state)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Loader();
+                return const Loader(text: "monthly collections");
               } else {
                 var d = snapshot.data!.docs;
-                collectionData = List.generate(d.length, (index) => MonthlyCollection(x,double.parse(d[index].data()['amountPaid']),Colors.deepPurple),);
+                collectionData = List.generate(
+                  d.length,
+                  (index) => MonthlyCollection(
+                      d[index].data()['date'],
+                      double.parse(d[index].data()['amountPaid']),
+                      Theme.of(context).primaryColor),
+                );
               }
-          return snapshot.data!.docs.isNotEmpty?  MonthlyCollectionChart(collectionData) : const NoDataWidget(text: "There's nothing here..");
-        }),
+              return snapshot.data!.docs.isNotEmpty
+                  ? MonthlyCollectionChart(collectionData)
+                  : const NoDataWidget(text: "There's nothing here..");
+            }),
       ),
     );
   }

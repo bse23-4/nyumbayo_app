@@ -69,24 +69,29 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                 margin: padding,
                 child: Column(
                   children: [
+
                     ListTile(
                       title: const Text("Complaint title",
                           style: TextStyle(fontSize: 16)),
+                      
                       trailing: Text(
                         widget.title,
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
+
                     ListTile(
                       title: const Text(
                         "Description",
                         style: TextStyle(fontSize: 16),
                       ),
+                     
                       trailing: Text(
                         widget.description,
                         // style: const TextStyle(fontSize: 16),
                       ),
                     ),
+
                     ListTile(
                       title: const Text(
                         "Date",
@@ -99,6 +104,7 @@ class _ComplaintProfileState extends State<ComplaintProfile>
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
+
                     ListTile(
                       title: const Text(
                         "Time",
@@ -162,8 +168,10 @@ class _ComplaintProfileState extends State<ComplaintProfile>
               const Space(space: 0.02),
             ],
           ),
+          // layout and responsiveness of the appbar
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
+              //
               SliverAppBar(
                 centerTitle: true,
                 floating: true,

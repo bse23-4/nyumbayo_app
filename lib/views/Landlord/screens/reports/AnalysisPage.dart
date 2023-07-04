@@ -25,23 +25,22 @@ class _AnalysisPageState extends State<AnalysisPage> {
         title: const Text("Analysis Page"),
       ),
       body: ListView.separated(
-          itemBuilder: (ctx, i) => ListTile(
-                leading: const Icon(Icons.analytics, size: 30),
-                title: Text(_data[i]),
-                subtitle: Text("Click here to view more",
-                    style: TextStyles(context).getDescriptionStyle()),
-                onTap: () {
-                  if (i == 0) {
-                   Routes.named(context, Routes.monthlyPropertyCollection);
-                  } else if (i == 1) {
-                   Routes.push(const TenantChartScreen(), context);
-                  } else {
-                   
-                  }
-                },
-              ),
-          separatorBuilder: (ctx, i) => const Divider(),
-          itemCount: _data.length),
+        itemBuilder: (ctx, i) => ListTile(
+          leading: const Icon(Icons.analytics, size: 30),
+          title: Text(_data[i]),
+          subtitle: Text("Click here to view more",
+              style: TextStyles(context).getDescriptionStyle()),
+          onTap: () {
+            if (i == 0) {
+              Routes.named(context, Routes.monthlyPropertyCollection);
+            } else if (i == 1) {
+              Routes.push(const TenantChartScreen(), context);
+            } else {}
+          },
+        ),
+        separatorBuilder: (ctx, i) => const Divider(),
+        itemCount: _data.length,
+      ),
     );
   }
 }

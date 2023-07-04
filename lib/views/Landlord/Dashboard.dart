@@ -14,10 +14,14 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    // fetching tenants 
     BlocProvider.of<TenantController>(context)
         .fetchTenants(context.read<PropertyIdController>().state);
+        // fetching property
     BlocProvider.of<PropertyController>(context).fetchProperties();
+    // fetching property id
     BlocProvider.of<PropertyIdController>(context).getPropertyId();
+    // setting the amount
     Provider.of<MainController>(context, listen: false)
         .setAmount(context.read<PropertyIdController>().state);
   }
@@ -59,9 +63,9 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     BlocProvider.of<TenantController>(context, listen: true)
         .fetchTenants(context.read<PropertyIdController>().state);
-
+// fetching property
     BlocProvider.of<PropertyController>(context).fetchProperties();
-
+// fetching property id
     BlocProvider.of<PropertyIdController>(context).getPropertyId();
 
     Provider.of<MainController>(context, listen: true)
@@ -105,11 +109,14 @@ class _DashboardState extends State<Dashboard> {
         shadowColor: Colors.transparent,
         backgroundColor: Colors.blue[800],
         actions: [
+          // Dropdown for property
           PopupMenuButton(
             iconSize: 20,
+            // dropdown menu builder
             itemBuilder: (context) => List.generate(
               BlocProvider.of<PropertyController>(context).state.length,
               (index) => PopupMenuItem(
+                // display property name
                 child: Text(
                     "${BlocProvider.of<PropertyController>(context).state[index]['name']}"),
                 onTap: () {
@@ -131,6 +138,7 @@ class _DashboardState extends State<Dashboard> {
                 },
               ),
             ),
+            // display selected property
             child: Padding(
               padding:
                   const EdgeInsets.only(right: 8.0, top: 8, bottom: 8, left: 8),
@@ -150,9 +158,8 @@ class _DashboardState extends State<Dashboard> {
       .orderBy('date', descending: true)
       .snapshots(),
         builder: (context, snapshot) {
-       
           if (snapshot.hasData) {
-           context.watch<MainController>().listenToNewComplaints(snapshot.data!);
+          //  context.watch<MainController>().listenToNewComplaints(snapshot.data!);
           }
           return Body(
             child: Padding(
@@ -166,6 +173,7 @@ class _DashboardState extends State<Dashboard> {
                       child: BlocBuilder<AmountController, double>(
                         builder: (context, state) {
                           return RichText(
+                            // text to display the amoiunt collected changes
                             text: TextSpan(
                               text:
                                   "UGX ${formatNumberWithCommas(context.watch<MainController>().amt.toInt())}\n",
@@ -177,7 +185,7 @@ class _DashboardState extends State<Dashboard> {
                                   text: "Available collections",
                                   style: TextStyles(context)
                                       .getRegularStyle()
-                                      .copyWith(fontSize: 19),
+                                      .copyWith(fontSize: 19,color:Colors.white),
                                 )
                               ],
                             ),
@@ -201,7 +209,11 @@ class _DashboardState extends State<Dashboard> {
                             crossAxisCount: 2,
                             children: List.generate(
                               data.length,
-                              (index) => TapEffect(
+                              (index) => 
+
+
+                              // dashboard cards
+                              TapEffect(
                                 onClick: () => Navigator.of(context)
                                     .pushNamed(data[index]['route']),
                                 child: Card(
@@ -218,6 +230,9 @@ class _DashboardState extends State<Dashboard> {
                                       child: Center(
                                         child: RichText(
                                           textAlign: TextAlign.center,
+
+
+                                          // card title
                                           text: TextSpan(
                                             text: data[index]["title"],
                                             style: TextStyles(context)
@@ -226,6 +241,9 @@ class _DashboardState extends State<Dashboard> {
                                                     color: Colors.black,
                                                     fontSize: 17),
                                             children: [
+
+
+                                              // figures
                                               TextSpan(
                                                 text: "\n ${data[index]['total']}",
                                                 style: TextStyles(context)
@@ -288,6 +306,7 @@ class _DashboardState extends State<Dashboard> {
                                   ],
                                 ),
                               ),
+                              // icon for bar chart.
                               const Icon(Icons.bar_chart,size:140)
                             ],
                           ),

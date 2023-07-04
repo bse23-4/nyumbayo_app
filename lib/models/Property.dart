@@ -12,6 +12,6 @@ class Property {
     required this.address,
     required this.numFloors,
     required this.numRooms,
-    this.now = "",
+    required this.now,
   });
 }

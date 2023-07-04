@@ -4,7 +4,6 @@ import 'package:nyumbayo_app/views/Offline.dart';
 
 import '../views/Landlord/screens/ViewResolved.dart';
 import '../views/Landlord/screens/reports/MonthlyCollections.dart';
-import '../views/Landlord/screens/settings/SettingsView.dart';
 import '/exports/exports.dart';
 
 class Routes {
@@ -49,6 +48,7 @@ class Routes {
   static void named(BuildContext context, String route){
     Navigator.of(context).pushNamed(route);
   }
+
   // routes
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
@@ -64,7 +64,7 @@ class Routes {
       Routes.signup: (context) => const SignUp(),
       Routes.stats: (context) => const AnalysisPage(),
       Routes.offline: (context) => const OfflinePage(),
-      Routes.settings: (context) => const SettingsView(),
+      // Routes.settings: (context) => const SettingsView(),
       Routes.resolved: (context) => const ViewResolvedReports(),
     };
   }

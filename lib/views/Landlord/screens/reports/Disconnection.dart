@@ -133,17 +133,6 @@ class _TenantChartScreenState extends State<TenantChartScreen> {
   @override
   Widget build(BuildContext context) {
     List<PowerConnection> collectionData = [];
-
-    // FirebaseFirestore.instance
-    //     .collection("property")
-    //     .doc(context.read<PropertyIdController>().state)
-    //     .get()
-    //     .then((value) {
-    //   setState(() {
-    //     x = value.data()?['name'] ?? "";
-    //   });
-    // });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Stats power status'),

@@ -111,7 +111,7 @@ void showProgress(BuildContext context, {String? text = 'Task'}) {
           child: Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 18.0),
+                padding: const EdgeInsets.only(left: 18.0),
                 child: SpinKitDualRing(
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
@@ -177,4 +177,11 @@ void showAlertWindow(BuildContext context,
           ),
         );
       });
+}
+
+
+String separateZerosWithCommas(String zeros) {
+  final formatter = NumberFormat("#,###");
+  int value = int.parse(zeros);
+  return formatter.format(value);
 }

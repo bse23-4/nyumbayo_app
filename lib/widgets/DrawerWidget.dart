@@ -36,23 +36,24 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Drawer(
       child: Column(
         children: [
-          BlocBuilder<LandlordController, Map<String, dynamic>>(
-              builder: (context, data) {
-            return UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.memory(base64.decode(data['profile'])))
-                  // child: Text(
-                  //   "${s?['name'].split(" ")[0].characters.first}${userName.split(" ")[1].characters.first}",
-                  //   style: const TextStyle(
-                  //       fontSize: 25, fontWeight: FontWeight.w700),
-                  // ),
-                  ),
-              accountName: Text(userName),
-              accountEmail: Text("${credential.currentUser?.email}"),
-            );
-          }),
+        //  StreamBuilder(
+        //   stream: FirebaseFirestore.instance.collection("landlords").doc(credential.currentUser!.uid).snapshots(),
+        //       builder: (context, snapshot) {
+        //     return snapshot.hasData ? UserAccountsDrawerHeader(bru
+        //       currentAccountPicture: CircleAvatar(
+        //           child: ClipRRect(
+        //               borderRadius: BorderRadius.circular(50),
+        //               child: Image.memory(base64.decode(snapshot.data!.data()!['profile'])))
+        //           // child: Text(
+        //           //   "${s?['name'].split(" ")[0].characters.first}${userName.split(" ")[1].characters.first}",
+        //           //   style: const TextStyle(
+        //           //       fontSize: 25, fontWeight: FontWeight.w700),
+        //           // ),
+        //           ),
+        //       accountName: Text(userName),
+        //       accountEmail: Text("${credential.currentUser?.email}"),
+        //     ):const CircularProgressIndicator.adaptive();
+        //   }),
           ListTile(
             title: const Text("Dashboard"),
             leading: const Icon(Icons.dashboard_outlined),

@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "308725614476",
-    "project_id": "nyumba-fbd07",
-    "storage_bucket": "nyumba-fbd07.appspot.com"
+    "project_number": "1022378897645",
+    "project_id": "nyumba-yo",
+    "storage_bucket": "nyumba-yo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:308725614476:android:c04ddb0263be9b67d978a9",
+        "mobilesdk_app_id": "1:1022378897645:android:9cb21e8591d5e731d05ce4",
         "android_client_info": {
           "package_name": "com.app.landlord"
         }
       },
       "oauth_client": [
         {
-          "client_id": "308725614476-fm0drllhsjuc5u4maatjicqp6hu690i7.apps.googleusercontent.com",
+          "client_id": "1022378897645-126s2qok3655gqd8hit0mmlqihlvoc0i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCwgfv7aU46aMWP0ztSuQwtplKd45AAiVQ"
+          "current_key": "AIzaSyC3B_xfoQdx_M4aHfjlNh3Ex9K4KOQxdj4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "308725614476-fm0drllhsjuc5u4maatjicqp6hu690i7.apps.googleusercontent.com",
+              "client_id": "1022378897645-126s2qok3655gqd8hit0mmlqihlvoc0i.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "308725614476-tj1fklnlhaj4dpbvl1h3uooi0993l3j9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.app.client"
-              }
             }
           ]
         }
@@ -43,35 +36,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:308725614476:android:889c79b94ada3cb3d978a9",
+        "mobilesdk_app_id": "1:1022378897645:android:ece8ddf5ae7aa7ead05ce4",
         "android_client_info": {
           "package_name": "com.app.tenant"
         }
       },
       "oauth_client": [
         {
-          "client_id": "308725614476-fm0drllhsjuc5u4maatjicqp6hu690i7.apps.googleusercontent.com",
+          "client_id": "1022378897645-126s2qok3655gqd8hit0mmlqihlvoc0i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCwgfv7aU46aMWP0ztSuQwtplKd45AAiVQ"
+          "current_key": "AIzaSyC3B_xfoQdx_M4aHfjlNh3Ex9K4KOQxdj4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "308725614476-fm0drllhsjuc5u4maatjicqp6hu690i7.apps.googleusercontent.com",
+              "client_id": "1022378897645-126s2qok3655gqd8hit0mmlqihlvoc0i.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "308725614476-tj1fklnlhaj4dpbvl1h3uooi0993l3j9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.app.client"
-              }
             }
           ]
         }

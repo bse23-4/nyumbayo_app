@@ -72,7 +72,9 @@ class _ViewResolvedReportsState extends State<ViewResolvedReports>
                           : ListView(
                               children: List.generate(
                                 resolved.length,
-                                (index) => TapEffect(
+                                (index) => 
+                                // resolved complaint card
+                                TapEffect(
                                   onClick: () {
                                     context
                                         .read<MainController>()

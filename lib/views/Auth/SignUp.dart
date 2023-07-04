@@ -76,7 +76,9 @@ class _SignUpState extends State<SignUp> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _image != null
-                        ? ClipRRect(
+                        ? 
+                        // displaying uploaded image
+                        ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: SizedBox(
                               width: 100,
@@ -84,11 +86,14 @@ class _SignUpState extends State<SignUp> {
                               child: Image.memory(_image!),
                             ),
                           )
-                        : SizedBox(
+                        : 
+                        // displaying default image
+                        SizedBox(
                             width: 70,
                             height: 70,
                             child: Image.asset("assets/default.png")),
                     const Space(space: 0.03),
+                    // camera button
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -104,6 +109,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
               ),
+
               CommonTextField(
                 titleText: "Name",
                 hintText: "John Doe",
@@ -179,7 +185,9 @@ class _SignUpState extends State<SignUp> {
               CommonButton(
                 padding: padding,
                 height: 50,
-                buttonText: "Login",
+                buttonText: "Sign Up",
+                textColor: Colors.white,
+                backgroundColor: Colors.blue,
                 onTap: () {
                   // check if all fields have data
                   if (nameController.text.isEmpty ||
@@ -194,7 +202,7 @@ class _SignUpState extends State<SignUp> {
                         type: 'danger');
                   }
                   showProgress(context,
-                      text: "Creating landlord account in progress...");
+                      text: "Creation progress");
                   if (formKey.currentState!.validate()) {
                     var user = Landlord(
                         name: nameController.text,
@@ -203,8 +211,11 @@ class _SignUpState extends State<SignUp> {
                         address: addressController.text,
                         password: passwordController.text,
                         profile: base64.encode(_image!));
+
+                        //creation of the landlord
                     Auth.createLandlord(user, context).then((value) {
                       Routes.pop(context);
+                      // on success validate the email
                       Routes.push(const EmailVerificationView(), context);
                     });
                   }
@@ -215,11 +226,11 @@ class _SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.only(left: 40.0, right: 40),
                 child: Row(
                   children: [
-                    Text("Already have an account    |",
-                        style: Theme.of(context).textTheme.bodyText1),
+                    Text("Already have an account  |",
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black)),
                     TextButton(
                       onPressed: () => Routes.routeUntil(context, Routes.login),
-                      child: const Text("login"),
+                      child: const Text("login",style: TextStyle(color: Colors.blue),),
                     )
                   ],
                 ),
