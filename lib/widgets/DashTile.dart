@@ -3,7 +3,8 @@ import '/exports/exports.dart';
 class DashTile extends StatelessWidget {
   final String title;
   final String value;
-  const DashTile({super.key, required this.title, required this.value});
+  Color color;
+   DashTile({super.key, required this.title, required this.value,this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class DashTile extends StatelessWidget {
           child: Text(
             value,
             style: TextStyles(context).getRegularStyle().copyWith(
-                fontWeight: FontWeight.w400, color: Colors.white, fontSize: 18),
+                fontWeight: FontWeight.w800, color: color, fontSize: 20),
           ),
         ),
       ],

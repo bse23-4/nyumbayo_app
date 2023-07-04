@@ -36,7 +36,10 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
         title: const Text("Payments Preview"),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("payments").where("tenantId",isEqualTo: context.read<UserdataController>().state).snapshots(),
+        stream: FirebaseFirestore.instance.collection("payments")
+        .where("tenantId",isEqualTo: context.read<UserdataController>().state)
+        .orderBy("date",)
+        .snapshots(),
         builder: (context, snapshot) {
           var result = snapshot.data;
           return snapshot.hasData
@@ -75,7 +78,7 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
                       separatorBuilder: (ctx, i) => const Divider(),
                       itemCount: result.docs.length)
               : const Loader(
-                  text: "Loading payments data..",
+                  text: "payment inventory",
                 );
         },
       ),

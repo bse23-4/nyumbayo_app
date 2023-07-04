@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:nyumbayo_app/tools/Reload.dart';
 
 import 'Observers/IntervalObserver.dart';
+import 'controllers/PowerBillController.dart';
 import 'firebase_options.dart';
 import 'exports/exports.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,6 +61,7 @@ Future<void> main() async {
           BlocProvider(create: (_) => AmountController()),
           BlocProvider(create: (_) => TenantController()),
           BlocProvider(create: (_) => PowerStatusController()),
+          BlocProvider(create: (_) => PowerBillController()),
           ChangeNotifierProvider(create: (_) => MainController()),
         ],
         child: Builder(

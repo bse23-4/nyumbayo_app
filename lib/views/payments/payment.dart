@@ -33,7 +33,7 @@ class _PaymentScreenState extends State<PaymentScreen>
   int _currentStep = 0;
   final rentController = TextEditingController();
   final electricController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
 
   String errorText1 = '';
   @override
@@ -198,7 +198,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                   Step(
                     state: assignState(index: 1),
                     title: const Text('Select payment option'),
-                    content: Column(
+                    content: Row(
                       children: [
                         RadioMenuButton(
                           value: mode,
@@ -206,30 +206,33 @@ class _PaymentScreenState extends State<PaymentScreen>
                           onChanged: (v) {
                             setState(() {
                               mode = 1;
+                              phoneNumberController = TextEditingController(
+                                  text: context
+                                      .read<TenantController>()
+                                      .state['acontact']);
                             });
                           },
-                          child: const Text(
-                            "MTN",
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
+                          child: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: Image.asset("assets/mtn.jpeg")),
                         ),
                         RadioMenuButton(
-                          value: mode,
-                          groupValue: 0,
-                          onChanged: (v) {
-                            setState(() {
-                              mode = 0;
-                            });
-                          },
-                          child: const Text(
-                            "Airtel",
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
-                        )
+                            value: mode,
+                            groupValue: 0,
+                            onChanged: (v) {
+                              setState(() {
+                                mode = 0;
+                                 phoneNumberController = TextEditingController(
+                                  text: context
+                                      .read<TenantController>()
+                                      .state['contact']);
+                              });
+                            },
+                            child: SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: Image.asset("assets/airtel.jpeg")))
                       ],
                     ),
                     isActive: step2,
@@ -373,15 +376,16 @@ class _PaymentScreenState extends State<PaymentScreen>
                                                           "${context.read<MainController>().computeBill(context.read<MainController>().powerConsumed)}",
                                                     ),
                                                   ).then((x) {
-                                                     Routes.push(const Dashboard(),
-                                                      context);
+                                                    Routes.push(
+                                                        const Dashboard(),
+                                                        context);
 
-                                                  // save payment details
-                                                  showMessage(
-                                                      context: context,
-                                                      msg:
-                                                          "Payment made successfully",
-                                                      type: 'success');
+                                                    // save payment details
+                                                    showMessage(
+                                                        context: context,
+                                                        msg:
+                                                            "Payment made successfully",
+                                                        type: 'success');
                                                     // trigger notification
                                                     sendNotification(
                                                       title: "Payment",
@@ -389,7 +393,6 @@ class _PaymentScreenState extends State<PaymentScreen>
                                                           "Payment made successfully",
                                                     );
                                                   });
-                                                 
                                                 },
                                                 child: Text(
                                                   "Confirm",

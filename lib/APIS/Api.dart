@@ -12,6 +12,7 @@ class Api {
       "https://api.thingspeak.com/channels/2164396/feeds/last.json?api_key=P7DE1Z4O2CTVID3V";
   static String power_status_api_write =
       "https://api.thingspeak.com/update?api_key=EIGVFVMPGBKK86VQ&field1=";
+      // https://api.thingspeak.com/update?api_key=EIGVFVMPGBKK86VQ&field1=0
 
   static Future<String> getCurrentPowerStatus() async {
     String msgCoded = "";

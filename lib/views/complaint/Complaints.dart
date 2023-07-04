@@ -40,6 +40,7 @@ class _ComplaintState extends State<Complaint> {
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("complaints")
+                      .orderBy("date", descending: true)
                       .snapshots(),
                   builder: (context, s) {
                     var data = s.data;
@@ -81,7 +82,11 @@ class _ComplaintState extends State<Complaint> {
                                         style: TextStyles(context)
                                             .getRegularStyle()),
                                     subtitle: Text(
-                                        formatDate(DateTime.parse(t?['date'])),
+                                        getTimeAgo(
+                                          DateTime.parse(t?['date']).subtract(
+                                            Duration(seconds: 1),
+                                          ),
+                                        ),
                                         style: TextStyles(context)
                                             .getDescriptionStyle()),
                                     trailing: Text(

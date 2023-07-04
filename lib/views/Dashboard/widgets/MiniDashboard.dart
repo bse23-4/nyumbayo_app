@@ -1,3 +1,4 @@
+import '../../../controllers/PowerBillController.dart';
 import '../../payments/payment.dart';
 import '/exports/exports.dart';
 
@@ -20,16 +21,17 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
     BlocProvider.of<TenantController>(context, listen: true)
         .fetchTenants(context.read<UserdataController>().state);
     // computations for balance
-    // int balance = int.parse(context.read<TenantController>().state['balance']);
-    // int amountPaid =
-    //     int.parse(context.read<TenantController>().state['amountPaid'] ?? "0");
-    // int amountToPay =
-    //     int.parse(context.read<TenantController>().state['monthlyRent'] ?? "0");
+    int balance = int.parse(context.read<TenantController>().state['balance']);
+    int amountPaid =
+        int.parse(context.read<TenantController>().state['amountPaid'] ?? "0");
+    int amountToPay =
+        int.parse(context.read<TenantController>().state['monthlyRent'] ?? "0");
     // computes percentage
-    // double percentage = ((amountPaid) / (amountToPay)) * 100;
+    double percentage = ((amountPaid) / (amountToPay)) * 100;
     // compute percentage for electricity
-    // double powerPercentage = ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
+    // double powerxPercentage = ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
     // logic for tunning oof power
+    BlocProvider.of<PowerBillController>(context).setSavePowerBill(context.watch<MainController>().computeBill(context.watch<MainController>().powerConsumed));
     return
         // complaint tab
         TapEffect(
@@ -66,9 +68,11 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
                 ),
                 const Space(space: 0.02),
                 DashTile(
-                    title: "Rent Balance",
-                    value:
-                        "${context.read<TenantController>().state['balance']}/="),
+                  title: "Rent Balance",
+                  value:
+                      "${separateZerosWithCommas(context.read<TenantController>().state['balance'])}/=",
+                  color: percentage < 80 ? Colors.orangeAccent : Colors.white,
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.03,
                 ),
@@ -77,10 +81,12 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
                     value:
                         "${context.watch<MainController>().powerConsumed} kWh"),
                 const Space(space: 0.01),
-                DashTile(
-                    title: "Power bills",
-                    value:
-                        "${context.watch<MainController>().computeBill(context.watch<MainController>().powerConsumed)}/="),
+                BlocBuilder<PowerBillController, double>(
+                  builder: (context, powerBill) {
+                    return DashTile(
+                        title: "Power bills", value: "$powerBill/=");
+                  },
+                ),
                 const Space(space: 0.01),
                 Padding(
                   padding:

@@ -2,7 +2,7 @@ import 'package:nyumbayo_app/APIS/Api.dart';
 
 import '../exports/exports.dart';
 
-class MainController extends ChangeNotifier { 
+class MainController extends ChangeNotifier {
   bool _power = false;
   final List<Map<String, dynamic>> _complaints = [];
 
@@ -57,10 +57,18 @@ class MainController extends ChangeNotifier {
 
   // complaints
   void fetchPowerConsumed() {
-    Api.getPowerConsumed().then((value) {
-      _powerConsumed =
-          double.parse(value.isEmpty || value == "?" ? "0" : value);
-      notifyListeners();
+    SharedPreferences.getInstance().then((value) {
+      if (value.getDouble("units") == null) {
+        value.setDouble("units", 0.0);
+      } else {
+        double totalUnits = value.getDouble("units") ?? 0.0;
+        Api.getPowerConsumed().then((units) {
+          totalUnits += double.parse(units.isEmpty || units == "?" ? "0.0" : units);
+           value.setDouble("units", totalUnits);
+          _powerConsumed = totalUnits;
+          notifyListeners();
+        });
+      }
     });
   }
 
@@ -68,20 +76,18 @@ class MainController extends ChangeNotifier {
   double computeBill(double units) {
     return (units * 500);
   }
+
 // property name
-void propertyName(String name) {
-  
-  FirebaseFirestore.instance
-      .collection('properties')
-      .doc(name)
-      .get()
-      .then((value) {
-    _property = value.data()?['name'] ?? "";
-    notifyListeners();
-  });
-
-}
-
+  void propertyName(String name) {
+    FirebaseFirestore.instance
+        .collection('properties')
+        .doc(name)
+        .get()
+        .then((value) {
+      _property = value.data()?['name'] ?? "";
+      notifyListeners();
+    });
+  }
 
   checkOnline() {
     InternetConnectionChecker.createInstance()

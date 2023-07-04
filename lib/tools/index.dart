@@ -162,7 +162,30 @@ String getEndOfMonth(DateTime date) {
   DateTime endOfMonth = nextMonth.subtract(const Duration(days: 1));
   return DateFormat('dd-MM-yyyy').format(endOfMonth);
 }
+String getTimeAgo(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
 
+  if (difference.inSeconds < 5) {
+    return 'just now';
+  } else if (difference.inSeconds < 60) {
+    return '${difference.inSeconds} seconds ago';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} minutes ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hours ago';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} days ago';
+  } else {
+    final formatter = DateFormat('dd MMM yyyy');
+    return formatter.format(dateTime);
+  }
+}
+String separateZerosWithCommas(String zeros) {
+  final formatter = NumberFormat("#,###");
+  int value = int.parse(zeros);
+  return formatter.format(value);
+}
 void showProgressLoader(BuildContext context) {
   showDialog(
     barrierDismissible: true,
