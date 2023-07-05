@@ -45,7 +45,8 @@ class _InventoryState extends State<Inventory> {
                     ? const NoDataWidget(
                         text: "No inventory data available.",
                       )
-                    : PdfPreview(
+                    :
+                     PdfPreview(
                         initialPageFormat: PdfPageFormat.standard,
                         build: (format) => pdfFile(format, {
                           "amountPaid": widget.amountPaid,

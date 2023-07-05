@@ -47,9 +47,6 @@ export '/views/complaint/AddComplaint.dart';
 export '/routes/routes.dart';
 export '/tools/index.dart';
 
-// backend
-export '/DB/database.dart';
-
 // tools
 // ignore: duplicate_export
 export '/messages/Index.dart';

@@ -21,7 +21,7 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
     BlocProvider.of<TenantController>(context, listen: true)
         .fetchTenants(context.read<UserdataController>().state);
     // computations for balance
-    int balance = int.parse(context.read<TenantController>().state['balance']);
+    // int balance = int.parse(context.read<TenantController>().state['balance']);
     int amountPaid =
         int.parse(context.read<TenantController>().state['amountPaid'] ?? "0");
     int amountToPay =
@@ -110,6 +110,7 @@ class _MiniDashBoardState extends State<MiniDashBoard> {
                           ),
                         ),
                       ),
+                      // circle decoration
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Card(

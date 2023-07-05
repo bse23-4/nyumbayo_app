@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import '../../controllers/PowerBillController.dart';
 import '/backend/payments.dart';
 import '/models/Payment.dart';
 import '/exports/exports.dart';
@@ -88,6 +89,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                 onBackClick: () => Navigator.pop(context),
                 topPadding: 30,
               ),
+             
               Stepper(
                 currentStep: _currentStep,
                 onStepCancel: step3 == true
@@ -155,7 +157,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             controller: electricController,
                             hintText: "e.g 8,000",
                             titleText:
-                                "Electricity: UGX:${context.read<TenantController>().state['power_fee']}",
+                                "Electricity: UGX:${context.read<PowerBillController>().state}",
                             validate: (valid) {
                               setState(() {
                                 errorText1 = "Electricity amount is required";
@@ -169,15 +171,15 @@ class _PaymentScreenState extends State<PaymentScreen>
                             padding: padding,
                             buttonText: "Proceed to payment",
                             onTap: () {
-                              if (electricController.text.isEmpty &&
+                              if (electricController.text.isEmpty ||
                                   rentController.text.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(errorText1),
+                                  const SnackBar(
+                                    content: Text("Please fill in one of these feilds"),
                                     backgroundColor: Colors.redAccent,
                                     // behavior: SnackBarBehavior.floating,
                                     duration:
-                                        const Duration(milliseconds: 1900),
+                                        Duration(milliseconds: 3000),
                                   ),
                                 );
                               } else {
@@ -200,6 +202,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                     title: const Text('Select payment option'),
                     content: Row(
                       children: [
+
                         RadioMenuButton(
                           value: mode,
                           groupValue: 1,
@@ -209,7 +212,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                               phoneNumberController = TextEditingController(
                                   text: context
                                       .read<TenantController>()
-                                      .state['acontact']);
+                                      .state['acontact']); // mtn number
                             });
                           },
                           child: SizedBox(
@@ -217,6 +220,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                               height: 60,
                               child: Image.asset("assets/mtn.jpeg")),
                         ),
+
+
                         RadioMenuButton(
                             value: mode,
                             groupValue: 0,
@@ -226,7 +231,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                                  phoneNumberController = TextEditingController(
                                   text: context
                                       .read<TenantController>()
-                                      .state['contact']);
+                                      .state['contact']); // airtel number
                               });
                             },
                             child: SizedBox(
@@ -239,7 +244,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                   ),
                   Step(
                     state: assignState(index: 2),
-                    title: const Text('Provide your mobile money number '),
+                    title: const Text('Paying with this number '),
                     content: Form(
                       key: phoneFormKey,
                       child: Column(
@@ -261,6 +266,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                             maxLength: 10,
                             controller: phoneNumberController,
                           ),
+                          
                           CommonButton(
                             buttonText: "Make Payment",
                             onTap: () {

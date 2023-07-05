@@ -59,9 +59,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         int.parse(context.read<TenantController>().state['monthlyRent'] ?? "0");
     // computes percentage
     double percentage = ((amountPaid) / (amountToPay)) * 100;
-    // compute percentage for electricity
-    // double powerPercentage = ((amountPaid + powerFee) / (amountToPay + powerFee)) * 100;
-    // logic for tunning oof power
+   
+    // logic for tunning on or off power
     if ((percentage.isNaN == false && percentage >= 80 && context.read<PowerBillController>().state < 5000)) {
       Provider.of<MainController>(context, listen: true).controlPower(
           context.read<UserdataController>().state, percentage.toInt(),
@@ -97,6 +96,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
                   child: ListTile(
+
                     leading: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
@@ -105,6 +105,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500, fontSize: 15),
                       ),
                     ),
+
                     title: const Text(
                       "Rent Payment",
                       style: TextStyle(
@@ -112,7 +113,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         fontSize: 17,
                       ),
                     ),
+
                     subtitle: const Text("Pay your dues"),
+
                     trailing: RichText(
                       text: TextSpan(
                         text: "Paid",
@@ -148,16 +151,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-            if (context.read<TenantController>().state['power_fee'] == "5000" && context.read<PowerBillController>().state >= 5000)
+            if (context.read<PowerBillController>().state > 0)
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
+
                   child: ListTile(
+                    
                     leading: Icon(
                       Icons.electric_bolt_sharp,
                       color: Colors.blue.shade600,
                       size: 40,
                     ),
+
                     title: const Text(
                       "Electricity Payment",
                       style: TextStyle(
@@ -248,6 +254,36 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
+               if (context.read<TenantController>().state['power_fee'] != "0")
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.electric_bolt_sharp,
+                      color: Colors.blue.shade600,
+                      size: 40,
+                    ),
+                    title: const Text(
+                      "Electricity Payment",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      "Thank you for paying",
+                    ),
+                    trailing:  Text(
+                      "UGX ${context.read<TenantController>().state['power_fee']}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (context.read<TenantController>().state['balance'] != "0")
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -277,6 +313,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 label: const Text("Analytics"),
               ),
             ),
+            
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: FloatingActionButton.extended(

@@ -38,7 +38,6 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("payments")
         .where("tenantId",isEqualTo: context.read<UserdataController>().state)
-        .orderBy("date",)
         .snapshots(),
         builder: (context, snapshot) {
           var result = snapshot.data;
@@ -50,7 +49,7 @@ class _PreviewState extends State<Preview> with SingleTickerProviderStateMixin {
                         return ListTile(
                           leading: const Icon(Icons.monetization_on),
                           title: Text(
-                              "Payments Amount: ${result.docs[i]["amountPaid"].toString()}"),
+                              "Amount currently paid: ${result.docs[i]["amountPaid"].toString()}"),
                           subtitle: Text(formatDateTime(DateTime.parse(
                               result.docs[i]["date"].toString()))),
                           onTap: () {
